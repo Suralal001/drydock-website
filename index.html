@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DryDock AI · Answers. Not Dashboards.</title>
+<meta name="description" content="Understand, govern, and improve AI-powered software delivery from planning to production.">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..700;1,8..60,200..700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF7F1;
+    --cream-2: #F4EFE6;
+    --navy: #0E2038;
+    --navy-2: #16304F;
+    --navy-3: #1E3A5F;
+    --ink: #1A2B42;
+    --muted: #526075;
+    --muted-2: #8494A8;
+    --blue: #2563EB;
+    --blue-soft: #EAF0FE;
+    --blue-border: rgba(37,99,235,0.25);
+    --green: #128C6A;
+    --green-soft: #E3F4EE;
+    --amber: #B45309;
+    --amber-soft: #FCF0DE;
+    --red: #C0392B;
+    --red-soft: #FBEAE7;
+    --line: rgba(14,32,56,0.10);
+    --line-dark: rgba(255,255,255,0.10);
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(14,32,56,0.04), 0 8px 24px rgba(14,32,56,0.07);
+    --shadow-lg: 0 2px 4px rgba(14,32,56,0.05), 0 20px 50px rgba(14,32,56,0.12);
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif: 'Source Serif 4', Georgia, serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16.5px; line-height: 1.65; letter-spacing: -.006em; overflow-x: hidden; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; }
+  strong { color: var(--navy); font-weight: 650; }
+  ::selection { background: rgba(37,99,235,.2); }
+
+  /* marker highlight for priority phrases */
+  .hl { background: linear-gradient(to top, rgba(59,130,246,.20) 0 36%, transparent 36%); border-radius: 2px; padding: 0 .06em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+  /* ── Reveal on scroll ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: .08s; } .reveal.d2 { transition-delay: .16s; }
+  .reveal.d3 { transition-delay: .24s; } .reveal.d4 { transition-delay: .32s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    * { animation: none !important; }
+  }
+
+  /* ── Buttons ── */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-family: var(--serif); font-size: 15.5px; font-weight: 600; letter-spacing: -.025em; cursor: pointer; border: none; transition: transform .18s, box-shadow .18s, background .18s, color .18s; white-space: nowrap; }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 4px 14px rgba(37,99,235,0.28); }
+  .btn-primary:hover { background: #1D4ED8; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(37,99,235,0.35); }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-navy:hover { background: var(--navy-2); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(14,32,56,0.25); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid rgba(14,32,56,0.25); }
+  .btn-outline:hover { border-color: var(--navy); transform: translateY(-2px); }
+  .btn-light { background: #fff; color: var(--navy); }
+  .btn-light:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+
+  /* ── Nav ── */
+  nav { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.25rem, 4vw, 3rem); height: 80px; background: rgba(250,247,241,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color .3s, box-shadow .3s; }
+  nav.scrolled { border-bottom-color: var(--line); box-shadow: 0 4px 20px rgba(14,32,56,0.06); }
+  .logo { display: flex; align-items: center; gap: 13px; font-family: var(--sans); font-weight: 800; font-size: 21px; letter-spacing: -.025em; color: var(--navy); }
+  .logo .logo-word { white-space: nowrap; }
+  .logo .logo-ai { color: var(--blue); font-weight: 600; }
+  .logo-mark { width: 44px; height: 44px; border-radius: 12px; background: var(--navy); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(14,32,56,0.22); transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s; }
+  .logo:hover .logo-mark { transform: translateY(-2px) rotate(-4deg); box-shadow: 0 7px 18px rgba(14,32,56,0.28); }
+  .logo-mark svg { width: 27px; height: 27px; }
+  .nav-links { display: flex; gap: 2.1rem; }
+  .nav-links a { font-size: 14.5px; font-weight: 500; color: var(--muted); transition: color .15s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -6px; height: 2px; border-radius: 2px; background: var(--blue); transition: right .25s cubic-bezier(.2,.7,.3,1); }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-links a:hover::after { right: 0; }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+
+  /* ── Layout helpers ── */
+  .wrap { max-width: 1360px; margin: 0 auto; padding-left: clamp(1.25rem, 4vw, 3rem); padding-right: clamp(1.25rem, 4vw, 3rem); }
+  section { padding-top: clamp(4rem, 9vw, 7.5rem); padding-bottom: clamp(4rem, 9vw, 7.5rem); }
+  .kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); margin-bottom: 1.1rem; }
+  .kicker::before { content: ''; width: 22px; height: 2px; border-radius: 2px; background: var(--blue); }
+  h1, h2 { font-family: var(--serif); color: var(--navy); }
+  h1 { font-size: clamp(2.7rem, 5.6vw, 4.1rem); line-height: 1.1; font-weight: 400; letter-spacing: -.025em; }
+  h2 { font-size: clamp(1.9rem, 3.5vw, 2.65rem); line-height: 1.12; font-weight: 400; letter-spacing: -.025em; }
+  h2 em, h1 em { font-style: italic; font-weight: 400; letter-spacing: 0; }
+  .lede { font-size: clamp(1.05rem, 1.7vw, 1.2rem); color: var(--muted); line-height: 1.75; letter-spacing: -.004em; }
+
+  /* ── Hero ── */
+  .hero { position: relative; padding-top: clamp(2rem, 4vw, 3.25rem); }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 45% at 18% 8%, rgba(37,99,235,0.07), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 90% 90%, rgba(14,32,56,0.05), transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; position: relative; }
+  @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 .accent { color: var(--navy); }
+  .hero .lede { max-width: 460px; margin: 1.4rem 0 2.2rem; }
+  .hero-ctas { display: flex; gap: .9rem; flex-wrap: wrap; }
+  .hero-note { display: flex; align-items: center; gap: 8px; margin-top: 1.4rem; font-size: 13px; color: var(--muted-2); }
+  .hero-note .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(18,140,106,0.15); animation: pulse-dot 2.2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100% { box-shadow: 0 0 0 3px rgba(18,140,106,0.15); } 50% { box-shadow: 0 0 0 6px rgba(18,140,106,0.06); } }
+
+  /* early access card */
+  .ea-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.8rem; box-shadow: var(--shadow-lg); position: relative; }
+  .ea-badge { position: absolute; top: -13px; left: 1.6rem; background: var(--navy); color: #FDE68A; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; }
+  .ea-card h3 { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.5; margin: .6rem 0 1.3rem; }
+  .field { margin-bottom: .9rem; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; letter-spacing: .02em; }
+  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid rgba(14,32,56,0.14); border-radius: 9px; font-family: var(--sans); font-size: 14px; color: var(--ink); background: var(--cream); transition: border-color .15s, box-shadow .15s, background .15s; }
+  .field input:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .ea-card .btn { width: 100%; margin-top: .4rem; }
+  .ea-fine { font-size: 11.5px; color: var(--muted-2); margin-top: .9rem; line-height: 1.5; }
+
+  /* ── Roles strip (ICP self-select) ── */
+  .roles-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.45); padding: 1.5rem clamp(1.25rem, 4vw, 3rem); text-align: center; }
+  .roles-label { font-size: 11.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted-2); margin-bottom: .8rem; }
+  .roles-row { display: flex; align-items: baseline; justify-content: center; gap: clamp(.9rem, 2.5vw, 1.8rem); flex-wrap: wrap; }
+  .role-item { font-family: var(--serif); font-size: clamp(1rem, 1.6vw, 1.2rem); font-weight: 450; letter-spacing: -.01em; color: var(--navy); opacity: .85; transition: opacity .2s; white-space: nowrap; }
+  .role-item:hover { opacity: 1; }
+  .role-sep { color: var(--muted-2); opacity: .5; font-size: .9em; }
+
+  /* ── Dark band: complexity ── */
+  .band { background: var(--navy); color: #fff; position: relative; overflow: hidden; }
+  .band::before {
+    content: ''; position: absolute; inset: 0; opacity: .5;
+    background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .band .wrap { position: relative; }
+  .band h2 { color: #fff; text-align: center; max-width: 640px; margin: 0 auto; }
+  .band .lede { color: rgba(255,255,255,0.72); text-align: center; max-width: 560px; margin: 1.3rem auto 0; }
+
+  /* drifting metric chips */
+  .chips-marquee { margin-top: 3rem; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .chips-track { display: flex; gap: .8rem; width: max-content; animation: drift 38s linear infinite; padding: 4px 0; }
+  .chips-track:nth-child(2) { animation-duration: 47s; animation-direction: reverse; margin-top: .8rem; }
+  .chips-marquee:hover .chips-track { animation-play-state: paused; }
+  @keyframes drift { to { transform: translateX(-50%); } }
+  .chip { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 9px 16px; font-family: 'SF Mono', ui-monospace, monospace; font-size: 12.5px; color: rgba(255,255,255,0.65); white-space: nowrap; }
+  .chip b { color: #fff; font-weight: 600; }
+  .chip .up { color: #6EE7B7; } .chip .down { color: #FCA5A5; } .chip .warn { color: #FCD34D; }
+
+  /* ── Dockmaster section ── */
+  .dockmaster { background: var(--cream); }
+  .dockmaster .head { text-align: center; max-width: 620px; margin: 0 auto 3.5rem; }
+  .dockmaster h2 .ask { color: var(--blue); }
+  .dm-points { display: flex; flex-direction: column; gap: .7rem; max-width: 520px; margin: 1.6rem auto 0; text-align: left; }
+  .dm-point { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; color: var(--muted); }
+  .dm-point svg { flex-shrink: 0; margin-top: 4px; }
+
+  .dm-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(2.5rem, 5vw, 5rem); align-items: center; }
+  @media (max-width: 920px) { .dm-grid { grid-template-columns: 1fr; } }
+
+  /* radial diagram */
+  .radial-wrap { display: flex; justify-content: center; }
+  .radial { position: relative; width: min(500px, 88vw); aspect-ratio: 1; }
+  .radial svg { width: 100%; height: 100%; overflow: visible; }
+  .ring-rotate { transform-origin: 200px 200px; animation: ring-spin 60s linear infinite; }
+  @keyframes ring-spin { to { transform: rotate(360deg); } }
+  .hub-pulse { transform-origin: 200px 200px; animation: hub-breathe 3.4s ease-in-out infinite; }
+  @keyframes hub-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+  .spoke-dot { animation: spoke-blink 2.8s ease-in-out infinite; }
+  .spoke-dot:nth-of-type(2) { animation-delay: .4s; } .spoke-dot:nth-of-type(3) { animation-delay: .8s; }
+  .spoke-dot:nth-of-type(4) { animation-delay: 1.2s; } .spoke-dot:nth-of-type(5) { animation-delay: 1.6s; }
+  .spoke-dot:nth-of-type(6) { animation-delay: 2s; }
+  @keyframes spoke-blink { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+
+  /* chat demo */
+  .chat-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .chat-head { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid var(--line); background: var(--cream-2); }
+  .chat-head .tl { width: 10px; height: 10px; border-radius: 50%; }
+  .chat-head span.title { margin-left: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+  .chat-body { padding: 1.7rem 1.8rem 1.9rem; min-height: 380px; }
+  .q-bubble { display: inline-flex; align-items: center; background: var(--navy); color: #fff; font-size: 15px; font-weight: 500; padding: 12px 18px; border-radius: 15px 15px 15px 4px; margin-bottom: 1.3rem; min-height: 45px; }
+  .q-bubble .caret { display: inline-block; width: 2px; height: 16px; background: #93C5FD; margin-left: 3px; animation: caret-blink 1s step-end infinite; }
+  @keyframes caret-blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .answer { opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .5s; }
+  .answer.on { opacity: 1; transform: none; }
+  .ans-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 9px; font-size: 14px; }
+  .ans-row .name { font-weight: 600; color: var(--ink); }
+  .tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; letter-spacing: .03em; }
+  .tag.risk { background: var(--red-soft); color: var(--red); }
+  .tag.watch { background: var(--amber-soft); color: var(--amber); }
+  .tag.ok { background: var(--green-soft); color: var(--green); }
+  .ans-note { margin-top: 1rem; padding: 12px 14px; background: var(--blue-soft); border-left: 3px solid var(--blue); border-radius: 0 9px 9px 0; font-size: 13px; color: var(--ink); line-height: 1.6; }
+  .ans-note b { color: var(--blue); }
+  .ans-src { margin-top: .8rem; font-size: 11.5px; color: var(--muted-2); }
+
+  /* ── Agents crew ── */
+  .crew { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%); position: relative; overflow: hidden; }
+  .crew::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle 340px at 12% 55%, rgba(37,99,235,0.10), transparent 70%),
+      radial-gradient(circle 300px at 30% 80%, rgba(18,140,106,0.09), transparent 70%),
+      radial-gradient(circle 280px at 8% 90%, rgba(180,83,9,0.07), transparent 70%);
+  }
+  .crew .wrap { position: relative; }
+  .crew .head { max-width: 560px; margin-bottom: 3rem; }
+  /* crew: deck + detail layout */
+  .crew2 { display: grid; grid-template-columns: 500px 1fr; gap: clamp(2rem, 4.5vw, 4rem); align-items: stretch; }
+  @media (max-width: 980px) { .crew2 { grid-template-columns: 1fr; } }
+
+  .deck { display: flex; flex-direction: column; padding: 6px 30px 26px 6px; }
+  .deck-card { display: flex; align-items: center; gap: 18px; background: #fff; border: 1px solid rgba(14,32,56,0.08); border-radius: 22px; padding: 34px 28px 38px; cursor: pointer; transition: transform .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s, border-color .4s; margin-top: -12px; position: relative; user-select: none; box-shadow: 0 18px 28px -18px rgba(14,32,56,0.22), 0 2px 6px rgba(14,32,56,0.04); }
+  .deck-card:first-child { margin-top: 0; }
+  /* stack order: top card in front, each casting its shadow on the one below */
+  .deck-card:nth-child(1) { z-index: 6; }
+  .deck-card:nth-child(2) { z-index: 5; }
+  .deck-card:nth-child(3) { z-index: 4; }
+  .deck-card:nth-child(4) { z-index: 3; }
+  .deck-card:nth-child(5) { z-index: 2; }
+  .deck-card:nth-child(6) { z-index: 1; }
+  .deck-card:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .deck-card .dg { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 27px; flex-shrink: 0; box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 5px rgba(14,32,56,0.07); }
+  .deck-card .dn { font-size: 18px; font-weight: 700; color: var(--navy); line-height: 1.35; }
+  .deck-card .ds { font-size: 14px; color: var(--muted); line-height: 1.4; }
+  .deck-card .chev { margin-left: auto; color: var(--muted-2); transition: transform .3s, color .3s; font-size: 21px; }
+  .deck-card:hover { transform: translateX(12px); z-index: 8; box-shadow: 0 26px 44px -14px rgba(14,32,56,0.32), 0 3px 8px rgba(14,32,56,0.06); }
+  .deck-card.active { transform: translateX(26px) translateY(-4px) scale(1.03); border-color: var(--blue-border); box-shadow: 0 34px 60px -14px rgba(14,32,56,0.38), 0 6px 18px rgba(37,99,235,0.12); z-index: 9; }
+  .deck-card.active .chev { transform: translateX(4px); color: var(--blue); }
+  .deck-card .prog { position: absolute; left: 28px; right: 28px; bottom: 12px; height: 3px; background: rgba(14,32,56,0.07); border-radius: 2px; overflow: hidden; opacity: 0; transition: opacity .3s; }
+  .deck-card.active .prog { opacity: 1; }
+  .deck-card .prog i { display: block; height: 100%; width: 0; background: var(--blue); border-radius: 2px; }
+  .deck-card.active .prog i { animation: prog-fill 6.5s linear forwards; }
+  .deck.paused .deck-card .prog { opacity: 0 !important; }
+  @keyframes prog-fill { to { width: 100%; } }
+
+  .agent-detail { background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg); padding: clamp(1.8rem, 3.2vw, 2.8rem); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .agent-detail::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3.5px; background: var(--accent-c, var(--blue)); transition: background .4s; }
+  .ad-anim { transition: opacity .32s ease, transform .32s ease; flex: 1; display: flex; flex-direction: column; }
+  .ad-anim.out { opacity: 0; transform: translateY(12px); }
+  .ad-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 1.6rem; }
+  @media (max-width: 560px) { .ad-stats { grid-template-columns: 1fr; } }
+  .ad-stat { background: var(--cream); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .ad-stat .v { font-family: var(--serif); font-size: 1.9rem; font-weight: 600; color: var(--navy); line-height: 1.1; margin-bottom: 4px; }
+  .ad-stat .v em { font-style: normal; color: var(--accent-c, var(--blue)); }
+  .ad-stat .l { font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-2); line-height: 1.45; }
+  .ad-top { display: flex; align-items: center; gap: 15px; margin-bottom: 1.2rem; }
+  .ad-glyph { width: 54px; height: 54px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 27px; flex-shrink: 0; }
+  .ad-name { font-family: var(--serif); font-size: 1.65rem; font-weight: 450; color: var(--navy); line-height: 1.12; letter-spacing: -.02em; }
+  .ad-domain { font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; margin-bottom: 3px; }
+  .ad-desc { color: var(--muted); font-size: 15.5px; line-height: 1.75; margin-bottom: 1.35rem; max-width: 580px; }
+  .ad-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+  .ad-bullets li { display: flex; gap: 10px; font-size: 14.5px; color: var(--ink); align-items: flex-start; line-height: 1.55; }
+  .ad-bullets li::before { content: '→'; color: var(--muted-2); flex-shrink: 0; }
+  .ad-mono { background: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 16px 19px; font-family: 'SF Mono', ui-monospace, monospace; font-size: 12.5px; color: var(--muted); line-height: 1.9; margin-top: auto; }
+  .ad-mono .g { color: var(--green); } .ad-mono .a { color: var(--amber); } .ad-mono .r { color: var(--red); }
+  .ad-mono .prompt { color: var(--muted-2); }
+
+  /* ── Mid CTA band ── */
+  .midcta { text-align: center; }
+  .midcta h2 { color: #fff; max-width: 520px; margin: 0 auto 2rem; }
+
+  /* ── Govern / Measure ── */
+  .knowsec .head { text-align: center; max-width: 560px; margin: 0 auto 4rem; }
+  .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; margin-bottom: clamp(3.5rem, 7vw, 6rem); }
+  .feature-row:last-child { margin-bottom: 0; }
+  @media (max-width: 880px) { .feature-row { grid-template-columns: 1fr; } .feature-row.flip .fr-copy { order: -1; } }
+  .fr-copy h3 { font-family: var(--serif); font-size: clamp(1.45rem, 2.5vw, 1.85rem); font-weight: 450; letter-spacing: -.02em; color: var(--navy); margin-bottom: .9rem; line-height: 1.2; }
+  .fr-copy p { color: var(--muted); font-size: 15.5px; line-height: 1.7; max-width: 420px; }
+  .mock { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 1.3rem; }
+  .mock-title { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 1rem; }
+  .pr-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 9px; margin-bottom: 8px; font-size: 13px; transition: transform .18s, border-color .18s; }
+  .pr-row:hover { transform: translateX(4px); border-color: var(--blue-border); }
+  .pr-row .pr-name { font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .pr-row .ai-badge { font-size: 9.5px; font-weight: 700; letter-spacing: .05em; background: var(--blue-soft); color: var(--blue); border-radius: 5px; padding: 2px 7px; }
+  .pr-row .who { font-size: 11.5px; color: var(--muted-2); }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-box { border: 1px solid var(--line); border-radius: 11px; padding: 1rem 1.1rem; }
+  .stat-box .sl { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 4px; }
+  .stat-box .sv { font-family: var(--serif); font-size: 1.8rem; font-weight: 600; color: var(--navy); line-height: 1.1; }
+  .stat-box .sd { font-size: 11px; margin-top: 3px; }
+  .sd.up { color: var(--green); } .sd.down { color: var(--red); }
+  .spend-bar { margin-top: 12px; }
+  .spend-bar .sl { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 7px; }
+  .bar-track { display: flex; height: 12px; border-radius: 6px; overflow: hidden; }
+  .bar-seg { height: 100%; transform-origin: left; }
+  .bar-legend { display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
+  .bar-legend span { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .bar-legend i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  /* ── Build your own ── */
+  .byo { background: var(--cream-2); }
+  .byo-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 880px) { .byo-grid { grid-template-columns: 1fr; } }
+  .byo .lede { max-width: 400px; margin-top: 1rem; }
+  .custom-table { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .ct-head { padding: 13px 18px; background: var(--navy); color: #fff; font-size: 12.5px; font-weight: 600; letter-spacing: .05em; display: flex; justify-content: space-between; }
+  .ct-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); border-left: 3px solid transparent; font-size: 13.5px; cursor: pointer; transition: background .15s, border-color .15s; }
+  .ct-row:last-of-type { border-bottom: none; }
+  .ct-row:hover { background: var(--cream); }
+  .ct-row.active { background: var(--blue-soft); border-left-color: var(--blue); }
+  .ct-row .cn { font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .ct-row .cn .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted-2); flex-shrink: 0; }
+  .ct-row.active .cn .dot { background: var(--blue); }
+  .ct-row .cd { font-size: 12px; color: var(--muted-2); margin-top: 2px; }
+  .ct-status { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; padding: 4px 11px; border-radius: 12px; flex-shrink: 0; }
+  .ct-status.live { background: var(--green-soft); color: var(--green); }
+  .ct-status.draft { background: var(--cream-2); color: var(--muted); }
+
+  /* "new agent" ghost row */
+  .ct-new { display: flex; align-items: center; gap: 10px; padding: 14px 18px; font-size: 13px; font-weight: 600; color: var(--blue); cursor: pointer; background: var(--cream); transition: background .15s; }
+  .ct-new:hover { background: var(--blue-soft); }
+  .ct-new .plus { width: 20px; height: 20px; border-radius: 50%; border: 1.5px dashed var(--blue); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+
+  /* recipe builder strip below the table */
+  .recipe-strip { margin-top: 16px; padding: 18px 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+  .recipe-label { font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 12px; }
+  .recipe-flow { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+  .recipe-pill { flex: 1; min-width: 150px; background: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; transition: opacity .25s, transform .25s; }
+  .recipe-flow.swap .recipe-pill { opacity: 0; transform: translateY(6px); }
+  .rp-tag { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .recipe-pill:nth-child(1) .rp-tag { color: var(--blue); }
+  .recipe-pill:nth-child(3) .rp-tag { color: var(--amber); }
+  .recipe-pill:nth-child(5) .rp-tag { color: var(--green); }
+  .rp-val { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.4; }
+  .recipe-arrow { display: flex; align-items: center; color: var(--muted-2); font-size: 17px; padding: 0 2px; }
+  @media (max-width: 620px) { .recipe-arrow { display: none; } }
+
+  /* ── FAQ ── */
+  .faq .head { margin-bottom: 2.5rem; }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.35rem 0; font-family: var(--serif); font-size: 19px; font-weight: 450; letter-spacing: -.015em; color: var(--navy); transition: color .15s; }
+  .faq-item summary:hover { color: var(--blue); }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary .pm { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(14,32,56,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 400; color: var(--muted); transition: transform .25s, background .2s, color .2s, border-color .2s; }
+  .faq-item[open] summary .pm { transform: rotate(45deg); background: var(--navy); color: #fff; border-color: var(--navy); }
+  .faq-item p { color: var(--muted); font-size: 15px; line-height: 1.7; padding-bottom: 1.4rem; max-width: 680px; }
+
+  /* ── Final CTA ── */
+  .final { text-align: center; }
+  .final h2 { font-size: clamp(2.1rem, 4.2vw, 3.1rem); }
+  .final .lede { max-width: 460px; margin: 1.2rem auto 2.3rem; }
+  .final-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Hero v2: banner scene ── */
+  .hero-center { text-align: center; position: relative; }
+  .hero-center h1 { max-width: 880px; margin: 0 auto; }
+  .hero-center .lede { max-width: 740px; margin: 1.6rem auto 2.3rem; }
+  .hero-center .hero-ctas { justify-content: center; }
+  .hero-center .hero-note { justify-content: center; }
+
+  .hero-visual { position: relative; max-width: 1240px; margin: clamp(2.8rem, 5.5vw, 4.5rem) auto 0; padding: 0 8px; }
+  .scene { position: relative; background: linear-gradient(180deg, #FDFCF8 0%, #F3EEE4 78%, #EAE3D4 100%); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .scene svg.sea { display: block; width: 100%; height: auto; }
+
+  /* status bar / log ticker */
+  .scene-status { display: flex; align-items: center; gap: 12px; padding: 11px 20px; border-top: 1px solid var(--line); background: rgba(255,255,255,0.6); font-family: 'SF Mono', ui-monospace, monospace; font-size: 11.5px; letter-spacing: .06em; color: var(--muted); }
+  .scene-status .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); flex-shrink: 0; transition: background .4s; animation: pulse-dot 2s ease-in-out infinite; }
+  .scene-status.cleared .live-dot { background: var(--green); }
+  #scene-log { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #scene-log .ok { color: var(--green); font-weight: 700; }
+  .replay-btn { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; background: transparent; border: 1px solid rgba(14,32,56,0.18); color: var(--muted); border-radius: 8px; padding: 5px 13px; font-family: var(--sans); font-size: 12px; font-weight: 600; cursor: pointer; transition: color .15s, border-color .15s; }
+  .replay-btn:hover { color: var(--navy); border-color: var(--navy); }
+
+  /* ── sequence states (driven by JS adding classes to .scene) ── */
+  .trolley-g { transition: transform 1.7s cubic-bezier(.45,0,.25,1); }
+  .scene.s-load .trolley-g { transform: translateX(250px); }
+  .hang { transition: transform 1s cubic-bezier(.55,0,.5,1), opacity .25s; }
+  .scene.s-drop .hang { transform: translateY(97px); }
+  .scene.s-dropped .hang { opacity: 0; }
+  .landed { opacity: 0; transition: opacity .2s; }
+  .scene.s-dropped .landed { opacity: 1; }
+
+  .scan-g { opacity: 0; }
+  .scene.s-scan .scan-g { opacity: 1; animation: scan-once 2.5s cubic-bezier(.4,.1,.6,.9) forwards; }
+  @keyframes scan-once { 0% { transform: translateX(0); opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(530px); opacity: 0; } }
+
+  .gate-arm { transform-origin: 962px 352px; transition: transform 1.2s cubic-bezier(.3,0,.25,1.15); }
+  .scene.s-clear .gate-arm { transform: rotate(-74deg); }
+  .ship-g { transition: transform 1.5s ease; }
+  .scene.s-clear .ship-g { transform: translateX(18px); }
+  .flag { transform-origin: left center; animation: flag-wave 2.6s ease-in-out infinite; }
+  @keyframes flag-wave { 0%,100% { transform: skewY(0deg); } 50% { transform: skewY(-6deg); } }
+
+  /* leader lines: agent card → inspected zone */
+  .lead { stroke: var(--muted-2); stroke-width: 1.6; stroke-dasharray: 5 5; fill: none; opacity: 0; transition: opacity .4s; }
+  .lead.draw { opacity: .85; animation: lead-march 1.2s linear; }
+  @keyframes lead-march { from { stroke-dashoffset: 60; } to { stroke-dashoffset: 0; } }
+
+  /* zone highlights on card hover */
+  .zone { fill: rgba(37,99,235,0.10); stroke: rgba(37,99,235,0.55); stroke-width: 1.5; stroke-dasharray: 6 5; opacity: 0; transition: opacity .25s; pointer-events: none; }
+  .scene svg .art { transition: opacity .25s; }
+  .scene.dimmed svg .art { opacity: .45; }
+  .zone.on { opacity: 1; }
+
+  /* containers: hoverable */
+  .ctr { transition: transform .2s, filter .2s; cursor: pointer; }
+  .ctr:hover { transform: translateY(-4px); filter: brightness(1.12); }
+
+  /* tooltip */
+  .scene-tip { position: absolute; z-index: 30; background: var(--navy); color: #fff; font-size: 12.5px; font-weight: 500; padding: 7px 13px; border-radius: 8px; pointer-events: none; opacity: 0; transform: translate(-50%, -130%); transition: opacity .18s; white-space: nowrap; box-shadow: 0 8px 24px rgba(14,32,56,.3); }
+  .scene-tip::after { content: ''; position: absolute; left: 50%; top: 100%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--navy); }
+  .scene-tip.on { opacity: 1; }
+
+  /* ── floating agent cards ── */
+  .acard { position: absolute; opacity: 0; animation: card-in .8s cubic-bezier(.2,.7,.3,1) forwards; z-index: 5; }
+  @keyframes card-in { from { opacity: 0; transform: translateY(20px) scale(.96); } to { opacity: 1; transform: none; } }
+  .acard-inner { display: flex; gap: 11px; align-items: center; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; box-shadow: var(--shadow-lg); transition: border-color .3s; }
+  .acard .ic { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--icbg, var(--cream-2)); }
+  .acard .ic svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .acard .t { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; white-space: nowrap; }
+  .acard .s { font-size: 11.5px; color: var(--muted); line-height: 1.4; white-space: nowrap; }
+  .acard .s.verdict { display: none; }
+  .acard .s.pending .dots::after { content: ''; display: inline-block; width: 14px; text-align: left; animation: dots 1.2s steps(4, end) infinite; }
+  @keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+  .acard.done .s.pending { display: none; }
+  .acard.done .s.verdict { display: inline; }
+  .acard.done .acard-inner { animation: pop .5s cubic-bezier(.3,1.5,.5,1); border-color: var(--done-c, var(--blue-border)); }
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.07); } 100% { transform: scale(1); } }
+  .acard .s .ok { color: var(--green); font-weight: 600; }
+  .acard .s .warn { color: var(--amber); font-weight: 600; }
+
+  .acard.pos-tl { top: 6%;  left: 2%;   animation-delay: .25s; }
+  .acard.pos-tr { top: 9%;  right: 2%;  animation-delay: .5s; }
+  .acard.pos-ml { top: 45%; left: 1.5%; animation-delay: .75s; }
+  .acard.pos-mr { top: 41%; right: 1.5%; animation-delay: 1s; }
+
+  /* dockmaster clearance banner: hidden until sequence clears */
+  .acard.pos-dm { left: 26%; bottom: 13%; transform: translateX(-50%); animation: none; opacity: 0; }
+  .acard.pos-dm.done { animation: dm-in .9s cubic-bezier(.2,.7,.3,1) forwards; }
+  @keyframes dm-in { from { opacity: 0; transform: translateX(-50%) translateY(22px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  .acard.pos-dm .acard-inner { background: var(--navy); border-color: var(--navy); box-shadow: 0 12px 36px rgba(14,32,56,0.35), 0 0 0 5px rgba(37,99,235,0.12); animation: none; }
+  .acard.pos-dm .t { color: #fff; }
+  .acard.pos-dm .s { color: #93C5FD; }
+  .acard.pos-dm .ic { background: rgba(255,255,255,0.12); color: #93C5FD; }
+
+  @media (max-width: 760px) {
+    .acard.pos-tl, .acard.pos-tr, .acard.pos-ml, .acard.pos-mr { display: none; }
+  }
+
+  /* ── Human escalation card (hero scene) ── */
+  .acard.pos-esc { left: 50%; top: 15%; transform: translateX(-50%); animation: none; opacity: 0; }
+  .acard.pos-esc.show { animation: dm-in .8s cubic-bezier(.2,.7,.3,1) forwards; }
+  .acard.pos-esc .ic { background: var(--amber-soft); color: var(--amber); }
+  .acard.pos-esc .s.done-s { display: none; }
+  .acard.pos-esc.approved .s.wait { display: none; }
+  .acard.pos-esc.approved .s.done-s { display: inline; }
+  .acard.pos-esc.approved .ic { background: var(--green-soft); color: var(--green); }
+  .acard.pos-esc.approved .acard-inner { animation: pop .5s cubic-bezier(.3,1.5,.5,1); border-color: rgba(18,140,106,0.4); }
+
+  /* ── Human in the right loop section ── */
+  .hitl-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  @media (max-width: 900px) { .hitl-grid { grid-template-columns: 1fr; } }
+  .hitl-stat-line { margin-top: 1.1rem; font-size: 13.5px; color: var(--muted-2); }
+  .hitl-stat-line b { color: var(--navy); }
+  .hitl-points { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .hitl-point { display: flex; gap: 15px; align-items: flex-start; }
+  .hitl-point .hp-ic { width: 42px; height: 42px; border-radius: 12px; background: var(--blue-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--blue); }
+  .hitl-point .hp-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .hitl-point h4 { font-size: 15.5px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .hitl-point p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  .funnel-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-lg); padding: clamp(1.6rem, 3vw, 2.4rem); }
+  .funnel-title { font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 1.5rem; }
+  .f-row { margin-bottom: 1.2rem; }
+  .f-row:last-of-type { margin-bottom: 0; }
+  .f-label { display: flex; justify-content: space-between; align-items: baseline; font-size: 13.5px; color: var(--ink); margin-bottom: 7px; }
+  .f-label b { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; color: var(--navy); }
+  .f-bar { height: 28px; border-radius: 9px; background: var(--cream-2); overflow: hidden; }
+  .f-bar i { display: block; height: 100%; border-radius: 9px; width: 0; transition: width 1.2s cubic-bezier(.2,.7,.3,1); }
+  .funnel-card.visible .f-bar i, .visible .funnel-card .f-bar i { width: var(--w); }
+  .funnel-card.visible .f-row:nth-of-type(2) .f-bar i, .visible .funnel-card .f-row:nth-of-type(2) .f-bar i { transition-delay: .2s; }
+  .funnel-card.visible .f-row:nth-of-type(3) .f-bar i, .visible .funnel-card .f-row:nth-of-type(3) .f-bar i { transition-delay: .45s; }
+  .funnel-card.visible .f-row:nth-of-type(4) .f-bar i, .visible .funnel-card .f-row:nth-of-type(4) .f-bar i { transition-delay: .7s; }
+  .f-note { margin-top: 1.5rem; padding: 13px 17px; background: var(--blue-soft); border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; font-size: 13.5px; color: var(--ink); line-height: 1.6; }
+
+  /* ── per-agent escalation row in detail panel ── */
+  .ad-esc { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); margin-bottom: 1.5rem; padding: 12px 16px; border: 1.5px dashed rgba(14,32,56,0.16); border-radius: 12px; }
+  .ad-esc svg { width: 17px; height: 17px; fill: none; stroke: var(--muted-2); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .ad-esc b { color: var(--navy); font-weight: 600; }
+
+  /* ── Plug-in hub section ── */
+  .plug-head { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; margin-bottom: 3.5rem; }
+  @media (max-width: 860px) { .plug-head { grid-template-columns: 1fr; } }
+  .plug-head .lede { max-width: 460px; }
+
+  .hub { position: relative; }
+  .hub-row { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .tool-tile { width: 58px; height: 58px; border-radius: 15px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s; }
+  .tool-tile:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+  .tool-tile .tg { font-size: 15px; font-weight: 800; letter-spacing: -.02em; }
+  .tool-tile .tn { font-size: 8px; font-weight: 600; letter-spacing: .04em; color: var(--muted-2); text-transform: uppercase; }
+  .hub-center { width: 84px; height: 84px; border-radius: 22px; background: var(--navy); margin: 0 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 40px rgba(14,32,56,0.3), 0 0 0 8px rgba(37,99,235,0.08); position: relative; z-index: 2; animation: hub-glow 3.5s ease-in-out infinite; }
+  @keyframes hub-glow { 0%,100% { box-shadow: 0 16px 40px rgba(14,32,56,0.3), 0 0 0 8px rgba(37,99,235,0.08); } 50% { box-shadow: 0 16px 40px rgba(14,32,56,0.3), 0 0 0 14px rgba(37,99,235,0.04); } }
+  .hub-center svg { width: 48px; height: 48px; }
+
+  .hub-lines { display: block; width: min(860px, 100%); margin: 0 auto; height: auto; }
+  .flow-line { stroke: #A8B2C0; stroke-width: 1.6; stroke-dasharray: 5 6; fill: none; animation: dash-flow 5s linear infinite; }
+  @keyframes dash-flow { to { stroke-dashoffset: -110; } }
+  .flow-tip { fill: var(--blue); }
+  @media (max-width: 700px) { .hub-lines { display: none; } }
+
+  .hub-outputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+  @media (max-width: 700px) { .hub-outputs { grid-template-columns: 1fr; margin-top: 2rem; } }
+  .out-group { text-align: center; }
+  .out-label { font-family: 'SF Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .22em; color: var(--muted-2); margin-bottom: 1rem; }
+  .out-chips { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .out-chip { display: inline-flex; align-items: center; gap: 9px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px 18px; font-size: 14px; font-weight: 550; color: var(--ink); box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .out-chip:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--blue-border); }
+  .out-chip .oc-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+
+  .plug-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 4.5rem; border-top: 1px solid var(--line); }
+  @media (max-width: 860px) { .plug-cols { grid-template-columns: 1fr; } }
+  .plug-col { padding: 2.2rem 2.2rem 0 0; }
+  .plug-col + .plug-col { border-left: 1px solid var(--line); padding-left: 2.2rem; }
+  @media (max-width: 860px) { .plug-col + .plug-col { border-left: none; padding-left: 0; } }
+  .plug-col h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 450; letter-spacing: -.02em; color: var(--navy); margin-bottom: .35rem; }
+  .plug-col .pc-sub { font-style: italic; font-family: var(--serif); font-size: 15px; color: var(--muted); margin-bottom: .9rem; }
+  .plug-col p.pc-body { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+
+  /* ── Crew: stacked agent windows ── */
+  .crew-stack { display: flex; flex-direction: column; }
+  .win { background: #fff; border: 1px solid var(--line); border-radius: 16px; margin-top: -8px; box-shadow: 0 16px 32px -20px rgba(14,32,56,0.28); transition: border-color .35s, box-shadow .35s; position: relative; }
+  .win:first-child { margin-top: 0; }
+  .win-head { display: flex; align-items: center; gap: 13px; padding: 17px 24px; cursor: pointer; user-select: none; font-family: 'SF Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: .13em; font-weight: 600; color: var(--navy); }
+  .win-head:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 14px; }
+  .win-head .wdot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .win-head .wsub { color: var(--muted-2); font-weight: 500; letter-spacing: .04em; text-transform: none; }
+  @media (max-width: 720px) { .win-head .wsub { display: none; } }
+  .win-head .wchev { margin-left: auto; color: var(--muted-2); font-size: 17px; transition: transform .3s, color .3s; }
+  .win.open { border-color: var(--wc); box-shadow: 0 0 0 2.5px var(--wc), 0 28px 56px -22px rgba(14,32,56,0.35); z-index: 2; border-radius: 18px; }
+  .win.open .wchev { transform: rotate(90deg); color: var(--wc); }
+  .win-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s cubic-bezier(.2,.7,.3,1); }
+  .win.open .win-body { grid-template-rows: 1fr; }
+  .win-inner { overflow: hidden; }
+  .win-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 3.5vw, 3.5rem); padding: .7rem 2.4rem 2.5rem; }
+  @media (max-width: 880px) { .win-grid { grid-template-columns: 1fr; } }
+  .wg-dom { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .6rem; }
+  .wg-title { font-family: var(--serif); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 420; letter-spacing: -.02em; color: var(--navy); line-height: 1.15; margin-bottom: .9rem; }
+  .wg-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; max-width: 520px; }
+  .win .ad-stats { margin-bottom: 0; }
+  .win .ad-esc { margin-bottom: 0; margin-top: 1.2rem; }
+
+  /* ── Custom agents: workflow canvas ── */
+  .canvas-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .ctab { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 8px 16px; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .2s; }
+  .ctab:hover { color: var(--navy); border-color: var(--border-bright, rgba(14,32,56,0.25)); }
+  .ctab.active { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 4px 12px rgba(14,32,56,0.2); }
+  .ctab-new { border-style: dashed; color: var(--blue); border-color: var(--blue-border); }
+  .ctab-new:hover { background: var(--blue-soft); }
+
+  .canvas { position: relative; background-color: #FCFAF5; background-image: radial-gradient(rgba(14,32,56,0.10) 1px, transparent 1px); background-size: 17px 17px; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-lg); padding: clamp(1.8rem, 3vw, 2.6rem) clamp(1.2rem, 2.5vw, 2rem); overflow: hidden; }
+  .canvas-status { position: absolute; top: 14px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; padding: 5px 12px; border-radius: 12px; background: var(--green-soft); color: var(--green); transition: all .3s; }
+  .canvas-status.draft { background: var(--cream-2); color: var(--muted); }
+
+  .flow { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .node { flex: 1; max-width: 200px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 13px 16px 15px; box-shadow: 0 6px 18px rgba(14,32,56,0.08); position: relative; transition: opacity .25s, transform .25s; }
+  .flow.swap .node { opacity: 0; transform: translateY(8px); }
+  .node::before, .node::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 50%; background: #fff; border: 2px solid var(--nc, var(--muted-2)); }
+  .node::before { left: -5px; }
+  .node::after { right: -5px; }
+  .node.n-first::before { display: none; }
+  .node.n-last::after { display: none; }
+  .node .nt { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--nc); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .node .nt::before { content: ''; width: 6px; height: 6px; border-radius: 2px; background: var(--nc); }
+  .node .nv { font-size: 13.5px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+
+  #flow-svg { display: block; width: 100%; height: auto; }
+  #flow-svg .fnode { transition: opacity .25s ease; }
+  #flow-svg.swap .fnode { opacity: 0; }
+  #flow-svg .fl-dash { stroke-dasharray: 5 5; animation: dash-flow 4s linear infinite; }
+  #flow-svg .fnode rect:first-child { filter: drop-shadow(0 5px 10px rgba(14,32,56,0.08)); }
+
+  .nlink { flex: 0 0 clamp(34px, 5vw, 64px); position: relative; height: 24px; }
+  .nlink svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .nl-path { stroke: #A8B2C0; stroke-width: 1.8; stroke-dasharray: 5 5; fill: none; animation: dash-flow 4s linear infinite; }
+  .nl-dot { position: absolute; top: 50%; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); transform: translateY(-50%); animation: dot-travel 2.6s ease-in-out infinite; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+  @keyframes dot-travel { 0% { left: -2%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { left: 96%; opacity: 0; } }
+
+  @media (max-width: 680px) {
+    .flow { flex-direction: column; gap: 0; }
+    .node { max-width: 100%; width: 100%; }
+    .node::before, .node::after { display: none; }
+    .nlink { flex-basis: 34px; width: 24px; height: 34px; }
+    .nlink svg { transform: rotate(90deg); }
+    .nl-dot { display: none; }
+  }
+
+  /* ── Early access section ── */
+  .easec { background: var(--cream-2); }
+  .easec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  @media (max-width: 880px) { .easec-grid { grid-template-columns: 1fr; } }
+  .easec .lede { max-width: 420px; margin-top: 1rem; }
+  .ea-perks { margin-top: 1.6rem; display: flex; flex-direction: column; gap: .65rem; }
+  .ea-perk { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--muted); }
+  .ea-perk svg { flex-shrink: 0; margin-top: 4px; }
+
+  /* ── Footer ── */
+  footer { background: var(--navy); color: rgba(255,255,255,0.55); padding: 2.6rem clamp(1.25rem, 4vw, 3rem); }
+  .foot-inner { max-width: 1360px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; }
+  .foot-logo { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 700; font-size: 16px; }
+  footer .links { display: flex; gap: 1.6rem; font-size: 13.5px; }
+  footer .links a:hover { color: #fff; }
+  footer small { font-size: 12.5px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a class="logo" href="#top">
+    <span class="logo-mark">
+      <svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+    </span>
+    <span class="logo-word">DryDock <span class="logo-ai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#dockmaster">Dockmaster</a>
+    <a href="#crew">The Crew</a>
+    <a href="#govern">Govern & Measure</a>
+    <a href="#byo">Custom Agents</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#early-access" class="btn btn-primary" style="padding:9px 20px; font-size:14px;">Request early access</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero hero-center" id="top">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Governance for the AI delivery era</div>
+      <h1>Your team adopted AI.<br><span class="accent">Now <em>govern</em> what it ships.</span></h1>
+      <p class="lede">A crew of specialised AI agents that enforces policy, tracks delivery, and generates audit evidence, while you make only the calls that matter. Dashboards measure. Drydock <strong>governs</strong>.</p>
+      <div class="hero-ctas">
+        <a href="#early-access" class="btn btn-navy">Request early access</a>
+        <a href="#dockmaster" class="btn btn-outline">See how it works ↓</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Banner: the drydock inspection scene ── -->
+  <div class="hero-visual reveal d2" id="hero-visual">
+
+    <!-- Floating agent verdict cards -->
+    <div class="acard pos-tl" id="ac-gov" data-zone="z-gov" style="--done-c: rgba(37,99,235,0.4);">
+      <div class="acard-inner">
+        <span class="ic" style="--icbg:var(--blue-soft); color:#2563EB;">
+          <svg viewBox="0 0 24 24"><path d="M3 21h18M4 9h16M12 3 4 9h16zM6 9v12M10 9v12M14 9v12M18 9v12"/></svg>
+        </span>
+        <span><span class="t">Governance Agent</span><br>
+          <span class="s pending">Checking policy gates<span class="dots"></span></span>
+          <span class="s verdict">Policy gates · <span class="ok">4 of 4 passed</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="acard pos-tr" id="ac-risk" data-zone="z-risk" style="--done-c: rgba(180,83,9,0.4);">
+      <div class="acard-inner">
+        <span class="ic" style="--icbg:var(--amber-soft); color:#B45309;">
+          <svg viewBox="0 0 24 24"><path d="M12 4 21 20H3zM12 10v4M12 17.5h.01"/></svg>
+        </span>
+        <span><span class="t">Risk Agent</span><br>
+          <span class="s pending">Reading every diff<span class="dots"></span></span>
+          <span class="s verdict"><span class="warn">3 AI diffs flagged</span> → reviewed</span>
+        </span>
+      </div>
+    </div>
+    <div class="acard pos-ml" id="ac-qa" data-zone="z-qa" style="--done-c: rgba(18,140,106,0.4);">
+      <div class="acard-inner">
+        <span class="ic" style="--icbg:var(--green-soft); color:#128C6A;">
+          <svg viewBox="0 0 24 24"><path d="M9.5 3h5M10.5 3v5.5L5.8 17a3 3 0 0 0 2.7 4.3h7a3 3 0 0 0 2.7-4.3L13.5 8.5V3M7.5 14h9"/></svg>
+        </span>
+        <span><span class="t">QA Agent</span><br>
+          <span class="s pending">Scanning coverage<span class="dots"></span></span>
+          <span class="s verdict">Coverage 74% · <span class="ok">▲ improving</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="acard pos-mr" id="ac-comp" data-zone="z-comp" style="--done-c: rgba(192,57,43,0.35);">
+      <div class="acard-inner">
+        <span class="ic" style="--icbg:var(--red-soft); color:#C0392B;">
+          <svg viewBox="0 0 24 24"><path d="M12 4v16M8.5 20h7M4 7h16M6.5 7l-2.8 6.5a3.2 3.2 0 0 0 5.6 0zM17.5 7l-2.8 6.5a3.2 3.2 0 0 0 5.6 0z"/></svg>
+        </span>
+        <span><span class="t">Compliance Agent</span><br>
+          <span class="s pending">Logging evidence<span class="dots"></span></span>
+          <span class="s verdict">SOC 2 evidence · <span class="ok">logged</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="acard pos-esc" id="ac-esc">
+      <div class="acard-inner">
+        <span class="ic">
+          <svg viewBox="0 0 24 24" style="width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.3-3.2 3.8-5 7-5s5.7 1.8 7 5"/></svg>
+        </span>
+        <span><span class="t">Human decision</span><br>
+          <span class="s wait"><span class="warn">2 items</span> need judgment → Eng Lead</span>
+          <span class="s done-s">Approved by Eng Lead · <span class="ok">logged as evidence</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="acard pos-dm" id="ac-dm">
+      <div class="acard-inner">
+        <span class="ic">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 5-5 2.2 2.2-5z"/></svg>
+        </span>
+        <span><span class="t">Dockmaster</span><br><span class="s">Cleared to ship · 2 human decisions logged</span></span>
+      </div>
+    </div>
+
+    <div class="scene" id="scene">
+      <svg class="sea" viewBox="0 0 1200 470" xmlns="http://www.w3.org/2000/svg" aria-label="A release, drawn as a ship, inspected by agents in a drydock; the gate opens when every check passes">
+        <defs>
+          <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#2563EB" stop-opacity="0"/>
+            <stop offset=".8" stop-color="#2563EB" stop-opacity=".14"/>
+            <stop offset="1" stop-color="#2563EB" stop-opacity=".5"/>
+          </linearGradient>
+          <linearGradient id="hullGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1B3A61"/>
+            <stop offset=".55" stop-color="#16304F"/>
+            <stop offset="1" stop-color="#0C1B30"/>
+          </linearGradient>
+        </defs>
+
+        <g class="art">
+          <!-- gantry crane -->
+          <g stroke="#9AA7B8" stroke-width="6" fill="none" stroke-linecap="round">
+            <line x1="250" y1="36" x2="250" y2="392"/>
+            <line x1="950" y1="36" x2="950" y2="392"/>
+          </g>
+          <rect x="200" y="28" width="800" height="11" rx="5" fill="#9AA7B8"/>
+          <g stroke="#C2CBD6" stroke-width="2.5" fill="none">
+            <line x1="250" y1="80" x2="292" y2="39"/>
+            <line x1="950" y1="80" x2="908" y2="39"/>
+          </g>
+
+          <!-- crane trolley + hanging PR container (sequence: slides right, lowers) -->
+          <g class="trolley-g">
+            <rect x="437" y="22" width="52" height="16" rx="4" fill="#5C6B80"/>
+            <g class="hang">
+              <line x1="463" y1="38" x2="463" y2="140" stroke="#5C6B80" stroke-width="2"/>
+              <rect x="438" y="140" width="50" height="24" rx="3" fill="#3E6FCB"/>
+              <text x="463" y="156" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="#fff">PR #1291</text>
+            </g>
+          </g>
+
+          <!-- dock walls (stepped concrete) -->
+          <g fill="#E2DBCB">
+            <path d="M0 300 h190 v34 h-50 v34 h-50 v32 h-90 z"/>
+            <path d="M1200 300 h-120 v34 h40 v34 h40 v32 h40 z"/>
+          </g>
+          <g fill="#D4CCB8">
+            <rect x="0" y="297" width="190" height="5"/>
+            <rect x="1080" y="297" width="120" height="5"/>
+          </g>
+
+          <!-- dock floor -->
+          <rect x="0" y="398" width="1200" height="72" fill="#DED6C3"/>
+          <rect x="0" y="398" width="1200" height="4" fill="#C9BFA8"/>
+          <g font-family="ui-monospace,monospace" font-size="11" fill="#A89F8A">
+            <text x="60" y="445">BAY-01</text>
+            <text x="1105" y="445">DD-4.2</text>
+          </g>
+
+          <!-- gate barrier at dock exit (opens on clearance) -->
+          <g>
+            <rect x="954" y="308" width="16" height="92" rx="3" fill="#33465E"/>
+            <g class="gate-arm">
+              <rect x="962" y="346" width="186" height="12" rx="6" fill="#fff" stroke="#C9BFA8" stroke-width="1"/>
+              <rect x="978" y="346" width="26" height="12" fill="#C0392B"/>
+              <rect x="1030" y="346" width="26" height="12" fill="#C0392B"/>
+              <rect x="1082" y="346" width="26" height="12" fill="#C0392B"/>
+              <circle cx="962" cy="352" r="9" fill="#33465E"/>
+            </g>
+          </g>
+
+          <!-- ship -->
+          <g class="ship-g">
+            <!-- soft ground shadow -->
+            <ellipse cx="605" cy="399" rx="255" ry="9" fill="rgba(14,32,56,0.10)"/>
+            <!-- keel blocks -->
+            <g fill="#5C6B80">
+              <path d="M430 380 h36 l-5 18 h-26 z"/>
+              <path d="M530 380 h36 l-5 18 h-26 z"/>
+              <path d="M630 380 h36 l-5 18 h-26 z"/>
+              <path d="M730 380 h36 l-5 18 h-26 z"/>
+            </g>
+            <!-- hull -->
+            <path d="M340 290 H870 C866 328 851 362 832 380 H406 C372 377 346 338 340 290 Z" fill="url(#hullGrad)"/>
+            <!-- waterline stripe -->
+            <path d="M344 336 H862 C858 346 853 354 848 360 H396 C384 353 372 346 366 336 Z" fill="#2563EB" opacity=".8"/>
+            <text x="600" y="325" text-anchor="middle" font-family="Inter,sans-serif" font-size="17" font-weight="600" fill="#DCE5F2" letter-spacing="7">RELEASE 4.2</text>
+
+            <!-- containers: bottom row (hoverable) -->
+            <g>
+              <g class="ctr" data-tip="code · 214 commits this sprint"><rect x="380" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="405" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">code</text></g>
+              <g class="ctr" data-tip="tests · 74% coverage · ▲ 13 pts"><rect x="436" y="262" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="461" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">tests</text></g>
+              <g class="ctr" data-tip="infra · 2 Terraform changes, gated"><rect x="492" y="262" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="517" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">infra</text></g>
+              <g class="ctr" data-tip="docs · updated with API changes"><rect x="548" y="262" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="573" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">docs</text></g>
+              <g class="ctr" data-tip="api · 3 endpoints changed · reviewed"><rect x="604" y="262" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="629" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">api</text></g>
+              <g class="ctr" data-tip="ui · 41 components touched · 12 by AI"><rect x="660" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="685" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">ui</text></g>
+            </g>
+            <!-- containers: top row -->
+            <g>
+              <g class="ctr" data-tip="policy · 4 of 4 gates passed"><rect x="408" y="236" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="433" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">policy</text></g>
+              <g class="ctr" data-tip="review · every diff read, 3 flagged &amp; cleared"><rect x="464" y="236" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="489" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">review</text></g>
+              <g class="ctr" data-tip="risk · scored 94/100, no open flags"><rect x="520" y="236" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="545" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">risk</text></g>
+              <g class="ctr" data-tip="audit · evidence logged, export-ready"><rect x="576" y="236" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="601" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">audit</text></g>
+              <g class="ctr" data-tip="approvals · 2 human decisions logged"><rect x="632" y="236" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="657" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.92)">approvals</text></g>
+              <!-- the landed PR container (appears after crane drop) -->
+              <g class="landed ctr" data-tip="PR #1291 · just landed · queued for scan"><rect x="688" y="236" width="50" height="24" rx="3" fill="#3E6FCB"/><text x="713" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="#fff">#1291</text></g>
+            </g>
+
+            <!-- superstructure -->
+            <g class="ctr" data-tip="the bridge · Dockmaster's post">
+              <rect x="750" y="205" width="95" height="85" rx="5" fill="#F4EFE6" stroke="#C9BFA8" stroke-width="1.5"/>
+              <g fill="#16304F">
+                <rect x="763" y="219" width="16" height="10" rx="2"/>
+                <rect x="787" y="219" width="16" height="10" rx="2"/>
+                <rect x="811" y="219" width="16" height="10" rx="2"/>
+                <rect x="763" y="239" width="16" height="10" rx="2"/>
+                <rect x="787" y="239" width="16" height="10" rx="2"/>
+                <rect x="811" y="239" width="16" height="10" rx="2"/>
+              </g>
+            </g>
+            <!-- mast + flag -->
+            <line x1="797" y1="205" x2="797" y2="170" stroke="#16304F" stroke-width="3"/>
+            <path class="flag" d="M797 170 h32 l-7.5 8.5 7.5 8.5 h-32 z" fill="#2563EB"/>
+          </g>
+        </g><!-- /art -->
+
+        <!-- scan beam (sweeps once per sequence) -->
+        <g class="scan-g">
+          <rect x="330" y="160" width="90" height="235" fill="url(#scanGrad)"/>
+          <line x1="420" y1="160" x2="420" y2="395" stroke="#2563EB" stroke-width="2" opacity=".65"/>
+        </g>
+
+        <!-- zone highlights (shown on agent card hover) -->
+        <rect class="zone" id="z-gov"  x="330" y="222" width="558" height="180" rx="10"/>
+        <rect class="zone" id="z-qa"   x="372" y="228" width="376" height="64"  rx="10"/>
+        <rect class="zone" id="z-risk" x="334" y="286" width="546" height="116" rx="10"/>
+        <rect class="zone" id="z-comp" x="742" y="198" width="112" height="100" rx="10"/>
+
+        <!-- leader lines: card → inspected zone -->
+        <path class="lead" id="lead-gov"  d="M262 108 Q340 150 424 224"/>
+        <path class="lead" id="lead-risk" d="M938 122 Q890 180 850 282"/>
+        <path class="lead" id="lead-qa"   d="M240 320 Q300 312 368 288"/>
+        <path class="lead" id="lead-comp" d="M960 330 Q920 310 858 262"/>
+      </svg>
+
+      <div class="scene-status" id="scene-status">
+        <span class="live-dot"></span>
+        <span id="scene-log">DRYDOCK BAY 01 · awaiting inspection</span>
+        <button class="replay-btn" id="replay-btn" type="button" aria-label="Replay inspection">↻ Replay inspection</button>
+      </div>
+    </div>
+    <div class="scene-tip" id="scene-tip"></div>
+  </div>
+</section>
+
+<!-- ═══ COMPLEXITY BAND ═══ -->
+<div class="band">
+  <section>
+    <div class="wrap">
+      <div class="reveal">
+        <h2>The complexity isn't AI.<br>It's everything around it.</h2>
+        <p class="lede">You're expected to know what's changing, where the risks are, and whether AI is actually improving delivery. The answers exist. They're just buried across dashboards, reports, and engineering tools.</p>
+      </div>
+      <div class="chips-marquee reveal d2">
+        <div class="chips-track">
+          <span class="chip">DORA · <b>deploy freq</b> <span class="up">▲ 2.1/day</span></span>
+          <span class="chip">AI TOKENS · <b class="warn">4.2M</b> this week</span>
+          <span class="chip">PR QUEUE · <b>38 waiting</b> <span class="down">▼ SLA</span></span>
+          <span class="chip">SONAR · <b>coverage 61%</b></span>
+          <span class="chip">JIRA · <b>Sprint 24</b> 71% complete</span>
+          <span class="chip">GITHUB · <b>214 PRs</b> · 89 AI-assisted</span>
+          <span class="chip">CI/CD · <b class="up">green</b> · main</span>
+          <span class="chip">SPEND · <b class="warn">$42K</b> AI/mo</span>
+          <!-- duplicated for seamless loop -->
+          <span class="chip">DORA · <b>deploy freq</b> <span class="up">▲ 2.1/day</span></span>
+          <span class="chip">AI TOKENS · <b class="warn">4.2M</b> this week</span>
+          <span class="chip">PR QUEUE · <b>38 waiting</b> <span class="down">▼ SLA</span></span>
+          <span class="chip">SONAR · <b>coverage 61%</b></span>
+          <span class="chip">JIRA · <b>Sprint 24</b> 71% complete</span>
+          <span class="chip">GITHUB · <b>214 PRs</b> · 89 AI-assisted</span>
+          <span class="chip">CI/CD · <b class="up">green</b> · main</span>
+          <span class="chip">SPEND · <b class="warn">$42K</b> AI/mo</span>
+        </div>
+      </div>
+      <div class="chips-marquee reveal d3">
+        <div class="chips-track">
+          <span class="chip">RELEASE 4.2 · <b class="warn">2 gates open</b></span>
+          <span class="chip">SLACK · <b>#eng-releases</b> 3 blockers raised</span>
+          <span class="chip">AUDIT · <b class="down">evidence gap</b> Q3</span>
+          <span class="chip">COPILOT · <b>1.2K suggestions</b> accepted</span>
+          <span class="chip">INCIDENTS · <b>1 open</b> · sev-3</span>
+          <span class="chip">CLAUDE · <b>34 agent runs</b> today</span>
+          <span class="chip">VELOCITY · <b class="up">+18%</b> QoQ</span>
+          <span class="chip">REVIEW LOAD · <b class="down">2.4x</b> capacity</span>
+          <!-- duplicated for seamless loop -->
+          <span class="chip">RELEASE 4.2 · <b class="warn">2 gates open</b></span>
+          <span class="chip">SLACK · <b>#eng-releases</b> 3 blockers raised</span>
+          <span class="chip">AUDIT · <b class="down">evidence gap</b> Q3</span>
+          <span class="chip">COPILOT · <b>1.2K suggestions</b> accepted</span>
+          <span class="chip">INCIDENTS · <b>1 open</b> · sev-3</span>
+          <span class="chip">CLAUDE · <b>34 agent runs</b> today</span>
+          <span class="chip">VELOCITY · <b class="up">+18%</b> QoQ</span>
+          <span class="chip">REVIEW LOAD · <b class="down">2.4x</b> capacity</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ DOCKMASTER ═══ -->
+<section class="dockmaster" id="dockmaster">
+  <div class="wrap">
+    <div class="head reveal" style="max-width:720px;">
+      <div class="kicker">Dockmaster AI</div>
+      <h2>With Dockmaster AI,<br>all you have to do is <span class="ask">ask</span>.</h2>
+      <div class="dm-points">
+        <div class="dm-point">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Plain-language risk summaries for every release, generated automatically
+        </div>
+        <div class="dm-point">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ask questions about any project and get answers with the evidence attached
+        </div>
+        <div class="dm-point">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Connects directly to Claude, ChatGPT, Copilot, and the AI tools your team already uses through MCP
+        </div>
+      </div>
+    </div>
+
+    <div class="dm-grid">
+      <!-- Radial diagram -->
+      <div class="radial-wrap reveal">
+        <div class="radial">
+          <svg viewBox="0 0 400 400">
+            <!-- outer decorative rotating ring -->
+            <g class="ring-rotate">
+              <circle cx="200" cy="200" r="178" fill="none" stroke="rgba(14,32,56,0.10)" stroke-width="1.5" stroke-dasharray="4 7"/>
+            </g>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(14,32,56,0.14)" stroke-width="1.5"/>
+            <!-- spokes -->
+            <g stroke="rgba(14,32,56,0.18)" stroke-width="1.5">
+              <line x1="200" y1="200" x2="200" y2="56"/>
+              <line x1="200" y1="200" x2="325" y2="128"/>
+              <line x1="200" y1="200" x2="325" y2="272"/>
+              <line x1="200" y1="200" x2="200" y2="344"/>
+              <line x1="200" y1="200" x2="75"  y2="272"/>
+              <line x1="200" y1="200" x2="75"  y2="128"/>
+            </g>
+            <!-- spoke endpoint dots -->
+            <circle class="spoke-dot" cx="200" cy="56"  r="5" fill="#2563EB"/>
+            <circle class="spoke-dot" cx="325" cy="128" r="5" fill="#128C6A"/>
+            <circle class="spoke-dot" cx="325" cy="272" r="5" fill="#B45309"/>
+            <circle class="spoke-dot" cx="200" cy="344" r="5" fill="#7C3AED"/>
+            <circle class="spoke-dot" cx="75"  cy="272" r="5" fill="#C0392B"/>
+            <circle class="spoke-dot" cx="75"  cy="128" r="5" fill="#0E7490"/>
+            <!-- agent labels -->
+            <g font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#0E2038">
+              <text x="200" y="38"  text-anchor="middle">Governance</text>
+              <text x="336" y="118" text-anchor="start">Delivery</text>
+              <text x="336" y="292" text-anchor="start">Productivity</text>
+              <text x="200" y="368" text-anchor="middle">QA</text>
+              <text x="64"  y="292" text-anchor="end">Risk</text>
+              <text x="64"  y="118" text-anchor="end">Compliance</text>
+            </g>
+            <!-- center hub -->
+            <g class="hub-pulse">
+              <circle cx="200" cy="200" r="62" fill="#0E2038"/>
+              <circle cx="200" cy="200" r="62" fill="none" stroke="rgba(37,99,235,0.35)" stroke-width="6" opacity=".4"/>
+              <text x="200" y="196" text-anchor="middle" font-family="Fraunces, serif" font-size="17" font-weight="700" fill="#FAF7F1">Dockmaster</text>
+              <text x="200" y="215" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#93C5FD" letter-spacing="1.5">AI</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Chat demo -->
+      <div class="reveal d2">
+        <div class="chat-card">
+          <div class="chat-head">
+            <span class="tl" style="background:#F87171"></span>
+            <span class="tl" style="background:#FBBF24"></span>
+            <span class="tl" style="background:#34D399"></span>
+            <span class="title">Ask Dockmaster</span>
+          </div>
+          <div class="chat-body">
+            <div class="q-bubble"><span id="type-target"></span><span class="caret"></span></div>
+            <div class="answer" id="chat-answer">
+              <div class="ans-row"><span class="name">Project Phoenix</span><span class="tag risk">AT RISK</span></div>
+              <div class="ans-row"><span class="name">Project Atlas</span><span class="tag watch">WATCH</span></div>
+              <div class="ans-row"><span class="name">Release 4.2</span><span class="tag ok">ON TRACK</span></div>
+              <div class="ans-note"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags are cleared.</div>
+              <div class="ans-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CREW ═══ -->
+<section class="crew" id="crew">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="kicker">The crew</div>
+      <h2>Behind every answer is a <span class="hl">crew of specialized agents</span>.</h2>
+      <p class="lede" style="margin-top:1rem;">Each agent owns one domain, watches it continuously, and reports to Dockmaster. Agents do the watching. Humans make the decisions your policy reserves for them.</p>
+    </div>
+
+    <div id="crew-stack" class="crew-stack reveal"></div>
+  </div>
+</section>
+
+<!-- ═══ GOVERN & MEASURE ═══ -->
+<section class="knowsec" id="govern">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="kicker">AI governance & impact</div>
+      <h2>Know <span class="hl">exactly</span> what AI is doing to your delivery.</h2>
+    </div>
+
+    <!-- Govern -->
+    <div class="feature-row">
+      <div class="fr-copy reveal">
+        <h3>Govern AI like every other contributor.</h3>
+        <p>Scale AI across engineering without compromising the standards, accountability, and trust your teams rely on. Every AI-assisted change is tagged, gated, and reviewable, automatically.</p>
+      </div>
+      <div class="reveal d2">
+        <div class="mock">
+          <div class="mock-title">Governance · AI-authored changes</div>
+          <div class="pr-row"><span class="pr-name">PR #1284 · auth-refactor <span class="ai-badge">AI</span></span><span class="tag ok">APPROVED</span></div>
+          <div class="pr-row"><span class="pr-name">PR #1285 · billing-migration <span class="ai-badge">AI</span></span><span class="tag risk">GATED</span></div>
+          <div class="pr-row"><span class="pr-name">PR #1286 · data-migration <span class="ai-badge">AI</span></span><span class="tag watch">IN REVIEW</span></div>
+          <div class="pr-row"><span class="pr-name">PR #1287 · UI components <span class="ai-badge">AI</span></span><span class="tag ok">APPROVED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Measure -->
+    <div class="feature-row flip">
+      <div class="reveal">
+        <div class="mock">
+          <div class="mock-title">AI impact · this quarter</div>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="sl">Delivery speed</div><div class="sv" data-count="18" data-prefix="+" data-suffix="%">+0%</div><div class="sd up">▲ vs. last quarter</div></div>
+            <div class="stat-box"><div class="sl">Code quality</div><div class="sv" data-count="94.2" data-decimals="1">0</div><div class="sd up">▲ 2.1 pts</div></div>
+            <div class="stat-box"><div class="sl">Rework rate</div><div class="sv" data-count="8.4" data-decimals="1" data-suffix="%">0%</div><div class="sd up">▼ 3.2% · improving</div></div>
+            <div class="stat-box"><div class="sl">AI spend</div><div class="sv" data-count="42" data-prefix="$" data-suffix="K">$0K</div><div class="sd down">▲ needs review</div></div>
+          </div>
+          <div class="spend-bar">
+            <div class="sl">AI token spend by team</div>
+            <div class="bar-track">
+              <div class="bar-seg" style="width:34%; background:#2563EB;"></div>
+              <div class="bar-seg" style="width:26%; background:#128C6A;"></div>
+              <div class="bar-seg" style="width:22%; background:#B45309;"></div>
+              <div class="bar-seg" style="width:18%; background:#7C3AED;"></div>
+            </div>
+            <div class="bar-legend">
+              <span><i style="background:#2563EB"></i>Platform 34%</span>
+              <span><i style="background:#128C6A"></i>Payments 26%</span>
+              <span><i style="background:#B45309"></i>Mobile 22%</span>
+              <span><i style="background:#7C3AED"></i>Growth 18%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fr-copy reveal d2">
+        <h3>Measure AI like every other investment.</h3>
+        <p>Know where AI is creating value, where it's falling short, and where to optimize next. The answers your board is already asking for, mapped to the work and outcomes AI produced.</p>
+      </div>
+    </div>
+
+    <!-- Humans in the right loop (compact) -->
+    <div class="feature-row" id="command" style="margin-top: clamp(3.5rem, 7vw, 6rem);">
+      <div class="fr-copy reveal">
+        <h3>Keep humans in the right loop.</h3>
+        <p>Policy decides when a person must decide. Escalations arrive decision-ready, and every approval is logged as audit evidence. <strong>85%</strong> of enterprises are piloting AI agents; only <strong>5%</strong> have shipped them to production. The difference isn't the AI. It's control.</p>
+      </div>
+      <div class="reveal d2">
+        <div class="funnel-card">
+          <div class="funnel-title">This week · human attention, spent precisely</div>
+          <div class="f-row">
+            <div class="f-label"><span>Changes shipped through the dock</span><b>214</b></div>
+            <div class="f-bar"><i style="--w:100%; background:#16304F;"></i></div>
+          </div>
+          <div class="f-row">
+            <div class="f-label"><span>Cleared by agents, inside policy</span><b>209</b></div>
+            <div class="f-bar"><i style="--w:97%; background:#2F9E7D;"></i></div>
+          </div>
+          <div class="f-row">
+            <div class="f-label"><span>Routed to humans, the right five</span><b>5</b></div>
+            <div class="f-bar"><i style="--w:13%; background:#D97706;"></i></div>
+          </div>
+          <div class="f-row">
+            <div class="f-label"><span>Decisions logged as audit evidence</span><b>5 / 5</b></div>
+            <div class="f-bar"><i style="--w:13%; background:#2563EB;"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLUG-IN HUB ═══ -->
+<section id="integrations">
+  <div class="wrap">
+    <div class="plug-head">
+      <div class="reveal">
+        <div class="kicker">Integrations</div>
+        <h2>Plug in your stack.<br>Get answers <em>anywhere</em>.</h2>
+      </div>
+      <p class="lede reveal d1">DryDock works with the tools your teams already use, and delivers governance where you actually work. No new dashboard to learn, unless you want one.</p>
+    </div>
+
+    <!-- input tiles → DryDock hub -->
+    <div class="hub reveal d1">
+      <div class="hub-row">
+        <div class="tool-tile" title="GitHub"><span class="tg" style="color:#1A2B42;">GH</span><span class="tn">GitHub</span></div>
+        <div class="tool-tile" title="GitLab"><span class="tg" style="color:#E24329;">GL</span><span class="tn">GitLab</span></div>
+        <div class="tool-tile" title="Jira"><span class="tg" style="color:#1868DB;">JI</span><span class="tn">Jira</span></div>
+        <div class="tool-tile" title="CI/CD pipelines"><span class="tg" style="color:#2F9E7D;">CI</span><span class="tn">CI/CD</span></div>
+        <div class="hub-center">
+          <svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <div class="tool-tile" title="Claude Code"><span class="tg" style="color:#C0662B;">CC</span><span class="tn">Claude</span></div>
+        <div class="tool-tile" title="Cursor"><span class="tg" style="color:#1A2B42;">CU</span><span class="tn">Cursor</span></div>
+        <div class="tool-tile" title="GitHub Copilot"><span class="tg" style="color:#8A63D2;">CO</span><span class="tn">Copilot</span></div>
+        <div class="tool-tile" title="Slack"><span class="tg" style="color:#611F69;">SL</span><span class="tn">Slack</span></div>
+      </div>
+
+      <!-- fan-out lines -->
+      <svg class="hub-lines" viewBox="0 0 860 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="flow-line" d="M430 6 C430 60 175 70 150 150"/>
+        <path class="flow-line" d="M430 6 V150"/>
+        <path class="flow-line" d="M430 6 C430 60 685 70 710 150"/>
+        <path class="flow-tip" d="M150 160 l-5 -9 h10 z"/>
+        <path class="flow-tip" d="M430 160 l-5 -9 h10 z"/>
+        <path class="flow-tip" d="M710 160 l-5 -9 h10 z"/>
+      </svg>
+
+      <!-- output channels -->
+      <div class="hub-outputs">
+        <div class="out-group">
+          <div class="out-label">INSPECT</div>
+          <div class="out-chips">
+            <span class="out-chip"><span class="oc-dot" style="background:#2563EB;"></span>Command deck</span>
+            <span class="out-chip"><span class="oc-dot" style="background:#0E7490;"></span>Release readiness</span>
+          </div>
+        </div>
+        <div class="out-group">
+          <div class="out-label">ASK</div>
+          <div class="out-chips">
+            <span class="out-chip"><span class="oc-dot" style="background:#C0662B;"></span>Dockmaster in Claude</span>
+            <span class="out-chip"><span class="oc-dot" style="background:#2F9E7D;"></span>Dockmaster in ChatGPT</span>
+          </div>
+        </div>
+        <div class="out-group">
+          <div class="out-label">ESCALATE</div>
+          <div class="out-chips">
+            <span class="out-chip"><span class="oc-dot" style="background:#611F69;"></span>Slack, to the right human</span>
+            <span class="out-chip"><span class="oc-dot" style="background:#B45309;"></span>Audit evidence export</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- three-step explainer -->
+    <div class="plug-cols reveal d2">
+      <div class="plug-col">
+        <h3>Connect your fleet</h3>
+        <div class="pc-sub">Every repo, pipeline, and ticket.</div>
+        <p class="pc-body">Link GitHub, GitLab, Jira, and your CI/CD in minutes. DryDock maps your delivery pipeline automatically, with no code changes.</p>
+      </div>
+      <div class="plug-col">
+        <h3>The crew inspects</h3>
+        <div class="pc-sub">Policy, risk, quality, evidence.</div>
+        <p class="pc-body">Six agents read every change against your rules, continuously. Most work clears on its own; anything that needs judgment is routed to a person.</p>
+      </div>
+      <div class="plug-col">
+        <h3>Answers where you work</h3>
+        <div class="pc-sub">Slack, Claude, or the command deck.</div>
+        <p class="pc-body">Ask Dockmaster from the tools you already use through MCP, take escalations in Slack, or open the deck for the full picture. You choose the surface.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUILD YOUR OWN ═══ -->
+<section class="byo" id="byo">
+  <div class="wrap byo-grid">
+    <div class="reveal">
+      <div class="kicker">Custom agents</div>
+      <h2>Build <span class="hl">your own</span> agents.</h2>
+      <p class="lede">Adapt DryDock AI to the way your teams work. Every custom agent is just a trigger, a condition, and an action, no code required. Click an agent to see how it's built.</p>
+    </div>
+    <div class="reveal d2">
+      <div class="canvas-tabs" id="canvas-tabs">
+        <button class="ctab active" data-agent="watch" type="button">AI Code Watch</button>
+        <button class="ctab" data-agent="freeze" type="button">Release Freeze Guard</button>
+        <button class="ctab" data-agent="incident" type="button">Incident Guard</button>
+        <button class="ctab" data-agent="spend" type="button">AI Spend Guard</button>
+        <button class="ctab" data-agent="soc2" type="button">SOC 2 Evidence</button>
+        <button class="ctab ctab-new" id="ctab-new" type="button">+ New agent</button>
+      </div>
+      <div class="canvas">
+        <span class="canvas-status" id="canvas-status">● LIVE</span>
+        <svg id="flow-svg" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, sans-serif">
+          <!-- connectors -->
+          <path class="fl-dash" d="M170 150 H223" stroke="#A8B2C0" stroke-width="1.8" fill="none"/>
+          <path class="fl-dash" d="M395 132 C455 114 452 66 543 66" stroke="#D97706" stroke-width="1.8" fill="none"/>
+          <path class="fl-dash" d="M395 168 C455 186 452 234 543 234" stroke="#2F9E7D" stroke-width="1.8" fill="none"/>
+
+          <!-- traveling pulses -->
+          <circle r="4" fill="#2563EB" opacity=".9"><animateMotion dur="1.8s" begin=".2s" repeatCount="indefinite" path="M170 150 H223"/></circle>
+          <circle r="4" fill="#D97706" opacity=".9"><animateMotion dur="3.4s" begin="0s" repeatCount="indefinite" path="M395 132 C455 114 452 66 543 66"/></circle>
+          <circle r="4" fill="#2F9E7D" opacity=".9"><animateMotion dur="2.2s" begin="1s" repeatCount="indefinite" path="M395 168 C455 186 452 234 543 234"/></circle>
+
+          <!-- edge label badges (centered on the curves, clear of all nodes) -->
+          <g>
+            <rect x="418" y="76" width="102" height="20" rx="10" fill="#fff" stroke="rgba(217,119,6,0.35)"/>
+            <text x="469" y="89.5" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1" fill="#B45309">CONDITION MET</text>
+          </g>
+          <g>
+            <rect x="418" y="204" width="102" height="20" rx="10" fill="#fff" stroke="rgba(47,158,125,0.35)"/>
+            <text x="469" y="217.5" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1" fill="#128C6A">WITHIN POLICY</text>
+          </g>
+
+          <!-- Trigger node -->
+          <g class="fnode">
+            <rect x="20" y="110" width="150" height="80" rx="13" fill="#fff" stroke="rgba(14,32,56,0.12)"/>
+            <circle cx="170" cy="150" r="4.5" fill="#fff" stroke="#2563EB" stroke-width="2"/>
+            <rect x="34" y="124" width="7" height="7" rx="2" fill="#2563EB"/>
+            <text x="47" y="131" font-size="9.5" font-weight="700" letter-spacing="1.2" fill="#2563EB">TRIGGER</text>
+            <text id="nv-trigger" x="34" y="150" font-size="12" font-weight="600" fill="#0E2038"></text>
+          </g>
+
+          <!-- Condition node -->
+          <g class="fnode">
+            <rect x="225" y="110" width="170" height="80" rx="13" fill="#fff" stroke="rgba(14,32,56,0.12)"/>
+            <circle cx="225" cy="150" r="4.5" fill="#fff" stroke="#B45309" stroke-width="2"/>
+            <circle cx="395" cy="132" r="4.5" fill="#fff" stroke="#B45309" stroke-width="2"/>
+            <circle cx="395" cy="168" r="4.5" fill="#fff" stroke="#2F9E7D" stroke-width="2"/>
+            <rect x="239" y="124" width="7" height="7" rx="2" fill="#B45309"/>
+            <text x="252" y="131" font-size="9.5" font-weight="700" letter-spacing="1.2" fill="#B45309">CONDITION</text>
+            <text id="nv-condition" x="239" y="150" font-size="12" font-weight="600" fill="#0E2038"></text>
+          </g>
+
+          <!-- Action node (condition met) -->
+          <g class="fnode">
+            <rect x="545" y="26" width="160" height="80" rx="13" fill="#fff" stroke="rgba(217,119,6,0.45)" stroke-width="1.5"/>
+            <circle cx="545" cy="66" r="4.5" fill="#fff" stroke="#B45309" stroke-width="2"/>
+            <rect x="559" y="40" width="7" height="7" rx="2" fill="#B45309"/>
+            <text x="572" y="47" font-size="9.5" font-weight="700" letter-spacing="1.2" fill="#B45309">ACTION</text>
+            <text id="nv-action" x="559" y="66" font-size="12" font-weight="600" fill="#0E2038"></text>
+          </g>
+
+          <!-- Default path node -->
+          <g class="fnode">
+            <rect x="545" y="194" width="160" height="80" rx="13" fill="#F2FAF7" stroke="rgba(47,158,125,0.4)" stroke-width="1.5"/>
+            <circle cx="545" cy="234" r="4.5" fill="#fff" stroke="#2F9E7D" stroke-width="2"/>
+            <rect x="559" y="208" width="7" height="7" rx="2" fill="#2F9E7D"/>
+            <text x="572" y="215" font-size="9.5" font-weight="700" letter-spacing="1.2" fill="#128C6A">FLOWS ON</text>
+            <text x="559" y="234" font-size="12" font-weight="600" fill="#0E2038">Clears automatically,</text>
+            <text x="559" y="250" font-size="12" font-weight="600" fill="#0E2038">logged as evidence</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq" id="faq">
+  <div class="wrap" style="max-width:800px;">
+    <div class="head reveal">
+      <div class="kicker">FAQ</div>
+      <h2>Common questions.</h2>
+    </div>
+    <div class="reveal d1">
+      <details class="faq-item">
+        <summary>How is this different from a CI/CD tool?<span class="pm">+</span></summary>
+        <p>CI/CD runs your pipeline. DryDock sits above it and governs it, reading across planning, code, testing, and infrastructure, and telling you what it means. CI/CD tools aren't built to do that on their own, and DryDock doesn't replace them.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does Drydock remove humans from the loop?<span class="pm">+</span></summary>
+        <p>The opposite. It makes human oversight actually implementable. Your policy defines where human judgment is required: AI-authored code, high-risk changes, production deploys. Agents clear routine work automatically; the few decisions that need a person arrive with evidence and a recommendation, and every approval is logged as an audit record. You stay in command without becoming the bottleneck.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will this slow my team down?<span class="pm">+</span></summary>
+        <p>No. That's the point of the agent model. Policies are enforced automatically, so most releases pass without touching a human queue. Only flagged work needs a decision. Teams typically ship faster because risk is caught at the diff, not at the last gate before production.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I own an agent for something specific to my org?<span class="pm">+</span></summary>
+        <p>Yes. Custom agents are built from simple triggers, conditions, and actions, with no code required. Monitor client SLAs, regional compliance, budget thresholds, documentation coverage, or anything else unique to how your teams work.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do we get started?<span class="pm">+</span></summary>
+        <p>Request early access above. Onboarding connects your existing tools (GitHub, Jira, CI/CD, Slack) and the agent crew starts observing immediately. Most teams see their first governed release within the first week.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does early access include, and what does it cost?<span class="pm">+</span></summary>
+        <p>Early access includes the full agent crew, Dockmaster AI, custom agents, and hands-on onboarding with our team. Early cohort pricing is discounted and locked in. We'll share details on the intro call.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EARLY ACCESS ═══ -->
+<section class="easec" id="early-access">
+  <div class="wrap easec-grid">
+    <div class="reveal">
+      <div class="kicker">Early access</div>
+      <h2>Get your releases under governance.</h2>
+      <p class="lede">See how DryDock can help you lower release-delivery risk, improve visibility, and prove AI ROI.</p>
+      <div class="ea-perks">
+        <div class="ea-perk">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Full agent crew + Dockmaster AI, included
+        </div>
+        <div class="ea-perk">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hands-on onboarding, connected to your stack in a week
+        </div>
+        <div class="ea-perk">
+          <svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="#128C6A" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#128C6A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Early cohort pricing, locked in
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d2">
+      <div class="ea-card">
+        <h3>Tell us a little about your team and we'll be in touch within one business day.</h3>
+        <form onsubmit="return handleSubmit(event)">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" type="text" placeholder="Jordan Reyes" required>
+          </div>
+          <div class="field">
+            <label for="f-email">Work email</label>
+            <input id="f-email" type="email" placeholder="jordan@company.com" required>
+          </div>
+          <div class="field">
+            <label for="f-company">Company</label>
+            <input id="f-company" type="text" placeholder="Acme Engineering" required>
+          </div>
+          <div class="field">
+            <label for="f-role">Role</label>
+            <input id="f-role" type="text" placeholder="VP Engineering">
+          </div>
+          <button type="submit" class="btn btn-primary" id="ea-submit">Request early access</button>
+        </form>
+        <p class="ea-fine">No spam, no drip campaigns. One conversation about how your delivery team works today.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<div class="band">
+  <section class="final">
+    <div class="wrap reveal">
+      <h2 style="color:#fff;">Ready to <em style="color:#93C5FD;">govern</em> what you ship?</h2>
+      <p class="lede" style="color:rgba(255,255,255,0.72);">See how DryDock AI brings clarity, confidence, and control to AI-powered software delivery.</p>
+      <div class="final-ctas">
+        <a href="#early-access" class="btn btn-light">Request early access</a>
+        <a href="#early-access" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.4);">Book a conversation</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-logo">
+      <span class="logo-mark" style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,0.1);">
+        <svg viewBox="0 0 64 64" fill="none" style="width:17px;height:17px;"><g stroke="#FAF7F1" stroke-width="5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5.5" fill="none" stroke-linecap="round"/></svg>
+      </span>
+      DryDock AI
+    </div>
+    <div class="links">
+      <a href="#dockmaster">Product</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:hello@usedrydock.com">Contact</a>
+    </div>
+    <small>© 2026 DryDock AI · usedrydock.com</small>
+  </div>
+</footer>
+
+<script>
+  // ── Nav shadow on scroll ──
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
+
+  // ── Reveal on scroll ──
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ── Typing demo in chat card: each question gets its own answer ──
+  const questions = [
+    "Which projects are at risk this week?",
+    "Is Release 4.2 safe to ship?",
+    "Where is our AI spend going?",
+    "Who approved the last prod deploy?"
+  ];
+  const ANSWERS = [
+    // 1 · projects at risk
+    `<div class="ans-row"><span class="name">Project Phoenix</span><span class="tag risk">AT RISK</span></div>
+     <div class="ans-row"><span class="name">Project Atlas</span><span class="tag watch">WATCH</span></div>
+     <div class="ans-row"><span class="name">Release 4.2</span><span class="tag ok">ON TRACK</span></div>
+     <div class="ans-note"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags are cleared.</div>
+     <div class="ans-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>`,
+    // 2 · release 4.2 safe?
+    `<div class="ans-row"><span class="name">Policy gates · 4 of 4</span><span class="tag ok">PASSED</span></div>
+     <div class="ans-row"><span class="name">Risk Agent · 214 diffs read</span><span class="tag ok">NO FLAGS</span></div>
+     <div class="ans-row"><span class="name">Human approvals · 2 of 2</span><span class="tag ok">LOGGED</span></div>
+     <div class="ans-note"><b>Yes.</b> Readiness score 94/100. All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
+     <div class="ans-src">Sources: Policy engine · CI · approvals log · evidence attached</div>`,
+    // 3 · AI spend
+    `<div class="ans-row"><span class="name">Platform team</span><span class="tag ok">$14.2K · efficient</span></div>
+     <div class="ans-row"><span class="name">Payments team</span><span class="tag ok">$10.9K · efficient</span></div>
+     <div class="ans-row"><span class="name">Mobile team</span><span class="tag watch">$9.3K · ▲ 32%</span></div>
+     <div class="ans-note"><b>Watch Mobile:</b> spend rose 32% this month with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
+     <div class="ans-src">Sources: token logs · billing · delivery metrics per team</div>`,
+    // 4 · who approved
+    `<div class="ans-row"><span class="name">Approver · Priya N, Eng Lead</span><span class="tag ok">VERIFIED</span></div>
+     <div class="ans-row"><span class="name">Gate · prod-deploy-approval</span><span class="tag ok">PASSED</span></div>
+     <div class="ans-row"><span class="name">Evidence · 14 records</span><span class="tag ok">EXPORTABLE</span></div>
+     <div class="ans-note"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
+     <div class="ans-src">Sources: approvals log · Risk Agent report · audit trail</div>`
+  ];
+  const target = document.getElementById('type-target');
+  const answerEl = document.getElementById('chat-answer');
+  let qi = 0, started = false;
+
+  function typeText(text, answerHTML, cb) {
+    let i = 0;
+    target.textContent = '';
+    answerEl.classList.remove('on');
+    const t = setInterval(() => {
+      target.textContent = text.slice(0, ++i);
+      if (i >= text.length) {
+        clearInterval(t);
+        setTimeout(() => {
+          answerEl.innerHTML = answerHTML;
+          answerEl.classList.add('on');
+          cb && cb();
+        }, 350);
+      }
+    }, 38);
+  }
+  function cycle() {
+    typeText(questions[qi], ANSWERS[qi], () => {
+      setTimeout(() => { qi = (qi + 1) % questions.length; cycle(); }, 5600);
+    });
+  }
+  const chatIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting && !started) { started = true; cycle(); chatIO.disconnect(); } });
+  }, { threshold: 0.3 });
+  chatIO.observe(document.querySelector('.chat-card'));
+
+  // ── Animated counters ──
+  function animateCount(el) {
+    const end = parseFloat(el.dataset.count);
+    const dec = parseInt(el.dataset.decimals || 0);
+    const pre = el.dataset.prefix || '';
+    const suf = el.dataset.suffix || '';
+    const dur = 1400, t0 = performance.now();
+    function frame(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = pre + (end * eased).toFixed(dec) + suf;
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  const cntIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { animateCount(e.target); cntIO.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => cntIO.observe(el));
+
+  // ── Hero scene: sequenced inspection ──
+  const scene = document.getElementById('scene');
+  const sceneStatus = document.getElementById('scene-status');
+  const sceneLog = document.getElementById('scene-log');
+  const heroVisual = document.getElementById('hero-visual');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let seqTimers = [];
+
+  function log(html) { sceneLog.innerHTML = html; }
+
+  function agentDone(key, msg) {
+    document.getElementById('ac-' + key).classList.add('done');
+    const lead = document.getElementById('lead-' + key);
+    if (lead) lead.classList.add('draw');
+    if (msg) log(msg);
+  }
+
+  const SEQ = [
+    [200,  () => { log('DRYDOCK BAY 01 · loading changes onto RELEASE 4.2'); scene.classList.add('s-load'); }],
+    [1900, () => scene.classList.add('s-drop')],
+    [2950, () => scene.classList.add('s-dropped')],
+    [3150, () => { log('PR #1291 aboard · inspection sweep in progress'); scene.classList.add('s-scan'); }],
+    [4100, () => agentDone('gov',  'GOVERNANCE · policy gates 4 of 4 passed')],
+    [4800, () => agentDone('qa',   'QA · coverage 74% and improving')],
+    [5500, () => agentDone('risk', 'RISK · 3 AI-authored diffs flagged → reviewed')],
+    [6200, () => agentDone('comp', 'COMPLIANCE · SOC 2 evidence logged')],
+    [7100, () => {
+      document.getElementById('ac-esc').classList.add('show');
+      log('2 escalations routed to Eng Lead · evidence attached · awaiting human decision');
+    }],
+    [8900, () => {
+      document.getElementById('ac-esc').classList.add('approved');
+      log('ENG LEAD approved 2 items · decisions logged as audit evidence');
+    }],
+    [9800, () => {
+      scene.classList.add('s-clear');
+      document.getElementById('ac-dm').classList.add('done');
+      sceneStatus.classList.add('cleared');
+      log('<span class="ok">ALL GATES PASSED · HUMAN-APPROVED · RELEASE 4.2 CLEARED TO SHIP</span>');
+    }],
+  ];
+
+  function resetScene() {
+    seqTimers.forEach(clearTimeout); seqTimers = [];
+    scene.classList.remove('s-load','s-drop','s-dropped','s-scan','s-clear');
+    sceneStatus.classList.remove('cleared');
+    ['gov','qa','risk','comp','dm'].forEach(k => document.getElementById('ac-' + k).classList.remove('done'));
+    document.getElementById('ac-esc').classList.remove('show','approved');
+    document.querySelectorAll('.lead').forEach(l => l.classList.remove('draw'));
+    log('DRYDOCK BAY 01 · awaiting inspection');
+    void scene.offsetWidth; // force reflow so transitions restart
+  }
+
+  function runScene() {
+    resetScene();
+    if (reducedMotion) {
+      // jump straight to the finished state
+      scene.classList.add('s-load','s-drop','s-dropped','s-clear');
+      ['gov','qa','risk','comp','dm'].forEach(k => document.getElementById('ac-' + k).classList.add('done'));
+      document.getElementById('ac-esc').classList.add('show','approved');
+      document.querySelectorAll('.lead').forEach(l => l.classList.add('draw'));
+      sceneStatus.classList.add('cleared');
+      log('<span class="ok">ALL GATES PASSED · HUMAN-APPROVED · RELEASE 4.2 CLEARED TO SHIP</span>');
+      return;
+    }
+    SEQ.forEach(([t, fn]) => seqTimers.push(setTimeout(fn, t)));
+  }
+
+  // auto-run once when the scene scrolls into view
+  let sceneRan = false;
+  const sceneIO = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting && !sceneRan) { sceneRan = true; runScene(); sceneIO.disconnect(); } });
+  }, { threshold: 0.35 });
+  sceneIO.observe(scene);
+
+  document.getElementById('replay-btn').addEventListener('click', runScene);
+
+  // ── Hero scene: tooltips on ship parts ──
+  const tip = document.getElementById('scene-tip');
+  document.querySelectorAll('[data-tip]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const r = el.getBoundingClientRect(), h = heroVisual.getBoundingClientRect();
+      tip.textContent = el.dataset.tip;
+      tip.style.left = (r.left + r.width / 2 - h.left) + 'px';
+      tip.style.top = (r.top - h.top) + 'px';
+      tip.classList.add('on');
+    });
+    el.addEventListener('mouseleave', () => tip.classList.remove('on'));
+  });
+
+  // ── Hero scene: agent card hover → highlight inspected zone ──
+  document.querySelectorAll('.acard[data-zone]').forEach(card => {
+    const zone = document.getElementById(card.dataset.zone);
+    card.addEventListener('mouseenter', () => { scene.classList.add('dimmed'); zone.classList.add('on'); });
+    card.addEventListener('mouseleave', () => { scene.classList.remove('dimmed'); zone.classList.remove('on'); });
+  });
+
+  // ── Crew deck: selectable cards + detail panel ──
+  const AGENTS = [
+    {
+      glyph: '🏛️', bg: 'var(--blue-soft)', accent: '#2563EB', domain: 'Governance',
+      name: 'Governance Agent',
+      desc: 'Ensures every change, human or AI, passes your policy gates before it ships. Rules are configured once and enforced on every merge and deploy, with exceptions escalated with full context.',
+      bullets: [
+        'Configurable policy gates per team, repo, or risk level',
+        'Blocks non-compliant releases before merge, not after',
+        'Separate rule sets for AI-generated vs. human-authored code'
+      ],
+      mono: '<span class="prompt">$</span> gate check · release-4.2<br>gate: ai-review-required → <span class="g">✓ 41 passed</span> · <span class="a">2 escalated</span><br>gate: test-coverage-min → <span class="g">✓ passed (74%)</span>',
+      stats: [ {v:'<em>41</em>', l:'checks run today'}, {v:'<em>2</em>', l:'escalated with context'}, {v:'<em>0</em>', l:'slipped through'} ],
+      esc: 'Escalates to your <b>Engineering Lead</b>: policy exceptions only, decision-ready'
+    },
+    {
+      glyph: '🧪', bg: 'var(--green-soft)', accent: '#128C6A', domain: 'Quality',
+      name: 'QA Agent',
+      desc: 'Catches quality risks early so your teams spend less time fixing problems later. Watches coverage and defect trends most closely in the areas where AI writes the fastest.',
+      bullets: [
+        'Coverage tracked per module, gaps flagged before release',
+        'Quality trend on every release, not just every incident',
+        'Prioritizes untested code that AI touched recently'
+      ],
+      mono: '<span class="prompt">$</span> qa scan · sprint-24<br>coverage: 61% → <span class="g">74% ▲</span><br><span class="r">flag:</span> auth module untested · 3 AI-authored fns',
+      stats: [ {v:'<em>74%</em>', l:'coverage · ▲ 13 pts'}, {v:'<em>31</em>', l:'risks caught early'}, {v:'<em>−38%</em>', l:'rework this quarter'} ],
+      esc: 'Escalates to your <b>QA Lead</b>: failed quality gates, evidence attached'
+    },
+    {
+      glyph: '⚡', bg: 'rgba(124,58,237,0.1)', accent: '#7C3AED', domain: 'Productivity',
+      name: 'Productivity Agent',
+      desc: 'Spots bottlenecks and helps your teams focus on what matters most. Review load, cycle time, and AI impact, measured continuously, with suggestions your leads can act on.',
+      bullets: [
+        'Review queue load vs. capacity, per team',
+        'DORA metrics tracked without manual effort',
+        'Shows where AI is actually helping, and where it isn’t'
+      ],
+      mono: '<span class="prompt">$</span> flow report · this week<br>review queue: <span class="a">2.4x capacity</span><br>suggest: split payments PRs · add reviewer to infra',
+      stats: [ {v:'<em>+18%</em>', l:'delivery speed QoQ'}, {v:'<em>2.4x</em>', l:'review load spotted'}, {v:'<em>9h</em>', l:'saved per dev / month'} ],
+      esc: 'Reports to your <b>Engineering Manager</b>: weekly digest, no approvals needed'
+    },
+    {
+      glyph: '🚢', bg: 'rgba(14,116,144,0.1)', accent: '#0E7490', domain: 'Delivery',
+      name: 'DevOps Agent',
+      desc: 'Stays ahead of deployment risks before they impact delivery. Every release gets a readiness score before it moves, so surprises happen in the dock, not in production.',
+      bullets: [
+        'Release readiness scored before every deploy',
+        'Deployment risk surfaced ahead of the release train',
+        'Full trace from ticket to production, automatically'
+      ],
+      mono: '<span class="prompt">$</span> readiness · next train<br>release 4.2: <span class="g">ready</span> · score 94<br>release 4.3: <span class="a">2 gates open</span> · ETA thu',
+      stats: [ {v:'<em>94</em>', l:'readiness score'}, {v:'<em>0</em>', l:'failed deploys / month'}, {v:'<em>2.1</em>', l:'deploys per day'} ],
+      esc: 'Escalates to your <b>Release Manager</b>: blocked trains, with the blocking gate named'
+    },
+    {
+      glyph: '⚠️', bg: 'var(--amber-soft)', accent: '#B45309', domain: 'Risk',
+      name: 'Risk Agent',
+      desc: 'Reads every diff before a human does. AI-authored changes get their own risk scoring, because their volume, velocity, and failure modes are different from human code.',
+      bullets: [
+        'AI-powered diff analysis across every PR',
+        'High-risk patterns detected before review',
+        'Risk score on every release, not just gut feel'
+      ],
+      mono: '<span class="prompt">$</span> risk sweep · 214 PRs<br><span class="r">3 flagged</span> · high-risk pattern in billing<br>89 AI-assisted · separate scoring applied',
+      stats: [ {v:'<em>214</em>', l:'PRs scanned / week'}, {v:'<em>3</em>', l:'flagged before review'}, {v:'<em>89</em>', l:'AI-assisted tracked'} ],
+      esc: 'Escalates to your <b>Tech Lead</b>: high-risk diffs with risk score and recommendation'
+    },
+    {
+      glyph: '⚖️', bg: 'var(--red-soft)', accent: '#C0392B', domain: 'Compliance',
+      name: 'Compliance Agent',
+      desc: 'Builds your audit evidence continuously: SOC 2, ISO 27001, or your own framework. When the auditor asks, the answer is an export, not a six-week scramble.',
+      bullets: [
+        'Evidence logged on every approval, override, and check',
+        'One-click export for any time window',
+        'Drift from compliance posture flagged in real time'
+      ],
+      mono: '<span class="prompt">$</span> evidence status<br>log: <span class="g">current</span> · 0 gaps<br>last export: Q2 · SOC 2 Type II · 1,204 records',
+      stats: [ {v:'<em>1,204</em>', l:'evidence records'}, {v:'<em>0</em>', l:'gaps found at audit'}, {v:'<em>1-click</em>', l:'export, any window'} ],
+      esc: 'Escalates to your <b>Compliance Officer</b>: evidence gaps, before the auditor finds them'
+    }
+  ];
+
+  // ── Crew: stacked agent windows (Qodo-style) ──
+  const CREW_HEADS = [
+    'Policy gates on every change',
+    'Quality risks, caught early',
+    'Bottlenecks and focus, found',
+    'Release readiness, scored',
+    'Every diff, read first',
+    'Audit evidence, always current'
+  ];
+  const crewStack = document.getElementById('crew-stack');
+  const personIcon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.3-3.2 3.8-5 7-5s5.7 1.8 7 5"/></svg>';
+
+  AGENTS.forEach((a, i) => {
+    const win = document.createElement('div');
+    win.className = 'win' + (i === 0 ? ' open' : '');
+    win.style.setProperty('--wc', a.accent);
+    win.style.setProperty('--accent-c', a.accent);
+    win.innerHTML = `
+      <div class="win-head" role="button" tabindex="0" aria-expanded="${i === 0}">
+        <span class="wdot" style="background:${a.accent}"></span>
+        ${a.name.toUpperCase()}
+        <span class="wsub">· ${CREW_HEADS[i]}</span>
+        <span class="wchev">›</span>
+      </div>
+      <div class="win-body"><div class="win-inner"><div class="win-grid">
+        <div>
+          <div class="wg-dom" style="color:${a.accent}">${a.domain.toUpperCase()} · AGENT ${i + 1} OF ${AGENTS.length}</div>
+          <div class="wg-title">${CREW_HEADS[i]}.</div>
+          <p class="wg-desc">${a.desc}</p>
+          <ul class="ad-bullets">${a.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+          <div class="ad-esc">${personIcon}<span>${a.esc}</span></div>
+        </div>
+        <div>
+          <div class="ad-stats">${a.stats.map(st => `<div class="ad-stat"><div class="v">${st.v}</div><div class="l">${st.l}</div></div>`).join('')}</div>
+          <div class="ad-mono" style="margin-top:14px;">${a.mono}</div>
+        </div>
+      </div></div></div>`;
+    const head = win.querySelector('.win-head');
+    const activate = () => {
+      document.querySelectorAll('#crew-stack .win').forEach(w => {
+        w.classList.remove('open');
+        w.querySelector('.win-head').setAttribute('aria-expanded', 'false');
+      });
+      win.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+    };
+    head.addEventListener('click', activate);
+    head.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+    crewStack.appendChild(win);
+  });
+
+  // ── Custom agents: workflow canvas ──
+  const RECIPES = {
+    watch:    { trigger: 'PR opened', condition: 'AI-authored share > 70% on payment code', action: 'Require senior human review', status: 'LIVE' },
+    freeze:   { trigger: 'Deploy requested', condition: 'Inside Friday change-freeze window', action: 'Hold deploy, notify Release Manager', status: 'LIVE' },
+    incident: { trigger: 'Sev-1 incident opened', condition: 'Pending deploys touch affected service', action: 'Pause release train until resolved', status: 'LIVE' },
+    spend:    { trigger: 'AI spend updates, hourly', condition: 'Team spend > $5,000 / month', action: 'Alert #eng-budget on Slack', status: 'LIVE' },
+    soc2:     { trigger: 'Quarterly audit window opens', condition: 'Evidence gap in any control', action: 'Escalate to Compliance Officer', status: 'DRAFT' },
+  };
+  const canvasStatus = document.getElementById('canvas-status');
+  const ctabs = document.querySelectorAll('.ctab[data-agent]');
+
+  function svgWrap(id, str, x, maxChars) {
+    const el = document.getElementById(id);
+    const words = str.split(' ');
+    const lines = [''];
+    words.forEach(w => {
+      if ((lines[lines.length - 1] + ' ' + w).trim().length > maxChars) lines.push(w);
+      else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + w).trim();
+    });
+    el.innerHTML = lines.slice(0, 3).map((l, i) => `<tspan x="${x}" dy="${i === 0 ? 0 : 15}">${l}</tspan>`).join('');
+  }
+
+  const flowSvg = document.getElementById('flow-svg');
+
+  function setCanvas(key) {
+    const r = RECIPES[key];
+    if (!r) return;
+    flowSvg.classList.add('swap');
+    setTimeout(() => {
+      svgWrap('nv-trigger', r.trigger, 34, 19);
+      svgWrap('nv-condition', r.condition, 239, 23);
+      svgWrap('nv-action', r.action, 559, 21);
+      canvasStatus.textContent = '\u25CF ' + r.status;
+      canvasStatus.classList.toggle('draft', r.status === 'DRAFT');
+      flowSvg.classList.remove('swap');
+    }, 200);
+  }
+
+  ctabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      ctabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      setCanvas(tab.dataset.agent);
+    });
+  });
+  setCanvas('watch');
+
+  document.getElementById('ctab-new')?.addEventListener('click', () => {
+    document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // ── Form submit (demo) ──
+  function handleSubmit(ev) {
+    ev.preventDefault();
+    const btn = document.getElementById('ea-submit');
+    btn.textContent = '✓ Request received. Check your inbox';
+    btn.style.background = '#128C6A';
+    btn.disabled = true;
+    return false;
+  }
+</script>
+</body>
+</html>

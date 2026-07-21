@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="512" height="512">
+  <!-- DryDock AI · The Anchor Check · app tile / social avatar -->
+  <rect width="64" height="64" rx="15" fill="#0E2038"/>
+  <g stroke="#FAF7F1" stroke-width="4" fill="none" stroke-linecap="round">
+    <circle cx="32" cy="13.5" r="4.5"/>
+    <path d="M32 18v30"/>
+    <path d="M22 26h20"/>
+    <path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/>
+  </g>
+  <path d="M32 48.5 51 27" stroke="#3B82F6" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+</svg>
