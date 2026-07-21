@@ -99,7 +99,7 @@
   .lede { font-size: clamp(1.05rem, 1.7vw, 1.2rem); color: var(--muted); line-height: 1.75; letter-spacing: -.004em; }
 
   /* ── Hero ── */
-  .hero { position: relative; padding-top: clamp(2rem, 4vw, 3.25rem); }
+  .hero { position: relative; padding-top: clamp(1.5rem, 3vw, 2.5rem); padding-bottom: clamp(2rem, 4vw, 3rem); }
   .hero::before {
     content: ''; position: absolute; inset: 0;
     background:
@@ -357,7 +357,21 @@
   .hero-center .hero-ctas { justify-content: center; }
   .hero-center .hero-note { justify-content: center; }
 
-  .hero-visual { position: relative; max-width: 1240px; margin: clamp(2.8rem, 5.5vw, 4.5rem) auto 0; padding: 0 8px; }
+  .hero-visual { position: relative; max-width: min(1240px, 125vh); margin: clamp(1.8rem, 3.5vw, 2.8rem) auto 0; padding: 0 8px; }
+
+  /* fit the whole hero in one viewport on shorter screens (e.g. 14" laptops) */
+  @media (min-width: 760px) and (max-height: 1000px) {
+    .hero { padding-top: 1rem; padding-bottom: 1.5rem; }
+    .hero-center .kicker { margin-bottom: .7rem; }
+    .hero-center h1 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); }
+    .hero-center .lede { font-size: 1.05rem; margin: .9rem auto 1.3rem; max-width: 640px; }
+    .hero-ctas .btn { padding: 10px 20px; font-size: 14.5px; }
+    .hero-visual { margin-top: 1.5rem; max-width: min(1100px, 108vh); }
+    .acard .t { font-size: 11.5px; }
+    .acard .s { font-size: 10.5px; }
+    .acard .ic { width: 30px; height: 30px; }
+    .acard-inner { padding: 9px 13px; }
+  }
   .scene { position: relative; background: linear-gradient(180deg, #FDFCF8 0%, #F3EEE4 78%, #EAE3D4 100%); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg); overflow: hidden; }
   .scene svg.sea { display: block; width: 100%; height: auto; }
 
@@ -1345,22 +1359,26 @@
     <div class="reveal d2">
       <div class="ea-card">
         <h3>Tell us a little about your team and we'll be in touch within one business day.</h3>
-        <form onsubmit="return handleSubmit(event)">
+        <form action="https://formsubmit.co/suralal.s@neoito.com" method="POST">
+          <input type="hidden" name="_cc" value="bd@neoito.com">
+          <input type="hidden" name="_subject" value="DryDock — early access request">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
           <div class="field">
             <label for="f-name">Name</label>
-            <input id="f-name" type="text" placeholder="Jordan Reyes" required>
+            <input id="f-name" name="name" type="text" placeholder="Jordan Reyes" required>
           </div>
           <div class="field">
             <label for="f-email">Work email</label>
-            <input id="f-email" type="email" placeholder="jordan@company.com" required>
+            <input id="f-email" name="email" type="email" placeholder="jordan@company.com" required>
           </div>
           <div class="field">
             <label for="f-company">Company</label>
-            <input id="f-company" type="text" placeholder="Acme Engineering" required>
+            <input id="f-company" name="company" type="text" placeholder="Acme Engineering" required>
           </div>
           <div class="field">
             <label for="f-role">Role</label>
-            <input id="f-role" type="text" placeholder="VP Engineering">
+            <input id="f-role" name="role" type="text" placeholder="VP Engineering">
           </div>
           <button type="submit" class="btn btn-primary" id="ea-submit">Request early access</button>
         </form>
@@ -1378,7 +1396,7 @@
       <p class="lede" style="color:rgba(255,255,255,0.72);">See how DryDock AI brings clarity, confidence, and control to AI-powered software delivery.</p>
       <div class="final-ctas">
         <a href="#early-access" class="btn btn-light">Request early access</a>
-        <a href="#early-access" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.4);">Book a conversation</a>
+        <a href="https://calendly.com/suralal-s" target="_blank" rel="noopener" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.4);">Book a conversation</a>
       </div>
     </div>
   </section>
@@ -1777,15 +1795,12 @@
     document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  // ── Form submit (demo) ──
-  function handleSubmit(ev) {
-    ev.preventDefault();
+  // ── Form: show sending state (native POST to FormSubmit continues) ──
+  document.querySelector('.ea-card form')?.addEventListener('submit', () => {
     const btn = document.getElementById('ea-submit');
-    btn.textContent = '✓ Request received. Check your inbox';
-    btn.style.background = '#128C6A';
+    btn.textContent = 'Sending…';
     btn.disabled = true;
-    return false;
-  }
+  });
 </script>
 </body>
 </html>
