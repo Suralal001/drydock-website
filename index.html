@@ -387,7 +387,7 @@
 
   /* ── sequence states (driven by JS adding classes to .scene) ── */
   .trolley-g { transition: transform 1.7s cubic-bezier(.45,0,.25,1); }
-  .scene.s-load .trolley-g { transform: translateX(250px); }
+  .scene.s-load .trolley-g { transform: translateX(308px); }
   .hang { transition: transform 1s cubic-bezier(.55,0,.5,1), opacity .25s; }
   .scene.s-drop .hang { transform: translateY(97px); }
   .scene.s-dropped .hang { opacity: 0; }
@@ -396,9 +396,9 @@
 
   .scan-g { opacity: 0; }
   .scene.s-scan .scan-g { opacity: 1; animation: scan-once 2.5s cubic-bezier(.4,.1,.6,.9) forwards; }
-  @keyframes scan-once { 0% { transform: translateX(0); opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(530px); opacity: 0; } }
+  @keyframes scan-once { 0% { transform: translateX(0); opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(700px); opacity: 0; } }
 
-  .gate-arm { transform-origin: 962px 352px; transition: transform 1.2s cubic-bezier(.3,0,.25,1.15); }
+  .gate-arm { transform-origin: 1008px 352px; transition: transform 1.2s cubic-bezier(.3,0,.25,1.15); }
   .scene.s-clear .gate-arm { transform: rotate(-74deg); }
   .ship-g { transition: transform 1.5s ease; }
   .scene.s-clear .ship-g { transform: translateX(18px); }
@@ -787,88 +787,88 @@
 
           <!-- gate barrier at dock exit (opens on clearance) -->
           <g>
-            <rect x="954" y="308" width="16" height="92" rx="3" fill="#33465E"/>
+            <rect x="1000" y="308" width="16" height="92" rx="3" fill="#33465E"/>
             <g class="gate-arm">
-              <rect x="962" y="346" width="186" height="12" rx="6" fill="#fff" stroke="#C9BFA8" stroke-width="1"/>
-              <rect x="978" y="346" width="26" height="12" fill="#C0392B"/>
-              <rect x="1030" y="346" width="26" height="12" fill="#C0392B"/>
-              <rect x="1082" y="346" width="26" height="12" fill="#C0392B"/>
-              <circle cx="962" cy="352" r="9" fill="#33465E"/>
+              <rect x="1008" y="346" width="186" height="12" rx="6" fill="#fff" stroke="#C9BFA8" stroke-width="1"/>
+              <rect x="1024" y="346" width="26" height="12" fill="#C0392B"/>
+              <rect x="1076" y="346" width="26" height="12" fill="#C0392B"/>
+              <rect x="1128" y="346" width="26" height="12" fill="#C0392B"/>
+              <circle cx="1008" cy="352" r="9" fill="#33465E"/>
             </g>
           </g>
 
           <!-- ship -->
           <g class="ship-g">
             <!-- soft ground shadow -->
-            <ellipse cx="605" cy="399" rx="255" ry="9" fill="rgba(14,32,56,0.10)"/>
+            <ellipse cx="605" cy="399" rx="340" ry="9" fill="rgba(14,32,56,0.10)"/>
             <!-- keel blocks -->
             <g fill="#5C6B80">
-              <path d="M430 380 h36 l-5 18 h-26 z"/>
-              <path d="M530 380 h36 l-5 18 h-26 z"/>
-              <path d="M630 380 h36 l-5 18 h-26 z"/>
-              <path d="M730 380 h36 l-5 18 h-26 z"/>
+              <path d="M380 380 h36 l-5 18 h-26 z"/>
+              <path d="M520 380 h36 l-5 18 h-26 z"/>
+              <path d="M660 380 h36 l-5 18 h-26 z"/>
+              <path d="M800 380 h36 l-5 18 h-26 z"/>
             </g>
             <!-- hull -->
-            <path d="M340 290 H870 C866 328 851 362 832 380 H406 C372 377 346 338 340 290 Z" fill="url(#hullGrad)"/>
+            <path d="M260 290 H950 C946 328 931 362 912 380 H326 C292 377 266 338 260 290 Z" fill="url(#hullGrad)"/>
             <!-- waterline stripe -->
-            <path d="M344 336 H862 C858 346 853 354 848 360 H396 C384 353 372 346 366 336 Z" fill="#2563EB" opacity=".8"/>
-            <text x="600" y="325" text-anchor="middle" font-family="Inter,sans-serif" font-size="17" font-weight="600" fill="#DCE5F2" letter-spacing="7">RELEASE 4.2</text>
+            <path d="M264 336 H942 C938 346 933 354 928 360 H316 C304 353 292 346 286 336 Z" fill="#2563EB" opacity=".8"/>
+            <text x="605" y="325" text-anchor="middle" font-family="Inter,sans-serif" font-size="17" font-weight="600" fill="#DCE5F2" letter-spacing="7">RELEASE 4.2</text>
 
             <!-- containers: bottom row (hoverable) -->
             <g>
-              <g class="ctr" data-tip="code · 214 commits this sprint"><rect x="380" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="405" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">code</text></g>
-              <g class="ctr" data-tip="tests · 74% coverage · ▲ 13 pts"><rect x="436" y="262" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="461" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">tests</text></g>
-              <g class="ctr" data-tip="infra · 2 Terraform changes, gated"><rect x="492" y="262" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="517" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">infra</text></g>
-              <g class="ctr" data-tip="docs · updated with API changes"><rect x="548" y="262" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="573" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">docs</text></g>
-              <g class="ctr" data-tip="api · 3 endpoints changed · reviewed"><rect x="604" y="262" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="629" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">api</text></g>
-              <g class="ctr" data-tip="ui · 41 components touched · 12 by AI"><rect x="660" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="685" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">ui</text></g>
+              <g class="ctr" data-tip="code · 214 commits this sprint"><rect x="438" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="463" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">code</text></g>
+              <g class="ctr" data-tip="tests · 74% coverage · ▲ 13 pts"><rect x="494" y="262" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="519" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">tests</text></g>
+              <g class="ctr" data-tip="infra · 2 Terraform changes, gated"><rect x="550" y="262" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="575" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">infra</text></g>
+              <g class="ctr" data-tip="docs · updated with API changes"><rect x="606" y="262" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="631" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">docs</text></g>
+              <g class="ctr" data-tip="api · 3 endpoints changed · reviewed"><rect x="662" y="262" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="687" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">api</text></g>
+              <g class="ctr" data-tip="ui · 41 components touched · 12 by AI"><rect x="718" y="262" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="743" y="278" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">ui</text></g>
             </g>
             <!-- containers: top row -->
             <g>
-              <g class="ctr" data-tip="policy · 4 of 4 gates passed"><rect x="408" y="236" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="433" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">policy</text></g>
-              <g class="ctr" data-tip="review · every diff read, 3 flagged &amp; cleared"><rect x="464" y="236" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="489" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">review</text></g>
-              <g class="ctr" data-tip="risk · scored 94/100, no open flags"><rect x="520" y="236" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="545" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">risk</text></g>
-              <g class="ctr" data-tip="audit · evidence logged, export-ready"><rect x="576" y="236" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="601" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">audit</text></g>
-              <g class="ctr" data-tip="approvals · 2 human decisions logged"><rect x="632" y="236" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="657" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.92)">approvals</text></g>
+              <g class="ctr" data-tip="policy · 4 of 4 gates passed"><rect x="466" y="236" width="50" height="24" rx="2.5" fill="#3A93A8"/><text x="491" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">policy</text></g>
+              <g class="ctr" data-tip="review · every diff read, 3 flagged &amp; cleared"><rect x="522" y="236" width="50" height="24" rx="2.5" fill="#8A63D2"/><text x="547" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">review</text></g>
+              <g class="ctr" data-tip="risk · scored 94/100, no open flags"><rect x="578" y="236" width="50" height="24" rx="2.5" fill="#2F9E7D"/><text x="603" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">risk</text></g>
+              <g class="ctr" data-tip="audit · evidence logged, export-ready"><rect x="634" y="236" width="50" height="24" rx="2.5" fill="#C07A3B"/><text x="659" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(255,255,255,0.92)">audit</text></g>
+              <g class="ctr" data-tip="approvals · 2 human decisions logged"><rect x="690" y="236" width="50" height="24" rx="2.5" fill="#3E6FCB"/><text x="715" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="rgba(255,255,255,0.92)">approvals</text></g>
               <!-- the landed PR container (appears after crane drop) -->
-              <g class="landed ctr" data-tip="PR #1291 · just landed · queued for scan"><rect x="688" y="236" width="50" height="24" rx="3" fill="#3E6FCB"/><text x="713" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="#fff">#1291</text></g>
+              <g class="landed ctr" data-tip="PR #1291 · just landed · queued for scan"><rect x="746" y="236" width="50" height="24" rx="3" fill="#3E6FCB"/><text x="771" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="#fff">#1291</text></g>
             </g>
 
             <!-- superstructure -->
             <g class="ctr" data-tip="the bridge · Dockmaster's post">
-              <rect x="750" y="205" width="95" height="85" rx="5" fill="#F4EFE6" stroke="#C9BFA8" stroke-width="1.5"/>
+              <rect x="810" y="205" width="95" height="85" rx="5" fill="#F4EFE6" stroke="#C9BFA8" stroke-width="1.5"/>
               <g fill="#16304F">
-                <rect x="763" y="219" width="16" height="10" rx="2"/>
-                <rect x="787" y="219" width="16" height="10" rx="2"/>
-                <rect x="811" y="219" width="16" height="10" rx="2"/>
-                <rect x="763" y="239" width="16" height="10" rx="2"/>
-                <rect x="787" y="239" width="16" height="10" rx="2"/>
-                <rect x="811" y="239" width="16" height="10" rx="2"/>
+                <rect x="823" y="219" width="16" height="10" rx="2"/>
+                <rect x="847" y="219" width="16" height="10" rx="2"/>
+                <rect x="871" y="219" width="16" height="10" rx="2"/>
+                <rect x="823" y="239" width="16" height="10" rx="2"/>
+                <rect x="847" y="239" width="16" height="10" rx="2"/>
+                <rect x="871" y="239" width="16" height="10" rx="2"/>
               </g>
             </g>
             <!-- mast + flag -->
-            <line x1="797" y1="205" x2="797" y2="170" stroke="#16304F" stroke-width="3"/>
-            <path class="flag" d="M797 170 h32 l-7.5 8.5 7.5 8.5 h-32 z" fill="#2563EB"/>
+            <line x1="857" y1="205" x2="857" y2="170" stroke="#16304F" stroke-width="3"/>
+            <path class="flag" d="M857 170 h32 l-7.5 8.5 7.5 8.5 h-32 z" fill="#2563EB"/>
           </g>
         </g><!-- /art -->
 
         <!-- scan beam (sweeps once per sequence) -->
         <g class="scan-g">
-          <rect x="330" y="160" width="90" height="235" fill="url(#scanGrad)"/>
-          <line x1="420" y1="160" x2="420" y2="395" stroke="#2563EB" stroke-width="2" opacity=".65"/>
+          <rect x="250" y="160" width="90" height="235" fill="url(#scanGrad)"/>
+          <line x1="340" y1="160" x2="340" y2="395" stroke="#2563EB" stroke-width="2" opacity=".65"/>
         </g>
 
         <!-- zone highlights (shown on agent card hover) -->
-        <rect class="zone" id="z-gov"  x="330" y="222" width="558" height="180" rx="10"/>
-        <rect class="zone" id="z-qa"   x="372" y="228" width="376" height="64"  rx="10"/>
-        <rect class="zone" id="z-risk" x="334" y="286" width="546" height="116" rx="10"/>
-        <rect class="zone" id="z-comp" x="742" y="198" width="112" height="100" rx="10"/>
+        <rect class="zone" id="z-gov"  x="250" y="222" width="710" height="180" rx="10"/>
+        <rect class="zone" id="z-qa"   x="430" y="228" width="346" height="64"  rx="10"/>
+        <rect class="zone" id="z-risk" x="254" y="286" width="716" height="116" rx="10"/>
+        <rect class="zone" id="z-comp" x="802" y="198" width="112" height="100" rx="10"/>
 
         <!-- leader lines: card → inspected zone -->
-        <path class="lead" id="lead-gov"  d="M262 108 Q340 150 424 224"/>
-        <path class="lead" id="lead-risk" d="M938 122 Q890 180 850 282"/>
-        <path class="lead" id="lead-qa"   d="M240 320 Q300 312 368 288"/>
-        <path class="lead" id="lead-comp" d="M960 330 Q920 310 858 262"/>
+        <path class="lead" id="lead-gov"  d="M-40 115 Q140 165 330 235"/>
+        <path class="lead" id="lead-risk" d="M1240 128 Q1080 185 940 270"/>
+        <path class="lead" id="lead-qa"   d="M-35 322 Q170 318 424 292"/>
+        <path class="lead" id="lead-comp" d="M1245 335 Q1080 305 918 258"/>
               </g>
       </svg>
 
