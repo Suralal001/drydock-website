@@ -357,7 +357,7 @@
   .hero-center .hero-ctas { justify-content: center; }
   .hero-center .hero-note { justify-content: center; }
 
-  .hero-visual { position: relative; max-width: min(1240px, 125vh); margin: clamp(1.8rem, 3.5vw, 2.8rem) auto 0; padding: 0 8px; }
+  .hero-visual { position: relative; width: 100%; max-width: 1760px; margin: clamp(1.5rem, 3vw, 2.5rem) auto 0; padding: 0; }
 
   /* fit the whole hero in one viewport on shorter screens (e.g. 14" laptops) */
   @media (min-width: 760px) and (max-height: 1000px) {
@@ -366,17 +366,18 @@
     .hero-center h1 { font-size: clamp(2.2rem, 4.4vw, 3.2rem); }
     .hero-center .lede { font-size: 1.05rem; margin: .9rem auto 1.3rem; max-width: 640px; }
     .hero-ctas .btn { padding: 10px 20px; font-size: 14.5px; }
-    .hero-visual { margin-top: 1.5rem; max-width: min(1100px, 108vh); }
+    .hero-visual { margin-top: 1.2rem; max-width: min(1500px, 330vh); }
     .acard .t { font-size: 11.5px; }
     .acard .s { font-size: 10.5px; }
     .acard .ic { width: 30px; height: 30px; }
     .acard-inner { padding: 9px 13px; }
   }
-  .scene { position: relative; background: linear-gradient(180deg, #FDFCF8 0%, #F3EEE4 78%, #EAE3D4 100%); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .scene { position: relative; background: transparent; border: none; border-radius: 0; box-shadow: none; overflow: visible; }
   .scene svg.sea { display: block; width: 100%; height: auto; }
 
-  /* status bar / log ticker */
-  .scene-status { display: flex; align-items: center; gap: 12px; padding: 11px 20px; border-top: 1px solid var(--line); background: rgba(255,255,255,0.6); font-family: 'SF Mono', ui-monospace, monospace; font-size: 11.5px; letter-spacing: .06em; color: var(--muted); }
+  /* status bar / log ticker: borderless floating strip under the dock */
+  .scene-status { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 10px 20px 0; border: none; background: transparent; font-family: 'SF Mono', ui-monospace, monospace; font-size: 11.5px; letter-spacing: .06em; color: var(--muted); }
+  #scene-log { flex: 0 1 auto; }
   .scene-status .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); flex-shrink: 0; transition: background .4s; animation: pulse-dot 2s ease-in-out infinite; }
   .scene-status.cleared .live-dot { background: var(--green); }
   #scene-log { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -729,7 +730,7 @@
     </div>
 
     <div class="scene" id="scene">
-      <svg class="sea" viewBox="0 0 1200 470" xmlns="http://www.w3.org/2000/svg" aria-label="A release, drawn as a ship, inspected by agents in a drydock; the gate opens when every check passes">
+      <svg class="sea" viewBox="0 0 1900 470" xmlns="http://www.w3.org/2000/svg" aria-label="A release, drawn as a ship, inspected by agents in a drydock; the gate opens when every check passes">
         <defs>
           <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#2563EB" stop-opacity="0"/>
@@ -742,6 +743,17 @@
             <stop offset="1" stop-color="#0C1B30"/>
           </linearGradient>
         </defs>
+
+        <!-- full-bleed dock floor + edge walls -->
+        <rect x="0" y="398" width="1900" height="72" fill="#DED6C3"/>
+        <rect x="0" y="398" width="1900" height="4" fill="#C9BFA8"/>
+        <g fill="#E2DBCB">
+          <path d="M0 300 h190 v34 h-50 v34 h-50 v32 h-90 z"/>
+          <path d="M1900 300 h-190 v34 h50 v34 h50 v32 h90 z"/>
+        </g>
+        <g fill="#D4CCB8"><rect x="0" y="297" width="190" height="5"/><rect x="1710" y="297" width="190" height="5"/></g>
+
+        <g transform="translate(350,0)">
 
         <g class="art">
           <!-- gantry crane -->
@@ -763,16 +775,6 @@
               <rect x="438" y="140" width="50" height="24" rx="3" fill="#3E6FCB"/>
               <text x="463" y="156" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="#fff">PR #1291</text>
             </g>
-          </g>
-
-          <!-- dock walls (stepped concrete) -->
-          <g fill="#E2DBCB">
-            <path d="M0 300 h190 v34 h-50 v34 h-50 v32 h-90 z"/>
-            <path d="M1200 300 h-120 v34 h40 v34 h40 v32 h40 z"/>
-          </g>
-          <g fill="#D4CCB8">
-            <rect x="0" y="297" width="190" height="5"/>
-            <rect x="1080" y="297" width="120" height="5"/>
           </g>
 
           <!-- dock floor -->
@@ -867,6 +869,7 @@
         <path class="lead" id="lead-risk" d="M938 122 Q890 180 850 282"/>
         <path class="lead" id="lead-qa"   d="M240 320 Q300 312 368 288"/>
         <path class="lead" id="lead-comp" d="M960 330 Q920 310 858 262"/>
+              </g>
       </svg>
 
       <div class="scene-status" id="scene-status">
