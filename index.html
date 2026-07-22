@@ -5,13 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DryDock AI · Answers. Not Dashboards.</title>
 <meta name="description" content="Understand, govern, and improve AI-powered software delivery from planning to production.">
-<!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-G37G9XB4MG"></script>
+<!-- Google Analytics (GA4) — loaded only after consent -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-G37G9XB4MG');
+  // Consent Mode: deny analytics storage until the visitor accepts
+  gtag('consent', 'default', { 'analytics_storage': 'denied' });
+
+  var DD_GA_ID = 'G-G37G9XB4MG';
+  function ddLoadGA() {
+    if (window.__ddGaLoaded) return;
+    window.__ddGaLoaded = true;
+    var sc = document.createElement('script');
+    sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + DD_GA_ID;
+    document.head.appendChild(sc);
+    gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    gtag('config', DD_GA_ID);
+  }
 </script>
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -631,6 +643,20 @@
   .ea-perks { margin-top: 1.6rem; display: flex; flex-direction: column; gap: .65rem; }
   .ea-perk { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; color: var(--muted); }
   .ea-perk svg { flex-shrink: 0; margin-top: 4px; }
+
+  /* ── Cookie consent banner ── */
+  .cookie-banner { position: fixed; left: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: 300; max-width: 400px; background: var(--navy); color: #fff; border-radius: 16px; padding: 1.4rem 1.5rem 1.5rem; box-shadow: 0 20px 50px rgba(14,32,56,0.35); transform: translateY(140%); opacity: 0; transition: transform .5s cubic-bezier(.2,.7,.3,1), opacity .5s; }
+  .cookie-banner.show { transform: none; opacity: 1; }
+  .cookie-banner h4 { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; margin-bottom: .5rem; }
+  .cookie-banner p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.72); margin-bottom: 1.1rem; }
+  .cookie-banner p a { color: #93C5FD; text-decoration: underline; }
+  .cookie-actions { display: flex; gap: .6rem; }
+  .cookie-actions button { flex: 1; padding: 10px 16px; border-radius: 9px; font-family: var(--sans); font-size: 13.5px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+  .ck-accept { background: var(--blue); color: #fff; }
+  .ck-accept:hover { background: #1D4ED8; }
+  .ck-decline { background: transparent; color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.25); }
+  .ck-decline:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+  @media (max-width: 520px) { .cookie-banner { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; } }
 
   /* ── Footer ── */
   footer { background: var(--navy); color: rgba(255,255,255,0.55); padding: 2.6rem clamp(1.25rem, 4vw, 3rem); }
@@ -1419,6 +1445,16 @@
   </section>
 </div>
 
+<!-- ═══ COOKIE CONSENT ═══ -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <h4>A note on privacy</h4>
+  <p>We use privacy-respecting analytics to understand how the site is used. Nothing runs until you say so, fittingly, for a governance product.</p>
+  <div class="cookie-actions">
+    <button class="ck-accept" id="ck-accept" type="button">Accept</button>
+    <button class="ck-decline" id="ck-decline" type="button">Decline</button>
+  </div>
+</div>
+
 <!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="foot-inner">
@@ -1812,9 +1848,27 @@
     document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  // ── Analytics helper ──
+  // ── Cookie consent ──
+  (function () {
+    const banner = document.getElementById('cookie-banner');
+    let choice = null;
+    try { choice = localStorage.getItem('dd-consent'); } catch (e) {}
+    if (choice === 'granted') {
+      ddLoadGA();
+    } else if (choice !== 'denied') {
+      setTimeout(() => banner.classList.add('show'), 1200);
+    }
+    function close(val) {
+      try { localStorage.setItem('dd-consent', val); } catch (e) {}
+      banner.classList.remove('show');
+    }
+    document.getElementById('ck-accept').addEventListener('click', () => { ddLoadGA(); close('granted'); });
+    document.getElementById('ck-decline').addEventListener('click', () => close('denied'));
+  })();
+
+  // ── Analytics helper (no-op until GA is consented + loaded) ──
   function track(name, params) {
-    if (typeof gtag === 'function') gtag('event', name, params || {});
+    if (window.__ddGaLoaded && typeof gtag === 'function') gtag('event', name, params || {});
   }
 
   // ── Form: show sending state + track conversion ──
