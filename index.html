@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DryDock AI · Answers. Not Dashboards.</title>
 <meta name="description" content="Understand, govern, and improve AI-powered software delivery from planning to production.">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G37G9XB4MG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G37G9XB4MG');
+</script>
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1804,11 +1812,28 @@
     document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  // ── Form: show sending state (native POST to FormSubmit continues) ──
+  // ── Analytics helper ──
+  function track(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+
+  // ── Form: show sending state + track conversion ──
   document.querySelector('.ea-card form')?.addEventListener('submit', () => {
     const btn = document.getElementById('ea-submit');
     btn.textContent = 'Sending…';
     btn.disabled = true;
+    const role = document.getElementById('f-role')?.value || '';
+    track('early_access_request', { method: 'form', role: role });
+  });
+
+  // ── Track "Book a conversation" (Calendly) clicks ──
+  document.querySelectorAll('a[href*="calendly.com"]').forEach(a => {
+    a.addEventListener('click', () => track('book_conversation', { destination: 'calendly' }));
+  });
+
+  // ── Track any "Request early access" button that jumps to the form ──
+  document.querySelectorAll('a[href="#early-access"]').forEach(a => {
+    a.addEventListener('click', () => track('cta_click', { cta: 'request_early_access', location: a.closest('nav') ? 'nav' : 'page' }));
   });
 </script>
 </body>
