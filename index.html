@@ -100,6 +100,12 @@
 
   /* ── Hero ── */
   .hero { position: relative; padding-top: clamp(2rem, 3.5vw, 3rem); padding-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+  /* fill exactly one screen below the 80px nav; distribute the slack as breathing room */
+  @media (min-width: 760px) {
+    .hero-center { min-height: calc(100svh - 80px); display: flex; flex-direction: column; justify-content: center; gap: clamp(1.5rem, 4vh, 3.5rem); padding-bottom: clamp(1rem, 2vh, 2rem); }
+    .hero-center > .wrap { margin: 0 auto; }
+    .hero-center .hero-visual { margin-top: 0; }
+  }
   .hero::before {
     content: ''; position: absolute; inset: 0;
     background:
