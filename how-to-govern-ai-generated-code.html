@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Govern AI-Generated Code: The Policy Playbook (2026) | DryDock AI</title>
+<meta name="description" content="Seven copy-paste policies for governing AI-generated code: mandatory human review rules, risk gates, change freezes, and audit evidence. A practical playbook for engineering leaders, with a 30-day rollout plan.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://usedrydock.com/how-to-govern-ai-generated-code.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DryDock AI">
+<meta property="og:title" content="How to Govern AI-Generated Code: The Policy Playbook">
+<meta property="og:description" content="Seven copy-paste policies, human-review routing rules, and a 30-day rollout plan for engineering teams shipping AI-generated code.">
+<meta property="og:url" content="https://usedrydock.com/how-to-govern-ai-generated-code.html">
+<meta property="og:image" content="https://usedrydock.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..700;1,8..60,200..700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "How to Govern AI-Generated Code: The Policy Playbook",
+      "description": "Seven copy-paste policies for governing AI-generated code, with human-review routing rules and a 30-day rollout plan.",
+      "author": { "@type": "Person", "name": "Suralal S", "jobTitle": "VP of Technology" },
+      "publisher": { "@type": "Organization", "name": "DryDock AI", "url": "https://usedrydock.com" },
+      "datePublished": "2026-07-21",
+      "mainEntityOfPage": "https://usedrydock.com/how-to-govern-ai-generated-code.html"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Should all AI-generated code require human review?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Requiring human review of everything caps delivery at the speed of one reviewer and teams route around it. Best practice is risk-based routing: AI-authored changes to high-risk areas (payments, auth, data, infrastructure) require named human approval; routine changes clear automatically through policy gates with evidence logged." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you identify AI-generated code in a pull request?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Attribution comes from the tools themselves (Copilot, Cursor, and Claude Code expose authorship signals), commit trailers or PR labels applied by the agent, and statistical detection as a fallback. The policy point is simpler: mandate that AI-assisted changes be tagged at commit time, and treat untagged bulk changes as AI-authored by default." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an AI coding policy?",
+          "acceptedAnswer": { "@type": "Answer", "text": "An AI coding policy is a written set of rules governing how AI-generated code enters production: which tools are approved, how AI-authored changes are tagged, what review they require by risk level, what gates they must pass, and what evidence is logged. It turns implicit team habits into enforceable, auditable rules." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --cream:#FAF7F1; --navy:#0E2038; --ink:#1A2B42; --muted:#526075; --blue:#2563EB; --line:rgba(14,32,56,0.10); --green:#128C6A; --amber:#B45309;
+    --sans:'Inter',-apple-system,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'SF Mono',ui-monospace,monospace; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--blue); }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.25rem,4vw,3rem); height:76px; border-bottom:1px solid var(--line); }
+  .logo { display:flex; align-items:center; gap:12px; font-weight:800; font-size:20px; letter-spacing:-.02em; color:var(--navy); text-decoration:none; }
+  .logo-mark { width:40px; height:40px; border-radius:11px; background:var(--navy); display:flex; align-items:center; justify-content:center; }
+  .logo-mark svg { width:24px; height:24px; }
+  .logo .ai { color: var(--blue); }
+  .nav-cta { background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; font-size:15px; padding:10px 20px; border-radius:9px; }
+  article { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem,6vw,4.5rem) 1.5rem 4rem; }
+  .kicker { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--blue); margin-bottom:1rem; }
+  .kicker::before { content:''; width:22px; height:2px; border-radius:2px; background:var(--blue); }
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.5vw,2.9rem); line-height:1.15; letter-spacing:-.02em; color:var(--navy); margin-bottom:1rem; }
+  .byline { font-size:14px; color:var(--muted); margin-bottom:2.5rem; }
+  h2 { font-family:var(--serif); font-weight:450; font-size:1.65rem; letter-spacing:-.015em; color:var(--navy); margin:2.6rem 0 .8rem; line-height:1.25; }
+  h3 { font-size:1.05rem; font-weight:700; color:var(--navy); margin:1.8rem 0 .5rem; }
+  p { margin-bottom:1.1rem; }
+  .lead { font-size:1.15rem; color:var(--muted); }
+  strong { color:var(--navy); }
+  ul, ol { margin:0 0 1.2rem 1.3rem; }
+  li { margin-bottom:.5rem; }
+  .policy { background:#fff; border:1px solid var(--line); border-radius:14px; margin:1.3rem 0 1.8rem; overflow:hidden; box-shadow:0 1px 2px rgba(14,32,56,.04), 0 8px 24px rgba(14,32,56,.05); }
+  .policy-head { display:flex; align-items:center; gap:10px; background:var(--navy); color:#fff; padding:11px 18px; font-family:var(--mono); font-size:13px; letter-spacing:.06em; }
+  .policy-head .dot { width:8px; height:8px; border-radius:50%; background:#5B9BFF; }
+  .policy-body { padding:1.1rem 1.4rem; font-family:var(--mono); font-size:13.5px; line-height:1.9; color:var(--ink); }
+  .policy-body .k { color:var(--blue); font-weight:600; }
+  .policy-body .v { color:var(--amber); }
+  .policy-why { border-top:1px dashed var(--line); padding:.9rem 1.4rem; font-size:13.5px; color:var(--muted); }
+  .cta { background:var(--navy); color:#fff; border-radius:18px; padding:2.2rem; margin:3rem 0 1rem; }
+  .cta h2 { color:#fff; margin-top:0; }
+  .cta p { color:rgba(255,255,255,.75); }
+  .cta a.btn { display:inline-block; background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; padding:12px 26px; border-radius:10px; margin-top:.5rem; }
+  .related { border-top:1px solid var(--line); margin-top:2.5rem; padding-top:1.5rem; font-size:14.5px; }
+  footer { border-top:1px solid var(--line); padding:2rem clamp(1.25rem,4vw,3rem); font-size:13px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span>
+    DryDock&nbsp;<span class="ai">AI</span>
+  </a>
+  <a class="nav-cta" href="/#early-access">Request early access</a>
+</nav>
+
+<article>
+  <div class="kicker">The policy playbook</div>
+  <h1>How to Govern AI-Generated Code</h1>
+  <div class="byline">By Suralal S, VP of Technology · Seven copy-paste policies + a 30-day rollout · July 2026</div>
+
+  <p class="lead">Your team didn't ask permission to adopt AI coding tools, and that was the right call — the productivity is real. But somewhere around the point where AI writes half your diffs, an uncomfortable question lands on the CTO's desk: <em>what's our actual policy here?</em> Usually the answer is a shrug. This playbook replaces the shrug.</p>
+
+  <p>Below are seven policies we see working inside real engineering organisations. They are written as enforceable rules, not aspirations — each one has a trigger, a condition, and an action, which means each one can be automated. Copy them, edit the thresholds, and you have an AI coding policy by Friday.</p>
+
+  <h2>The two failure modes to avoid</h2>
+  <p>Before the policies, the two ditches on either side of the road:</p>
+  <ul>
+    <li><strong>Review everything.</strong> Mandating human review of all AI output caps delivery at the speed of your reviewers and quietly teaches engineers to stop tagging AI-assisted work. The policy dies in a month.</li>
+    <li><strong>Trust everything.</strong> Treating AI diffs exactly like human diffs ignores that their volume, style, and failure modes are different — subtle logic gaps, plausible-but-wrong API usage, and untested surface area at scale.</li>
+  </ul>
+  <p>Everything below follows the middle path: <strong>risk-based routing</strong>. Routine AI changes clear automatically through gates; the narrow set that needs judgment goes to a named human, with evidence attached.</p>
+
+  <h2>The seven policies</h2>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 1 · ATTRIBUTION</div>
+    <div class="policy-body"><span class="k">WHEN</span> any commit or PR is created<br><span class="k">REQUIRE</span> AI-assisted changes tagged at commit time <span class="v">(tool, agent, or trailer)</span><br><span class="k">DEFAULT</span> untagged bulk changes are treated as AI-authored</div>
+    <div class="policy-why">Why: you cannot govern what you cannot distinguish. This is the foundation every other policy depends on — and the default clause removes the incentive to skip tagging.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 2 · HIGH-RISK HUMAN REVIEW</div>
+    <div class="policy-body"><span class="k">WHEN</span> a PR is opened<br><span class="k">IF</span> AI-authored share &gt; <span class="v">70%</span> <span class="k">AND</span> touches <span class="v">payments | auth | PII | infra</span><br><span class="k">THEN</span> require review by a named senior engineer before merge</div>
+    <div class="policy-why">Why: this is the policy auditors and boards ask about first. Note what it doesn't do — it doesn't touch the other 95% of changes.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 3 · TEST COVERAGE GATE</div>
+    <div class="policy-body"><span class="k">WHEN</span> a PR is opened<br><span class="k">IF</span> AI-authored <span class="k">AND</span> module coverage &lt; <span class="v">60%</span><br><span class="k">THEN</span> block merge until tests accompany the change</div>
+    <div class="policy-why">Why: AI writes implementation faster than it writes meaningful tests. Untested AI surface area is where incidents come from six weeks later.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 4 · DEPENDENCY & LICENSE CHECK</div>
+    <div class="policy-body"><span class="k">WHEN</span> an AI-authored change adds a dependency<br><span class="k">THEN</span> run license + vulnerability scan before merge<br><span class="k">ESCALATE</span> unknown licenses to engineering lead</div>
+    <div class="policy-why">Why: AI assistants happily import packages a human would have questioned. This one catches supply-chain and licensing surprises at the diff, not in legal review.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 5 · CHANGE FREEZE</div>
+    <div class="policy-body"><span class="k">WHEN</span> a deploy is requested<br><span class="k">IF</span> inside freeze window <span class="v">(e.g. Fri 14:00 – Mon 08:00)</span><br><span class="k">THEN</span> hold deploy, notify release manager</div>
+    <div class="policy-why">Why: agent-driven pipelines don't know it's Friday evening unless you tell them. Freezes must be machine-enforced once machines can deploy.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 6 · INCIDENT HOLD</div>
+    <div class="policy-body"><span class="k">WHEN</span> a sev-1 incident opens<br><span class="k">IF</span> pending deploys touch the affected service<br><span class="k">THEN</span> pause the release train until resolution</div>
+    <div class="policy-why">Why: at AI-era deploy frequency, shipping into an active incident is the most preventable way to turn one outage into two.</div>
+  </div>
+
+  <div class="policy">
+    <div class="policy-head"><span class="dot"></span>POLICY 7 · EVIDENCE LOG</div>
+    <div class="policy-body"><span class="k">WHEN</span> any gate passes, fails, or is overridden<br><span class="k">THEN</span> log actor, decision, evidence, and timestamp as an immutable record<br><span class="k">RETAIN</span> per your compliance framework <span class="v">(SOC 2 / ISO 27001 / EU AI Act)</span></div>
+    <div class="policy-why">Why: a policy that leaves no evidence might as well not exist at audit time. This turns every enforcement into a compliance asset.</div>
+  </div>
+
+  <h2>The 30-day rollout</h2>
+  <ol>
+    <li><strong>Week 1 — Attribution only.</strong> Ship Policy 1. Announce it as observability, not enforcement: "we're learning where AI helps." No gates yet; nobody routes around what doesn't block them.</li>
+    <li><strong>Week 2 — Baseline.</strong> Measure: AI share by repo, coverage in AI-heavy modules, review load. Pick thresholds from your data, not this article's defaults.</li>
+    <li><strong>Week 3 — Enforce three.</strong> Turn on Policies 2, 5, and 7 — the human-review rule, the freeze, and the evidence log. Escalations must go to a named role with context attached, never a shared channel.</li>
+    <li><strong>Week 4 — Review the ratio.</strong> Healthy target: 95%+ of changes clear automatically. If more than ~5% routes to humans, your conditions are too broad — tighten them before the team feels the drag.</li>
+  </ol>
+
+  <h2>Enforcement is the hard part</h2>
+  <p>Everything above can live in a wiki and change nothing. The difference between a policy document and a governed pipeline is mechanical enforcement: something has to read every change, apply the conditions, route the escalations, and write the evidence log — continuously, without a human remembering to check.</p>
+  <p>That enforcement layer is what <a href="/what-is-ai-delivery-governance.html">AI delivery governance</a> platforms exist to provide. (It's also exactly what DryDock's agent crew does — each policy above maps to a trigger → condition → action agents run for you.)</p>
+
+  <div class="cta">
+    <h2>Turn this playbook into a running system</h2>
+    <p>DryDock ships these policies as pre-built agents: attribution, risk-based human review, coverage gates, freezes, incident holds, and a continuous evidence log — live in your pipeline in a week.</p>
+    <a class="btn" href="/#early-access">Request early access</a>
+  </div>
+
+  <div class="related">
+    <strong>Related:</strong> <a href="/what-is-ai-delivery-governance.html">What is AI Delivery Governance?</a> · <a href="/drydock-vs-qodo.html">DryDock vs Qodo</a> · <a href="/drydock-vs-jellyfish.html">DryDock vs Jellyfish</a> · <a href="/drydock-vs-linearb.html">DryDock vs LinearB</a>
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 DryDock AI · usedrydock.com</span>
+  <span><a href="/">Home</a> · <a href="/#faq">FAQ</a> · <a href="mailto:suralal.s@neoito.com">Contact</a></span>
+</footer>
+
+</body>
+</html>
