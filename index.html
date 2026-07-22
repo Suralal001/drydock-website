@@ -549,6 +549,8 @@
   .flag { transform-origin: left center; animation: flag-wave 2.6s ease-in-out infinite; }
   @keyframes flag-wave { 0%,100% { transform: skewY(0deg); } 50% { transform: skewY(-6deg); } }
 
+  .lead-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; overflow: visible; }
+
   /* leader lines: agent card → inspected zone */
   .lead { stroke: var(--muted-2); stroke-width: 1.6; stroke-dasharray: 5 5; fill: none; opacity: 0; transition: opacity .4s; }
   .lead.draw { opacity: .85; animation: lead-march 1.2s linear; }
@@ -887,6 +889,7 @@
       </div>
     </div>
 
+    <svg class="lead-overlay" id="lead-overlay" aria-hidden="true"></svg>
     <div class="scene" id="scene">
       <svg class="sea" viewBox="0 0 1900 470" xmlns="http://www.w3.org/2000/svg" aria-label="A release, drawn as a ship, inspected by agents in a drydock; the gate opens when every check passes">
         <defs>
@@ -1022,11 +1025,6 @@
         <rect class="zone" id="z-risk" x="254" y="286" width="716" height="116" rx="10"/>
         <rect class="zone" id="z-comp" x="802" y="198" width="112" height="100" rx="10"/>
 
-        <!-- leader lines: card → inspected zone -->
-        <path class="lead" id="lead-gov"  d="M-40 115 Q140 165 330 235"/>
-        <path class="lead" id="lead-risk" d="M1240 128 Q1080 185 940 270"/>
-        <path class="lead" id="lead-qa"   d="M-35 322 Q170 318 424 292"/>
-        <path class="lead" id="lead-comp" d="M1245 335 Q1080 305 918 258"/>
               </g>
       </svg>
 
@@ -1788,8 +1786,43 @@
       log('<span class="ok">ALL GATES PASSED · HUMAN-APPROVED · RELEASE 4.2 CLEARED TO SHIP</span>');
       return;
     }
+    positionLeads();
     SEQ.forEach(([t, fn]) => seqTimers.push(setTimeout(fn, t)));
+    // hold the finished state, then replay automatically
+    seqTimers.push(setTimeout(runScene, 17000));
   }
+
+  // ── Dynamic leader lines: drawn from each card's real position to its ship anchor ──
+  const LEAD_ANCHORS = { gov: [640, 240], qa: [780, 292], risk: [1290, 268], comp: [1258, 248] }; // scene viewBox coords (1900x470)
+  const leadOverlay = document.getElementById('lead-overlay');
+  const sceneSvg = document.querySelector('.scene svg.sea');
+
+  function positionLeads() {
+    if (!leadOverlay || !sceneSvg) return;
+    const hv = heroVisual.getBoundingClientRect();
+    const sr = sceneSvg.getBoundingClientRect();
+    leadOverlay.setAttribute('viewBox', `0 0 ${hv.width} ${hv.height}`);
+    const sx = sr.width / 1900, sy = sr.height / 470;
+    const cards = { gov: 'ac-gov', qa: 'ac-qa', risk: 'ac-risk', comp: 'ac-comp' };
+    let html = '';
+    for (const key in cards) {
+      const el = document.getElementById(cards[key]);
+      if (!el || getComputedStyle(el).display === 'none') continue;
+      const r = el.getBoundingClientRect();
+      const fromRight = key === 'risk' || key === 'comp';
+      const cx = (fromRight ? r.left : r.right) - hv.left;
+      const cy = r.top + r.height / 2 - hv.top;
+      const ax = sr.left - hv.left + LEAD_ANCHORS[key][0] * sx;
+      const ay = sr.top - hv.top + LEAD_ANCHORS[key][1] * sy;
+      const mx = (cx + ax) / 2;
+      const drawn = document.getElementById('lead-' + key)?.classList.contains('draw') ? ' draw' : '';
+      html += `<path class="lead${drawn}" id="lead-${key}" d="M${cx.toFixed(1)} ${cy.toFixed(1)} C ${mx.toFixed(1)} ${cy.toFixed(1)}, ${mx.toFixed(1)} ${ay.toFixed(1)}, ${ax.toFixed(1)} ${ay.toFixed(1)}"/>`;
+    }
+    leadOverlay.innerHTML = html;
+  }
+  addEventListener('resize', positionLeads, { passive: true });
+  addEventListener('load', positionLeads);
+  setTimeout(positionLeads, 300);
 
   // auto-run once when the scene scrolls into view
   let sceneRan = false;
