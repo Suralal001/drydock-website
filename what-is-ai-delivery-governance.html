@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is AI Delivery Governance? The Definitive Guide | DryDock AI</title>
+<meta name="description" content="AI delivery governance is the practice of enforcing policy, tracking changes, and generating audit evidence across a software pipeline where AI writes much of the code. Learn the model, the policies, and how to start.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://usedrydock.com/what-is-ai-delivery-governance.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DryDock AI">
+<meta property="og:title" content="What is AI Delivery Governance? The Definitive Guide">
+<meta property="og:description" content="The category guide: why AI-generated code broke traditional review, the five domains of delivery governance, and how humans stay in the right loop.">
+<meta property="og:url" content="https://usedrydock.com/what-is-ai-delivery-governance.html">
+<meta property="og:image" content="https://usedrydock.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..700;1,8..60,200..700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What is AI Delivery Governance? The Definitive Guide",
+  "description": "AI delivery governance is the practice of enforcing policy, tracking changes, and generating audit evidence across a software pipeline where AI writes much of the code.",
+  "author": { "@type": "Person", "name": "Suralal S", "jobTitle": "VP of Technology" },
+  "publisher": { "@type": "Organization", "name": "DryDock AI", "url": "https://usedrydock.com" },
+  "datePublished": "2026-07-21",
+  "mainEntityOfPage": "https://usedrydock.com/what-is-ai-delivery-governance.html"
+}
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --cream:#FAF7F1; --navy:#0E2038; --ink:#1A2B42; --muted:#526075; --blue:#2563EB; --line:rgba(14,32,56,0.10); --green:#128C6A; --amber:#B45309;
+    --sans:'Inter',-apple-system,sans-serif; --serif:'Source Serif 4',Georgia,serif; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--blue); }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.25rem,4vw,3rem); height:76px; border-bottom:1px solid var(--line); }
+  .logo { display:flex; align-items:center; gap:12px; font-weight:800; font-size:20px; letter-spacing:-.02em; color:var(--navy); text-decoration:none; }
+  .logo-mark { width:40px; height:40px; border-radius:11px; background:var(--navy); display:flex; align-items:center; justify-content:center; }
+  .logo-mark svg { width:24px; height:24px; }
+  .logo .ai { color: var(--blue); }
+  .nav-cta { background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; font-size:15px; padding:10px 20px; border-radius:9px; }
+  article { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem,6vw,4.5rem) 1.5rem 4rem; }
+  .kicker { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--blue); margin-bottom:1rem; }
+  .kicker::before { content:''; width:22px; height:2px; border-radius:2px; background:var(--blue); }
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.5vw,3rem); line-height:1.15; letter-spacing:-.02em; color:var(--navy); margin-bottom:1rem; }
+  .byline { font-size:14px; color:var(--muted); margin-bottom:2.5rem; }
+  h2 { font-family:var(--serif); font-weight:450; font-size:1.7rem; letter-spacing:-.015em; color:var(--navy); margin:2.6rem 0 .8rem; line-height:1.25; }
+  h3 { font-size:1.1rem; font-weight:700; color:var(--navy); margin:1.8rem 0 .5rem; }
+  p { margin-bottom:1.1rem; color:var(--ink); }
+  .lead { font-size:1.15rem; color:var(--muted); }
+  .defbox { background:#fff; border:1px solid var(--line); border-left:4px solid var(--blue); border-radius:0 14px 14px 0; padding:1.4rem 1.6rem; margin:1.6rem 0 2rem; }
+  .defbox p { margin:0; font-size:1.05rem; }
+  ul { margin:0 0 1.2rem 1.3rem; }
+  li { margin-bottom:.5rem; }
+  strong { color:var(--navy); }
+  .stat-callout { display:flex; gap:1rem; margin:1.8rem 0; flex-wrap:wrap; }
+  .stat { flex:1; min-width:180px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:1.2rem 1.3rem; }
+  .stat .v { font-family:var(--serif); font-size:2rem; color:var(--navy); line-height:1.1; }
+  .stat .l { font-size:13px; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .cta { background:var(--navy); color:#fff; border-radius:18px; padding:2.2rem; margin:3rem 0 1rem; }
+  .cta h2 { color:#fff; margin-top:0; }
+  .cta p { color:rgba(255,255,255,.75); }
+  .cta a.btn { display:inline-block; background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; padding:12px 26px; border-radius:10px; margin-top:.5rem; }
+  footer { border-top:1px solid var(--line); padding:2rem clamp(1.25rem,4vw,3rem); font-size:13px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span>
+    DryDock&nbsp;<span class="ai">AI</span>
+  </a>
+  <a class="nav-cta" href="/#early-access">Request early access</a>
+</nav>
+
+<article>
+  <div class="kicker">The category guide</div>
+  <h1>What is AI Delivery Governance?</h1>
+  <div class="byline">By Suralal S, VP of Technology · 15+ years shipping software at enterprise scale · July 2026</div>
+
+  <div class="defbox">
+    <p><strong>AI delivery governance</strong> is the practice of enforcing policy, tracking every change, and generating audit evidence across a software delivery pipeline where AI writes a significant share of the code. It combines automated policy gates, separate risk scoring for AI-authored changes, and human approvals routed only where policy requires judgment — so teams ship at AI speed without losing control, accountability, or compliance.</p>
+  </div>
+
+  <p class="lead">If your engineering team adopted Claude Code, Cursor, or Copilot in the last two years, you already know the strange new feeling: more code is shipping than ever, and you are less certain than ever about what exactly is in it.</p>
+
+  <h2>Why this category exists now</h2>
+  <p>Three numbers explain why governance became the bottleneck of AI-powered engineering:</p>
+  <div class="stat-callout">
+    <div class="stat"><div class="v">~61%</div><div class="l">of the average enterprise codebase is now AI-assisted or AI-generated</div></div>
+    <div class="stat"><div class="v">85% → 5%</div><div class="l">of large enterprises pilot AI agents, but only 5% run them in production. The gap is trust, not capability</div></div>
+    <div class="stat"><div class="v">Aug 2026</div><div class="l">EU AI Act obligations begin, requiring demonstrable human oversight of high-risk AI systems</div></div>
+  </div>
+  <p>Traditional controls assumed a human wrote every line and a human reviewed every PR. AI broke both assumptions at once: generation volume grew roughly tenfold while review capacity stayed flat. The result is a review pipeline doing archaeology on code nobody on the team wrote, and audit trails that can no longer answer the auditor's newest question: <em>who reviewed what the AI shipped?</em></p>
+
+  <h2>Governance is not review, and it is not analytics</h2>
+  <p>Two adjacent categories get confused with delivery governance, and the difference matters when you're choosing tools:</p>
+  <ul>
+    <li><strong>AI code review tools</strong> (Qodo, CodeRabbit, Copilot code review) inspect individual pull requests. Essential — but a PR-level verdict is not a release-level decision. Review tells you a diff looks right; governance decides whether the release ships, who must approve it, and proves it afterwards.</li>
+    <li><strong>Engineering intelligence platforms</strong> (Jellyfish, LinearB, DX, Swarmia) measure activity: DORA metrics, cycle time, investment allocation. Measurement is passive. It tells you what happened; it does not stop a non-compliant release, route a decision to a human, or produce an evidence trail.</li>
+  </ul>
+  <p>Delivery governance sits above both: it consumes review verdicts and delivery signals, applies your policy to them, and acts — clearing, blocking, escalating, and logging.</p>
+
+  <h2>The five domains of delivery governance</h2>
+  <h3>1. Policy</h3>
+  <p>Rules defined once and enforced on every change: which gates apply to which repos, what AI-authored code must pass that human code needn't, what can never reach production without a named human's approval.</p>
+  <h3>2. Quality</h3>
+  <p>Coverage and defect trends watched continuously — most closely where AI writes fastest, because that is where untested surface area accumulates.</p>
+  <h3>3. Risk</h3>
+  <p>Every diff read before a human sees it, with AI-authored changes scored separately. Their volume, velocity, and failure modes are different; scoring them like human code hides exactly the risk you bought the tool to find.</p>
+  <h3>4. Delivery</h3>
+  <p>A readiness score before every release, not a post-mortem after it. Full trace from ticket to production.</p>
+  <h3>5. Compliance</h3>
+  <p>Evidence generated continuously — every approval, override, and gate result logged as an audit record. When the auditor asks, the answer is an export, not a six-week reconstruction.</p>
+
+  <h2>The human stays in the right loop</h2>
+  <p>The most common governance failure is over-correcting: requiring human review of everything, which caps delivery at the speed of one reviewer and quietly teaches teams to route around the process. The emerging best practice — sometimes called <strong>governed autonomy</strong> — inverts it: policy defines the narrow set of changes that require human judgment (AI-authored code touching payments, production-bound schema changes, high-risk diffs), and everything else clears automatically with evidence logged.</p>
+  <p>In a well-tuned governed pipeline, the ratio looks like this: of ~214 changes in a week, agents clear ~209 inside policy, and roughly 5 route to a human — with the evidence, the risk score, and a recommendation attached, so the decision takes thirty seconds instead of thirty minutes. Every one of those decisions becomes an audit record. That ratio is the entire product of governance: human attention spent precisely, and provably.</p>
+
+  <h2>How to start (without a big program)</h2>
+  <ul>
+    <li><strong>Week 1 — tag AI-authored changes.</strong> You cannot govern what you cannot distinguish. Start attributing which changes are AI-assisted.</li>
+    <li><strong>Week 2 — write three policies, not thirty.</strong> Example: AI-authored changes to payment code require senior human review; no deploys inside the Friday change freeze; sev-1 incidents pause the release train.</li>
+    <li><strong>Week 3 — automate the gates.</strong> Enforce those three policies mechanically, with escalations routed to a named role, not a shared inbox.</li>
+    <li><strong>Week 4 — start the evidence log.</strong> Record every gate result and approval from day one; your next audit begins accumulating value immediately.</li>
+  </ul>
+
+  <div class="cta">
+    <h2>Or let the crew do it</h2>
+    <p>DryDock ships all five domains as specialised AI agents — Governance, QA, Risk, DevOps, Productivity, and Compliance — orchestrated by Dockmaster, with humans making only the calls your policy reserves for them.</p>
+    <a class="btn" href="/#early-access">Request early access</a>
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 DryDock AI · usedrydock.com</span>
+  <span><a href="/">Home</a> · <a href="/#faq">FAQ</a> · <a href="mailto:suralal.s@neoito.com">Contact</a></span>
+</footer>
+
+</body>
+</html>
