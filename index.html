@@ -1156,9 +1156,9 @@
           </div>
           <div class="sl-body">
             <div class="sl-msg">
-              <div class="sl-av" style="background:#B45309;">S</div>
+              <div class="sl-av" style="background:#B45309;">J</div>
               <div class="sl-msg-c">
-                <div class="sl-who">Suralal <span class="sl-time">2:14 PM</span></div>
+                <div class="sl-who">John <span class="sl-time">2:14 PM</span></div>
                 <div class="sl-text"><span id="type-target"></span><span class="caret"></span></div>
               </div>
             </div>
@@ -1639,19 +1639,20 @@
   ];
   const target = document.getElementById('type-target');
   const answerEl = document.getElementById('chat-answer');
+  const answerMsg = document.getElementById('chat-answer-msg');
   let qi = 0, started = false;
 
   function typeText(text, answerHTML, cb) {
     let i = 0;
     target.textContent = '';
-    answerEl.classList.remove('on');
+    answerMsg.classList.remove('on');
     const t = setInterval(() => {
       target.textContent = text.slice(0, ++i);
       if (i >= text.length) {
         clearInterval(t);
         setTimeout(() => {
           answerEl.innerHTML = answerHTML;
-          answerEl.classList.add('on');
+          answerMsg.classList.add('on');
           cb && cb();
         }, 350);
       }
