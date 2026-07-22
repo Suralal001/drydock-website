@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The EU AI Act for Software Delivery Teams: Practical Guide (2026) | DryDock AI</title>
+<meta name="description" content="What the EU AI Act actually requires of engineering teams using AI to write and ship software: human oversight, logging, and evidence — with a practical implementation checklist. Not legal advice.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://usedrydock.com/eu-ai-act-software-teams.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DryDock AI">
+<meta property="og:title" content="The EU AI Act for Software Delivery Teams: A Practical Guide">
+<meta property="og:description" content="Human oversight, logging, and evidence: what the EU AI Act means for teams shipping AI-generated code, and how to implement it without a compliance program.">
+<meta property="og:url" content="https://usedrydock.com/eu-ai-act-software-teams.html">
+<meta property="og:image" content="https://usedrydock.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..700;1,8..60,200..700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "The EU AI Act for Software Delivery Teams: A Practical Guide",
+      "description": "What the EU AI Act requires of engineering teams using AI to write and ship software: human oversight, logging, and evidence, with an implementation checklist.",
+      "author": { "@type": "Person", "name": "Suralal S", "jobTitle": "VP of Technology" },
+      "publisher": { "@type": "Organization", "name": "DryDock AI", "url": "https://usedrydock.com" },
+      "datePublished": "2026-07-21",
+      "mainEntityOfPage": "https://usedrydock.com/eu-ai-act-software-teams.html"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does the EU AI Act apply to teams using AI coding assistants?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Using Copilot or Claude Code to write ordinary software is generally not itself a high-risk AI use under the Act. But the Act reaches engineering teams indirectly: if AI-assisted code ships inside products the Act classifies as high-risk, if your enterprise customers flow oversight requirements down through procurement, or if your organisation adopts the Act's human-oversight and logging standards as internal policy — which most regulated enterprises are doing." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the EU AI Act require for human oversight?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Article 14 requires that high-risk AI systems be designed so humans can effectively oversee them: understand outputs, intervene, and override or halt the system. For delivery teams the practical translation is policy-routed human approval of consequential AI-driven changes, with the ability to stop a release, and records proving oversight happened." }
+        },
+        {
+          "@type": "Question",
+          "name": "What records does the EU AI Act require?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Article 12 requires automatic logging of events relevant to identifying risks and tracing how outputs were produced, retained for appropriate periods. In delivery terms: an immutable log of what the AI changed, what checks it passed, who approved it, and when — generated continuously, not reconstructed at audit time." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --cream:#FAF7F1; --navy:#0E2038; --ink:#1A2B42; --muted:#526075; --blue:#2563EB; --line:rgba(14,32,56,0.10); --green:#128C6A; --amber:#B45309;
+    --sans:'Inter',-apple-system,sans-serif; --serif:'Source Serif 4',Georgia,serif; --mono:'SF Mono',ui-monospace,monospace; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+  a { color: var(--blue); }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.25rem,4vw,3rem); height:76px; border-bottom:1px solid var(--line); }
+  .logo { display:flex; align-items:center; gap:12px; font-weight:800; font-size:20px; letter-spacing:-.02em; color:var(--navy); text-decoration:none; }
+  .logo-mark { width:40px; height:40px; border-radius:11px; background:var(--navy); display:flex; align-items:center; justify-content:center; }
+  .logo-mark svg { width:24px; height:24px; }
+  .logo .ai { color: var(--blue); }
+  .nav-cta { background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; font-size:15px; padding:10px 20px; border-radius:9px; }
+  article { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem,6vw,4.5rem) 1.5rem 4rem; }
+  .kicker { display:inline-flex; align-items:center; gap:10px; font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--blue); margin-bottom:1rem; }
+  .kicker::before { content:''; width:22px; height:2px; border-radius:2px; background:var(--blue); }
+  h1 { font-family:var(--serif); font-weight:400; font-size:clamp(2.1rem,4.5vw,2.9rem); line-height:1.15; letter-spacing:-.02em; color:var(--navy); margin-bottom:1rem; }
+  .byline { font-size:14px; color:var(--muted); margin-bottom:1.2rem; }
+  .disclaimer { font-size:13px; color:var(--muted); background:#fff; border:1px dashed rgba(14,32,56,.2); border-radius:10px; padding:.8rem 1.1rem; margin-bottom:2.2rem; }
+  h2 { font-family:var(--serif); font-weight:450; font-size:1.65rem; letter-spacing:-.015em; color:var(--navy); margin:2.6rem 0 .8rem; line-height:1.25; }
+  h3 { font-size:1.05rem; font-weight:700; color:var(--navy); margin:1.8rem 0 .5rem; }
+  p { margin-bottom:1.1rem; }
+  .lead { font-size:1.15rem; color:var(--muted); }
+  strong { color:var(--navy); }
+  ul, ol { margin:0 0 1.2rem 1.3rem; }
+  li { margin-bottom:.5rem; }
+  .defbox { background:#fff; border:1px solid var(--line); border-left:4px solid var(--blue); border-radius:0 14px 14px 0; padding:1.4rem 1.6rem; margin:1.6rem 0 2rem; }
+  .defbox p { margin:0; font-size:1.05rem; }
+  .timeline { margin:1.6rem 0 2rem; }
+  .tl-row { display:flex; gap:1rem; padding:.8rem 0; border-bottom:1px solid var(--line); }
+  .tl-row:last-child { border-bottom:none; }
+  .tl-date { flex:0 0 120px; font-family:var(--serif); font-size:1.05rem; color:var(--navy); }
+  .tl-what { font-size:14.5px; color:var(--ink); }
+  .tl-what small { color:var(--muted); display:block; }
+  .check { background:#fff; border:1px solid var(--line); border-radius:14px; padding:1.4rem 1.6rem; margin:1.4rem 0; }
+  .check li { margin-bottom:.7rem; }
+  .cta { background:var(--navy); color:#fff; border-radius:18px; padding:2.2rem; margin:3rem 0 1rem; }
+  .cta h2 { color:#fff; margin-top:0; }
+  .cta p { color:rgba(255,255,255,.75); }
+  .cta a.btn { display:inline-block; background:var(--blue); color:#fff; text-decoration:none; font-family:var(--serif); font-weight:600; padding:12px 26px; border-radius:10px; margin-top:.5rem; }
+  .related { border-top:1px solid var(--line); margin-top:2.5rem; padding-top:1.5rem; font-size:14.5px; }
+  footer { border-top:1px solid var(--line); padding:2rem clamp(1.25rem,4vw,3rem); font-size:13px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <span class="logo-mark"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span>
+    DryDock&nbsp;<span class="ai">AI</span>
+  </a>
+  <a class="nav-cta" href="/#early-access">Request early access</a>
+</nav>
+
+<article>
+  <div class="kicker">Compliance guide</div>
+  <h1>The EU AI Act for Software Delivery Teams</h1>
+  <div class="byline">By Suralal S, VP of Technology · Updated July 2026</div>
+  <div class="disclaimer">This guide is practical engineering context, not legal advice. The Act's application to your organisation depends on facts only your counsel can assess — use this to arrive at that conversation prepared.</div>
+
+  <div class="defbox">
+    <p>For software delivery teams, the EU AI Act matters through three articles: <strong>Article 14</strong> (humans must be able to effectively oversee, intervene in, and halt AI systems), <strong>Article 12</strong> (automatic logging that makes AI behaviour traceable), and <strong>Article 9</strong> (continuous risk management). If AI writes and ships a large share of your code, the practical translation is: policy-routed human approvals, an always-on evidence log, and risk scoring of AI-driven changes.</p>
+  </div>
+
+  <p class="lead">Most engineering leaders have heard two versions of the EU AI Act: "it doesn't apply to us" and "it changes everything." Both are wrong in interesting ways — and the truth arrives on a schedule.</p>
+
+  <h2>The timeline that matters</h2>
+  <div class="timeline">
+    <div class="tl-row"><div class="tl-date">Aug 2024</div><div class="tl-what">Act entered into force.<small>The clock started; nothing enforced yet.</small></div></div>
+    <div class="tl-row"><div class="tl-date">Feb 2025</div><div class="tl-what">Prohibited practices banned; AI literacy obligations began.<small>Rarely relevant to delivery teams directly.</small></div></div>
+    <div class="tl-row"><div class="tl-date">Aug 2025</div><div class="tl-what">Obligations for general-purpose AI models began.<small>Mostly affects model providers — the tools you buy, not you.</small></div></div>
+    <div class="tl-row"><div class="tl-date"><strong>Aug 2026</strong></div><div class="tl-what"><strong>High-risk system obligations apply.</strong><small>Human oversight, logging, risk management, conformity assessment — the articles this guide covers. This is next month.</small></div></div>
+    <div class="tl-row"><div class="tl-date">Aug 2027</div><div class="tl-what">Extended transition ends for high-risk AI embedded in regulated products.</div></div>
+  </div>
+
+  <h2>Does this actually apply to your team?</h2>
+  <p>Honest answer: <strong>using Copilot or Claude Code to write ordinary software is not, by itself, a high-risk AI use.</strong> The Act's high-risk categories (Annex III) cover AI in things like credit scoring, hiring, medical devices, and critical infrastructure — not AI that helps write a web app.</p>
+  <p>But the Act reaches delivery teams through three side doors, and at least one probably applies to you:</p>
+  <ul>
+    <li><strong>Your product is the high-risk system.</strong> If AI-assisted code ships inside software the Act classifies as high-risk (fintech decisioning, health, HR tech, infrastructure), the traceability and oversight obligations attach to how that code was produced and maintained.</li>
+    <li><strong>Procurement flows it down.</strong> Enterprise customers subject to the Act are already adding AI-oversight clauses to vendor contracts. "Show us how AI-generated code is reviewed and logged" is becoming a security-questionnaire staple, next to the SOC 2 request.</li>
+    <li><strong>Your own governance adopts it.</strong> Most regulated enterprises are applying Article 14/12-style standards internally to all AI use — because maintaining two standards is more expensive than maintaining one.</li>
+  </ul>
+
+  <h2>The three obligations, translated to delivery</h2>
+  <h3>Article 14 — Human oversight</h3>
+  <p>The Act requires that humans can <em>effectively</em> oversee AI systems: understand what they produce, intervene, and override or stop them. Note the word effectively — a human rubber-stamping 400 AI PRs a week is oversight in name only, and regulators have said as much. The compliant pattern is the one that also happens to scale: <a href="/what-is-ai-delivery-governance.html">policy decides which AI-driven changes require human judgment</a>, those changes route to a named person with evidence attached, and that person can hold the release.</p>
+  <h3>Article 12 — Logging and traceability</h3>
+  <p>Automatic recording of events sufficient to trace how outputs were produced and identify risk. In delivery terms: what did the AI change, what gates did it pass, who approved it, when, and on what basis — logged as it happens. If your answer today is "we could reconstruct that from GitHub if we had to," you don't have Article 12 logging; you have archaeology.</p>
+  <h3>Article 9 — Risk management</h3>
+  <p>A continuous, iterative process — not an annual review. For delivery: risk scoring on changes (AI-authored ones scored separately, since their failure modes differ), monitored trends, and gates that tighten automatically where risk accumulates.</p>
+
+  <h2>The implementation checklist</h2>
+  <div class="check">
+    <ul>
+      <li><strong>Attribute AI-authored changes</strong> at commit time — traceability starts with knowing which changes were AI's. (Policy 1 in our <a href="/how-to-govern-ai-generated-code.html">policy playbook</a>.)</li>
+      <li><strong>Define oversight routing</strong> — write down which changes require a named human's approval, and enforce it mechanically, not socially.</li>
+      <li><strong>Prove the override works</strong> — you need to be able to show a human can halt a release. A gate that has never blocked anything is hard to defend as effective oversight.</li>
+      <li><strong>Run the evidence log from today</strong> — every gate result, approval, and override recorded immutably. Retention aligned with your framework.</li>
+      <li><strong>Score AI-authored risk separately</strong> — and keep the trend line; Article 9 wants a process, not a snapshot.</li>
+      <li><strong>Prepare the procurement answer</strong> — a one-page description of the above, ready for the next security questionnaire that asks.</li>
+    </ul>
+  </div>
+  <p>Teams that already run <a href="/what-is-ai-delivery-governance.html">AI delivery governance</a> will notice this checklist is just… their pipeline. That is the quiet convergence happening in 2026: what the regulator calls human oversight and logging, engineering calls policy gates and an evidence log. Build it once, and it serves the auditor, the enterprise customer, and your own sleep equally.</p>
+
+  <div class="cta">
+    <h2>Oversight and evidence, running by next week</h2>
+    <p>DryDock's agents enforce oversight routing, log every decision as exportable evidence, and score AI-authored risk continuously — the Article 14/12/9 pattern, as a working pipeline instead of a compliance project.</p>
+    <a class="btn" href="/#early-access">Request early access</a>
+  </div>
+
+  <div class="related">
+    <strong>Related:</strong> <a href="/what-is-ai-delivery-governance.html">What is AI Delivery Governance?</a> · <a href="/how-to-govern-ai-generated-code.html">The Policy Playbook</a> · <a href="/drydock-vs-qodo.html">DryDock vs Qodo</a>
+  </div>
+</article>
+
+<footer>
+  <span>© 2026 DryDock AI · usedrydock.com</span>
+  <span><a href="/">Home</a> · <a href="/#faq">FAQ</a> · <a href="mailto:suralal.s@neoito.com">Contact</a></span>
+</footer>
+
+</body>
+</html>
