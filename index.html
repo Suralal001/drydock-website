@@ -300,6 +300,21 @@
 
   /* ── Slack-style Dockmaster demo ── */
   .slack-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; font-family: var(--sans); }
+  .sl-shell { display: grid; grid-template-columns: 168px 1fr; }
+  @media (max-width: 640px) { .sl-shell { grid-template-columns: 1fr; } .sl-side { display: none; } }
+  .sl-side { background: #3F0E40; color: rgba(255,255,255,0.75); padding: 12px 0 16px; font-size: 13.5px; }
+  .sl-ws { display: flex; align-items: center; justify-content: space-between; color: #fff; font-weight: 800; font-size: 14.5px; padding: 6px 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
+  .sl-ws .chev { font-size: 10px; opacity: .7; }
+  .sl-sec { font-size: 12px; padding: 8px 14px 4px; color: rgba(255,255,255,0.55); }
+  .sl-ch { padding: 4px 14px; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sl-ch .hash { opacity: .6; margin-right: 6px; }
+  .sl-ch.active { background: #1164A3; color: #fff; font-weight: 600; }
+  .sl-ch .badge { float: right; background: #CD2553; color: #fff; font-size: 10.5px; font-weight: 700; border-radius: 9px; padding: 0 6px; line-height: 16px; margin-top: 2px; }
+  .sl-ch.dm { display: flex; align-items: center; gap: 7px; }
+  .sl-dm-dot { width: 8px; height: 8px; border-radius: 50%; background: #2BAC76; border: 1.5px solid #3F0E40; flex-shrink: 0; }
+  .sl-day { display: flex; align-items: center; gap: 10px; padding: 2px 18px 10px; }
+  .sl-day::before, .sl-day::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .sl-day span { font-size: 11.5px; font-weight: 700; color: #616061; border: 1px solid var(--line); border-radius: 12px; padding: 2px 10px; }
   .sl-head { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid var(--line); font-weight: 800; font-size: 15px; color: #1D1C1D; }
   .sl-head .sl-hash { color: #616061; font-weight: 400; }
   .sl-head .sl-meta { margin-left: auto; font-size: 12px; font-weight: 400; color: #616061; display: flex; align-items: center; gap: 6px; }
@@ -1150,11 +1165,25 @@
       <!-- Slack-style demo -->
       <div class="reveal d2">
         <div class="slack-card">
+          <div class="sl-shell">
+          <div class="sl-side">
+            <div class="sl-ws">Acme Eng <span class="chev">▾</span></div>
+            <div class="sl-sec">Channels</div>
+            <div class="sl-ch"><span class="hash">#</span>deploys</div>
+            <div class="sl-ch"><span class="hash">#</span>eng-releases <span class="badge">3</span></div>
+            <div class="sl-ch active"><span class="hash">#</span>release-governance</div>
+            <div class="sl-ch"><span class="hash">#</span>incidents</div>
+            <div class="sl-sec">Direct messages</div>
+            <div class="sl-ch dm"><span class="sl-dm-dot"></span>Dockmaster</div>
+            <div class="sl-ch dm"><span class="sl-dm-dot" style="background:transparent;border-color:rgba(255,255,255,.4);"></span>Priya N</div>
+          </div>
+          <div class="sl-main">
           <div class="sl-head">
             <span class="sl-hash">#</span> release-governance
             <span class="sl-meta"><span class="sl-live"></span> Dockmaster is active</span>
           </div>
           <div class="sl-body">
+            <div class="sl-day"><span>Today</span></div>
             <div class="sl-msg">
               <div class="sl-av" style="background:#B45309;">J</div>
               <div class="sl-msg-c">
@@ -1173,6 +1202,8 @@
             </div>
           </div>
           <div class="sl-input"><span class="plus">+</span> Message #release-governance</div>
+          </div><!-- /sl-main -->
+          </div><!-- /sl-shell -->
         </div>
       </div>
     </div>
@@ -1611,7 +1642,8 @@
      <div class="sl-att green"><b>Release 4.2</b><span class="tag ok">ON TRACK</span></div>
      <div class="sl-att blue"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags clear.</div>
      <div class="sl-actions"><span class="sl-btn primary">Hold release train</span><span class="sl-btn">View evidence</span></div>
-     <div class="sl-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>`,
+     <div class="sl-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>
+     <div class="sl-reactions"><span class="sl-react">👀 3</span><span class="sl-react">✅ 2</span></div>`,
     // 2 · release 4.2 safe?
     `Yes — cleared on every dimension:
      <div class="sl-att green"><b>Policy gates · 4 of 4</b><span class="tag ok">PASSED</span></div>
@@ -1619,7 +1651,8 @@
      <div class="sl-att green"><b>Human approvals · 2 of 2</b><span class="tag ok">LOGGED</span></div>
      <div class="sl-att blue"><b>Readiness 94/100.</b> All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
      <div class="sl-actions"><span class="sl-btn primary">Approve deploy</span><span class="sl-btn">Full report</span></div>
-     <div class="sl-src">Sources: Policy engine · CI · approvals log · evidence attached</div>`,
+     <div class="sl-src">Sources: Policy engine · CI · approvals log · evidence attached</div>
+     <div class="sl-reactions"><span class="sl-react">🚀 4</span><span class="sl-react">✅ 2</span></div>`,
     // 3 · AI spend
     `Spend by team, this month:
      <div class="sl-att green"><b>Platform</b><span class="tag ok">$14.2K · efficient</span></div>
@@ -1627,7 +1660,8 @@
      <div class="sl-att amber"><b>Mobile</b><span class="tag watch">$9.3K · ▲ 32%</span></div>
      <div class="sl-att blue"><b>Watch Mobile:</b> spend rose 32% with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
      <div class="sl-actions"><span class="sl-btn primary">Open spend report</span><span class="sl-btn">Alert Mobile lead</span></div>
-     <div class="sl-src">Sources: token logs · billing · delivery metrics per team</div>`,
+     <div class="sl-src">Sources: token logs · billing · delivery metrics per team</div>
+     <div class="sl-reactions"><span class="sl-react">👀 2</span><span class="sl-react">💸 1</span></div>`,
     // 4 · who approved
     `Found it in the approvals log:
      <div class="sl-att green"><b>Approver · Priya N, Eng Lead</b><span class="tag ok">VERIFIED</span></div>
@@ -1635,7 +1669,8 @@
      <div class="sl-att green"><b>Evidence · 14 records</b><span class="tag ok">EXPORTABLE</span></div>
      <div class="sl-att blue"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
      <div class="sl-actions"><span class="sl-btn primary">Export audit trail</span><span class="sl-btn">Open thread</span></div>
-     <div class="sl-src">Sources: approvals log · Risk Agent report · audit trail</div>`
+     <div class="sl-src">Sources: approvals log · Risk Agent report · audit trail</div>
+     <div class="sl-reactions"><span class="sl-react">✅ 3</span><span class="sl-react">📎 1</span></div>`
   ];
   const target = document.getElementById('type-target');
   const answerEl = document.getElementById('chat-answer');
