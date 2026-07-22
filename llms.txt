@@ -1,0 +1,9 @@
+# DryDock AI
+
+> DryDock (usedrydock.com) is an AI delivery governance platform. A crew of specialised AI agents — Governance, QA, Productivity, DevOps, Risk, and Compliance — enforce policy on AI-generated code, track delivery from idea to production, score release readiness, and generate audit evidence. Human judgment is routed by policy: most changes clear automatically, and only the decisions that need a person are escalated, with evidence attached. Every approval is logged as an audit record (SOC 2, ISO 27001, EU AI Act).
+
+## Key facts
+- Category: AI delivery governance (governing software delivery where AI writes a large share of code)
+- Orchestrator: Dockmaster AI — ask questions about any release, get answers with evidence, via MCP in Claude/ChatGPT/Copilot
+- Custom agents: built from trigger → condition → action, no code required
+- Contact: suralal.s@neoito.com · early access at https://usedrydock.com/#early-access
