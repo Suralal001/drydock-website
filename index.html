@@ -1477,6 +1477,7 @@
           <input type="hidden" name="_subject" value="DryDock — early access request">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://www.usedrydock.com/?submitted=1">
           <div class="field">
             <label for="f-name">Name</label>
             <input id="f-name" name="name" type="text" placeholder="Jordan Reyes" required>
@@ -1950,6 +1951,22 @@
     const role = document.getElementById('f-role')?.value || '';
     track('early_access_request', { method: 'form', role: role });
   });
+
+  // ── Post-submit acknowledgement (visitor returns from FormSubmit via ?submitted=1) ──
+  if (new URLSearchParams(location.search).has('submitted')) {
+    const card = document.querySelector('.ea-card');
+    if (card) {
+      card.innerHTML = `
+        <div style="text-align:center; padding:2.2rem 1rem;">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:30px;color:var(--green);">✓</div>
+          <h3 style="font-family:var(--serif);font-weight:450;font-size:1.5rem;color:var(--navy);margin-bottom:.6rem;">Request received. Welcome aboard!</h3>
+          <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:1.4rem;">Thanks for your interest in DryDock. We'll reach out at your work email within one business day.</p>
+          <a href="https://calendly.com/suralal-s" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:14px;">Want to talk sooner? Book a conversation →</a>
+        </div>`;
+    }
+    history.replaceState({}, '', location.pathname + '#early-access');
+    setTimeout(() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+  }
 
   // ── Track "Book a conversation" (Calendly) clicks ──
   document.querySelectorAll('a[href*="calendly.com"]').forEach(a => {
