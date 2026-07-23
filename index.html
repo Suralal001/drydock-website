@@ -298,73 +298,77 @@
   .ans-note b { color: var(--blue); }
   .ans-src { margin-top: .8rem; font-size: 11.5px; color: var(--muted-2); }
 
-  /* ── Dockmaster console (modern product surface) ── */
-  .dm-console { max-width: 1080px; margin: 3rem auto 0; background: #0B1524; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 30px 70px -30px rgba(14,32,56,0.5), 0 4px 12px rgba(14,32,56,0.15); overflow: hidden; }
-  .dmc-chrome { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
-  .dmc-dots { display: flex; gap: 7px; }
-  .dmc-dots i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
-  .dmc-title { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 700; font-size: 14.5px; margin-left: 6px; }
-  .dmc-title svg { width: 20px; height: 20px; }
-  .dmc-status { margin-left: auto; display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(255,255,255,0.55); font-family: var(--mono); }
-  .dmc-status .live { width: 7px; height: 7px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 3px rgba(52,211,153,0.2); animation: pulse-dot 2s ease-in-out infinite; }
+  /* ── Dockmaster section layout ── */
+  .dm-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; margin-top: 3rem; }
+  @media (max-width: 940px) { .dm-grid { grid-template-columns: 1fr; gap: 3rem; } }
 
-  /* segmented domain control */
-  .dmc-tabs { display: flex; gap: 4px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); overflow-x: auto; }
-  .dmc-tab { flex: 1; min-width: max-content; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 11px; background: transparent; border: 1px solid transparent; color: rgba(255,255,255,0.55); font-family: var(--sans); font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all .2s; white-space: nowrap; }
-  .dmc-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .dmc-tab .tdot { width: 8px; height: 8px; border-radius: 50%; }
-  .dmc-tab.active { color: #fff; background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.14); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  /* Beautiful Dockmaster orb */
+  .orb-wrap { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; max-width: 460px; margin: 0 auto; width: 100%; }
+  .orb-wrap::before { content: ''; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle at 50% 45%, rgba(37,99,235,0.18), rgba(37,99,235,0.06) 45%, transparent 70%); filter: blur(6px); }
+  .orb-svg { position: relative; width: 100%; height: 100%; overflow: visible; }
+  .orb-ring { transform-origin: 230px 230px; }
+  .orb-ring.r1 { animation: orb-spin 40s linear infinite; }
+  .orb-ring.r2 { animation: orb-spin 60s linear infinite reverse; }
+  @keyframes orb-spin { to { transform: rotate(360deg); } }
+  .orb-core { transform-origin: 230px 230px; animation: hub-breathe 4s ease-in-out infinite; }
+  .orb-halo { transform-origin: 230px 230px; animation: orb-halo 4s ease-in-out infinite; }
+  @keyframes orb-halo { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .85; transform: scale(1.04); } }
+  .orb-node { transition: transform .3s; }
+  .orb-node-g { cursor: default; }
+  .orb-particle { animation: orb-fade 3s ease-in-out infinite; }
+  @keyframes orb-fade { 0%,100% { opacity: 0; } 25%,75% { opacity: 1; } }
+  .orb-chip { fill: #fff; stroke: rgba(14,32,56,0.1); }
+  .orb-chip-t { font-family: var(--sans); font-size: 12.5px; font-weight: 600; fill: #1A2B42; }
+  @media (prefers-reduced-motion: reduce) { .orb-ring, .orb-core, .orb-halo, .orb-particle { animation: none; } }
 
-  .dmc-body { display: grid; grid-template-columns: 232px 1fr; min-height: 420px; }
-  @media (max-width: 760px) { .dmc-body { grid-template-columns: 1fr; } .dmc-sources { display: none; } }
+  /* ── Slack-style Dockmaster demo ── */
+  .slack-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; font-family: var(--sans); }
+  .sl-shell { display: grid; grid-template-columns: 168px 1fr; }
+  @media (max-width: 640px) { .sl-shell { grid-template-columns: 1fr; } .sl-side { display: none; } }
+  .sl-side { background: #3F0E40; color: rgba(255,255,255,0.75); padding: 12px 0 16px; font-size: 13.5px; }
+  .sl-ws { display: flex; align-items: center; justify-content: space-between; color: #fff; font-weight: 800; font-size: 14.5px; padding: 6px 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
+  .sl-ws .chev { font-size: 10px; opacity: .7; }
+  .sl-sec { font-size: 12px; padding: 8px 14px 4px; color: rgba(255,255,255,0.55); }
+  .sl-ch { padding: 4px 14px; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sl-ch .hash { opacity: .6; margin-right: 6px; }
+  .sl-ch.active { background: #1164A3; color: #fff; font-weight: 600; }
+  .sl-ch .badge { float: right; background: #CD2553; color: #fff; font-size: 10.5px; font-weight: 700; border-radius: 9px; padding: 0 6px; line-height: 16px; margin-top: 2px; }
+  .sl-ch.dm { display: flex; align-items: center; gap: 7px; }
+  .sl-dm-dot { width: 8px; height: 8px; border-radius: 50%; background: #2BAC76; border: 1.5px solid #3F0E40; flex-shrink: 0; }
+  .sl-day { display: flex; align-items: center; gap: 10px; padding: 2px 18px 10px; }
+  .sl-day::before, .sl-day::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .sl-day span { font-size: 11.5px; font-weight: 700; color: #616061; border: 1px solid var(--line); border-radius: 12px; padding: 2px 10px; }
+  .sl-head { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid var(--line); font-weight: 800; font-size: 15px; color: #1D1C1D; }
+  .sl-head .sl-hash { color: #616061; font-weight: 400; }
+  .sl-head .sl-meta { margin-left: auto; font-size: 12px; font-weight: 400; color: #616061; display: flex; align-items: center; gap: 6px; }
+  .sl-head .sl-live { width: 8px; height: 8px; border-radius: 50%; background: #2BAC76; }
+  .sl-body { padding: 14px 0 6px; min-height: 380px; }
+  .sl-msg { display: flex; gap: 10px; padding: 8px 18px; transition: background .15s; }
+  .sl-msg:hover { background: #F8F8F8; }
+  .sl-av { width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; color: #fff; }
+  .sl-av svg { width: 22px; height: 22px; }
+  .sl-msg-c { flex: 1; min-width: 0; }
+  .sl-who { font-size: 14.5px; font-weight: 800; color: #1D1C1D; margin-bottom: 2px; }
+  .sl-app { font-size: 9.5px; font-weight: 700; color: #616061; background: #EBEAEB; border-radius: 3px; padding: 1px 4px; vertical-align: 1px; letter-spacing: .03em; }
+  .sl-time { font-size: 11.5px; font-weight: 400; color: #616061; margin-left: 4px; }
+  .sl-text { font-size: 14.5px; color: #1D1C1D; line-height: 1.55; min-height: 22px; }
+  .sl-text .caret { display: inline-block; width: 2px; height: 15px; background: var(--blue); margin-left: 2px; vertical-align: -2px; animation: caret-blink 1s step-end infinite; }
+  .sl-att { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-left: 4px solid #DDD; background: #FAFAFA; border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 6px 0; font-size: 13.5px; }
+  .sl-att b { color: #1D1C1D; font-weight: 700; }
+  .sl-att.red { border-left-color: #E01E5A; }
+  .sl-att.amber { border-left-color: #ECB22E; }
+  .sl-att.green { border-left-color: #2BAC76; }
+  .sl-att.blue { border-left-color: var(--blue); display: block; }
+  .sl-att.blue b { color: var(--blue); }
+  .sl-src { font-size: 11.5px; color: #616061; margin-top: 7px; }
+  .sl-actions { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
+  .sl-btn { font-size: 12.5px; font-weight: 700; color: #1D1C1D; background: #fff; border: 1px solid #BBBABB; border-radius: 6px; padding: 5px 12px; cursor: default; }
+  .sl-btn.primary { background: #007A5A; border-color: #007A5A; color: #fff; }
+  .sl-reactions { display: flex; gap: 6px; margin-top: 8px; }
+  .sl-react { font-size: 11.5px; background: #F0F4FF; border: 1px solid rgba(37,99,235,.25); border-radius: 12px; padding: 2px 8px; color: #1D1C1D; }
+  .sl-input { margin: 8px 14px 14px; border: 1px solid #BBBABB; border-radius: 10px; padding: 10px 14px; font-size: 13.5px; color: #9A999A; display: flex; align-items: center; gap: 8px; }
+  .sl-input .plus { width: 20px; height: 20px; border-radius: 50%; background: #EBEAEB; color: #616061; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 
-  /* connected sources rail */
-  .dmc-sources { border-right: 1px solid rgba(255,255,255,0.07); padding: 16px 14px; display: flex; flex-direction: column; }
-  .dmc-sources-h { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 2px 6px 12px; }
-  .dmc-src { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; font-size: 13px; color: rgba(255,255,255,0.75); transition: background .3s, color .3s; position: relative; }
-  .dmc-src .sdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; transition: box-shadow .3s, transform .3s; }
-  .dmc-src .sync { margin-left: auto; font-size: 10px; font-family: var(--mono); color: rgba(255,255,255,0.3); transition: color .3s; }
-  .dmc-src.hot { background: rgba(255,255,255,0.07); color: #fff; }
-  .dmc-src.hot .sdot { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); transform: scale(1.15); }
-  .dmc-src.hot .sync { color: #34D399; }
-  .dmc-core { margin-top: auto; padding: 12px 12px 6px; }
-  .dmc-core-inner { display: flex; align-items: center; gap: 10px; background: rgba(37,99,235,0.14); border: 1px solid rgba(91,155,255,0.28); border-radius: 12px; padding: 10px 12px; }
-  .dmc-core-inner svg { width: 26px; height: 26px; flex-shrink: 0; }
-  .dmc-core-inner .ct { font-size: 12.5px; font-weight: 700; color: #fff; }
-  .dmc-core-inner .cs { font-size: 10.5px; color: #93C5FD; font-family: var(--mono); }
-
-  /* conversation main pane */
-  .dmc-conv { background: #0E1728; display: flex; flex-direction: column; }
-  .dmc-conv-head { display: flex; align-items: center; gap: 8px; padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: rgba(255,255,255,0.55); }
-  .dmc-conv-head .hash { color: rgba(255,255,255,0.35); }
-  .dmc-conv-head b { color: #fff; font-weight: 600; }
-  .dmc-conv-body { padding: 18px 20px; flex: 1; }
-  .dmc-msg { display: flex; gap: 12px; margin-bottom: 16px; }
-  .dmc-av { width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; }
-  .dmc-av svg { width: 20px; height: 20px; }
-  .dmc-mc { flex: 1; min-width: 0; }
-  .dmc-who { font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 3px; }
-  .dmc-who .badge { font-size: 9px; font-weight: 700; letter-spacing: .04em; color: #93C5FD; background: rgba(37,99,235,0.2); border-radius: 4px; padding: 1px 5px; margin-left: 5px; vertical-align: 1px; }
-  .dmc-who .t { font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.35); margin-left: 5px; }
-  .dmc-q { font-size: 14.5px; color: rgba(255,255,255,0.9); min-height: 20px; }
-  .dmc-q .caret { display: inline-block; width: 2px; height: 15px; background: #5B9BFF; margin-left: 2px; vertical-align: -2px; animation: caret-blink 1s step-end infinite; }
-  .dmc-a { opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
-  .dmc-a.on { opacity: 1; transform: none; }
-  .dmc-a .lead-in { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
-  .dmc-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-left-width: 3px; margin-bottom: 7px; font-size: 13.5px; color: rgba(255,255,255,0.9); }
-  .dmc-row b { color: #fff; font-weight: 600; }
-  .dmc-row.red { border-left-color: #F87171; } .dmc-row.amber { border-left-color: #FBBF24; }
-  .dmc-row.green { border-left-color: #34D399; } .dmc-row.blue { border-left-color: #5B9BFF; }
-  .dmc-note { display: block; padding: 12px 14px; border-radius: 10px; background: rgba(37,99,235,0.12); border-left: 3px solid #5B9BFF; font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,0.9); margin: 8px 0; }
-  .dmc-note b { color: #93C5FD; }
-  .dmc-tag { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 11px; letter-spacing: .03em; white-space: nowrap; }
-  .dmc-tag.risk { background: rgba(248,113,113,0.16); color: #FCA5A5; }
-  .dmc-tag.watch { background: rgba(251,191,36,0.16); color: #FCD34D; }
-  .dmc-tag.ok { background: rgba(52,211,153,0.16); color: #6EE7B7; }
-  .dmc-acts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .dmc-btn { font-size: 12.5px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); background: transparent; color: rgba(255,255,255,0.8); cursor: default; }
-  .dmc-btn.primary { background: #2563EB; border-color: #2563EB; color: #fff; }
-  .dmc-src-line { font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 12px; font-family: var(--mono); }
 
   /* ── Agents crew ── */
   .crew { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%); position: relative; overflow: hidden; }
@@ -1134,53 +1138,120 @@
       </div>
     </div>
 
-    <!-- Dockmaster console -->
-    <div class="dm-console reveal" id="dm-console">
-      <div class="dmc-chrome">
-        <div class="dmc-dots"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></div>
-        <div class="dmc-title"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg> Dockmaster</div>
-        <div class="dmc-status"><span class="live"></span> synthesizing across 6 sources</div>
+    <div class="dm-grid">
+      <!-- Beautiful Dockmaster orb -->
+      <div class="reveal">
+        <div class="orb-wrap">
+          <svg class="orb-svg" viewBox="0 0 460 460" role="img" aria-label="Dockmaster AI absorbs signals from every connected tool">
+            <!-- rotating outer rings -->
+            <circle class="orb-ring r1" cx="230" cy="230" r="168" fill="none" stroke="rgba(14,32,56,0.08)" stroke-width="1.4" stroke-dasharray="3 9"/>
+            <circle class="orb-ring r2" cx="230" cy="230" r="120" fill="none" stroke="rgba(37,99,235,0.14)" stroke-width="1.4" stroke-dasharray="2 8"/>
+
+            <!-- connectors + travelling particles -->
+      <line x1="230" y1="84" x2="230" y2="160" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#1A2B42"><animateMotion dur="2.4s" repeatCount="indefinite" path="M230 84 L230 160"/></circle>
+      <line x1="356" y1="157" x2="291" y2="195" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#2F9E7D"><animateMotion dur="2.6s" repeatCount="indefinite" path="M356 157 L291 195"/></circle>
+      <line x1="356" y1="303" x2="291" y2="265" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#C07A3B"><animateMotion dur="2.9s" repeatCount="indefinite" path="M356 303 L291 265"/></circle>
+      <line x1="230" y1="376" x2="230" y2="300" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#8A63D2"><animateMotion dur="3.1s" repeatCount="indefinite" path="M230 376 L230 300"/></circle>
+      <line x1="104" y1="303" x2="169" y2="265" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#C0662B"><animateMotion dur="3.4s" repeatCount="indefinite" path="M104 303 L169 265"/></circle>
+      <line x1="104" y1="157" x2="169" y2="195" stroke="rgba(14,32,56,0.14)" stroke-width="1.4"/>
+      <circle class="orb-particle" r="3" fill="#2563EB"><animateMotion dur="3.6s" repeatCount="indefinite" path="M104 157 L169 195"/></circle>
+
+            <!-- source chips -->
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="186" y="47" width="88" height="30" rx="9"/>
+        <circle cx="202" cy="62" r="5" fill="#1A2B42"/>
+        <text class="orb-chip-t" x="214" y="66">GitHub</text>
+      </g>
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="331" y="131" width="88" height="30" rx="9"/>
+        <circle cx="347" cy="146" r="5" fill="#2F9E7D"/>
+        <text class="orb-chip-t" x="359" y="150">Jira</text>
+      </g>
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="331" y="299" width="88" height="30" rx="9"/>
+        <circle cx="347" cy="314" r="5" fill="#C07A3B"/>
+        <text class="orb-chip-t" x="359" y="318">CI/CD</text>
+      </g>
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="186" y="383" width="88" height="30" rx="9"/>
+        <circle cx="202" cy="398" r="5" fill="#8A63D2"/>
+        <text class="orb-chip-t" x="214" y="402">Slack</text>
+      </g>
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="41" y="299" width="88" height="30" rx="9"/>
+        <circle cx="57" cy="314" r="5" fill="#C0662B"/>
+        <text class="orb-chip-t" x="69" y="318">Claude</text>
+      </g>
+      <g class="orb-node-g">
+        <rect class="orb-chip" x="41" y="131" width="88" height="30" rx="9"/>
+        <circle cx="57" cy="146" r="5" fill="#2563EB"/>
+        <text class="orb-chip-t" x="69" y="150">Policy</text>
+      </g>
+
+            <!-- soft halo + core -->
+            <circle class="orb-halo" cx="230" cy="230" r="70" fill="none" stroke="rgba(91,155,255,0.4)" stroke-width="10"/>
+            <g class="orb-core">
+              <circle cx="230" cy="230" r="62" fill="#0E2038"/>
+              <circle cx="230" cy="230" r="62" fill="url(#orbGrad)"/>
+              <g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="230" cy="205" r="6"/><path d="M230 211v40"/><path d="M216 224h28"/><path d="M204 238c3.4 11.5 12.5 17 26 17"/></g><path d="M230 255 L256 227" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <text x="230" y="288" text-anchor="middle" font-family="Source Serif 4, serif" font-size="15" fill="#FAF7F1">Dockmaster</text>
+            </g>
+            <defs>
+              <radialGradient id="orbGrad" cx="50%" cy="38%" r="65%">
+                <stop offset="0" stop-color="#1E3A5F"/><stop offset="1" stop-color="#0B1524"/>
+              </radialGradient>
+            </defs>
+          </svg>
+        </div>
       </div>
 
-      <div class="dmc-tabs" id="dmc-tabs">
-        <button class="dmc-tab active" data-domain="gov"  type="button"><span class="tdot" style="background:#5B9BFF"></span>Governance</button>
-        <button class="dmc-tab"        data-domain="risk" type="button"><span class="tdot" style="background:#FBBF24"></span>Risk</button>
-        <button class="dmc-tab"        data-domain="comp" type="button"><span class="tdot" style="background:#5EEAD4"></span>Compliance</button>
-        <button class="dmc-tab"        data-domain="prod" type="button"><span class="tdot" style="background:#C4B5FD"></span>Productivity</button>
-      </div>
-
-      <div class="dmc-body">
-        <aside class="dmc-sources">
-          <div class="dmc-sources-h">Connected sources</div>
-          <div class="dmc-src" data-src="github"><span class="sdot" style="background:#93C5FD"></span>GitHub<span class="sync">live</span></div>
-          <div class="dmc-src" data-src="jira"><span class="sdot" style="background:#6EE7B7"></span>Jira<span class="sync">live</span></div>
-          <div class="dmc-src" data-src="ci"><span class="sdot" style="background:#FCD34D"></span>CI/CD<span class="sync">live</span></div>
-          <div class="dmc-src" data-src="slack"><span class="sdot" style="background:#C4B5FD"></span>Slack<span class="sync">live</span></div>
-          <div class="dmc-src" data-src="ai"><span class="sdot" style="background:#FDBA74"></span>Claude &amp; Copilot<span class="sync">live</span></div>
-          <div class="dmc-src" data-src="policy"><span class="sdot" style="background:#5B9BFF"></span>Policy engine<span class="sync">live</span></div>
-          <div class="dmc-core">
-            <div class="dmc-core-inner"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg><div><div class="ct">Dockmaster AI</div><div class="cs">MCP · Claude · ChatGPT</div></div></div>
+      <!-- Slack-style output -->
+      <div class="reveal d2">
+        <div class="slack-card">
+          <div class="sl-shell">
+          <div class="sl-side">
+            <div class="sl-ws">Acme Eng <span class="chev">▾</span></div>
+            <div class="sl-sec">Channels</div>
+            <div class="sl-ch"><span class="hash">#</span>deploys</div>
+            <div class="sl-ch"><span class="hash">#</span>eng-releases <span class="badge">3</span></div>
+            <div class="sl-ch active"><span class="hash">#</span>release-governance</div>
+            <div class="sl-ch"><span class="hash">#</span>incidents</div>
+            <div class="sl-sec">Direct messages</div>
+            <div class="sl-ch dm"><span class="sl-dm-dot"></span>Dockmaster</div>
+            <div class="sl-ch dm"><span class="sl-dm-dot" style="background:transparent;border-color:rgba(255,255,255,.4);"></span>Priya N</div>
           </div>
-        </aside>
-
-        <div class="dmc-conv">
-          <div class="dmc-conv-head"><span class="hash">#</span> release-governance <span style="margin-left:auto;color:rgba(255,255,255,.35)">answering as <b style="color:#fff">Dockmaster</b></span></div>
-          <div class="dmc-conv-body">
-            <div class="dmc-msg">
-              <div class="dmc-av" style="background:#B45309;">J</div>
-              <div class="dmc-mc">
-                <div class="dmc-who">John <span class="t">2:14 PM</span></div>
-                <div class="dmc-q"><span id="type-target"></span><span class="caret"></span></div>
+          <div class="sl-main">
+          <div class="sl-head">
+            <span class="sl-hash">#</span> release-governance
+            <span class="sl-meta"><span class="sl-live"></span> Dockmaster is active</span>
+          </div>
+          <div class="sl-body">
+            <div class="sl-day"><span>Today</span></div>
+            <div class="sl-msg">
+              <div class="sl-av" style="background:#B45309;">J</div>
+              <div class="sl-msg-c">
+                <div class="sl-who">John <span class="sl-time">2:14 PM</span></div>
+                <div class="sl-text"><span id="type-target"></span><span class="caret"></span></div>
               </div>
             </div>
-            <div class="dmc-msg dmc-a" id="chat-answer-msg">
-              <div class="dmc-av" style="background:#16304F;"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
-              <div class="dmc-mc">
-                <div class="dmc-who">Dockmaster <span class="badge">AI</span><span class="t">2:14 PM</span></div>
-                <div id="chat-answer" class="dmc-a-body"></div>
+            <div class="sl-msg answer" id="chat-answer-msg">
+              <div class="sl-av" style="background:var(--navy);">
+                <svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
+              </div>
+              <div class="sl-msg-c">
+                <div class="sl-who">Dockmaster <span class="sl-app">APP</span> <span class="sl-time">2:14 PM</span></div>
+                <div id="chat-answer" class="sl-text"></div>
               </div>
             </div>
           </div>
+          <div class="sl-input"><span class="plus">+</span> Message #release-governance</div>
+          </div><!-- /sl-main -->
+          </div><!-- /sl-shell -->
         </div>
       </div>
     </div>
@@ -1611,43 +1682,47 @@
     "Who approved the last prod deploy?"
   ];
   const ANSWERS = [
-    // 0 · projects at risk (Governance)
-    `<div class="lead-in">Here's this week's risk picture:</div>
-     <div class="dmc-row red"><b>Project Phoenix</b><span class="dmc-tag risk">AT RISK</span></div>
-     <div class="dmc-row amber"><b>Project Atlas</b><span class="dmc-tag watch">WATCH</span></div>
-     <div class="dmc-row green"><b>Release 4.2</b><span class="dmc-tag ok">ON TRACK</span></div>
-     <div class="dmc-note"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags clear.</div>
-     <div class="dmc-acts"><span class="dmc-btn primary">Hold release train</span><span class="dmc-btn">View evidence</span></div>
-     <div class="dmc-src-line">Consulted: GitHub · Jira · CI/CD · Policy engine</div>`,
-    // 1 · safe to ship (Risk)
-    `<div class="lead-in">Yes — cleared on every dimension:</div>
-     <div class="dmc-row green"><b>Policy gates · 4 of 4</b><span class="dmc-tag ok">PASSED</span></div>
-     <div class="dmc-row green"><b>Risk Agent · 214 diffs read</b><span class="dmc-tag ok">NO FLAGS</span></div>
-     <div class="dmc-row green"><b>Human approvals · 2 of 2</b><span class="dmc-tag ok">LOGGED</span></div>
-     <div class="dmc-note"><b>Readiness 94/100.</b> All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
-     <div class="dmc-acts"><span class="dmc-btn primary">Approve deploy</span><span class="dmc-btn">Full report</span></div>
-     <div class="dmc-src-line">Consulted: Policy engine · CI/CD · Slack approvals</div>`,
-    // 2 · AI spend (Productivity)
-    `<div class="lead-in">Spend by team, this month:</div>
-     <div class="dmc-row green"><b>Platform</b><span class="dmc-tag ok">$14.2K · efficient</span></div>
-     <div class="dmc-row green"><b>Payments</b><span class="dmc-tag ok">$10.9K · efficient</span></div>
-     <div class="dmc-row amber"><b>Mobile</b><span class="dmc-tag watch">$9.3K · ▲ 32%</span></div>
-     <div class="dmc-note"><b>Watch Mobile:</b> spend rose 32% with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
-     <div class="dmc-acts"><span class="dmc-btn primary">Open spend report</span><span class="dmc-btn">Alert Mobile lead</span></div>
-     <div class="dmc-src-line">Consulted: Claude &amp; Copilot · billing · CI/CD</div>`,
-    // 3 · who approved (Compliance)
-    `<div class="lead-in">Found it in the approvals log:</div>
-     <div class="dmc-row green"><b>Approver · Priya N, Eng Lead</b><span class="dmc-tag ok">VERIFIED</span></div>
-     <div class="dmc-row green"><b>Gate · prod-deploy-approval</b><span class="dmc-tag ok">PASSED</span></div>
-     <div class="dmc-row green"><b>Evidence · 14 records</b><span class="dmc-tag ok">EXPORTABLE</span></div>
-     <div class="dmc-note"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
-     <div class="dmc-acts"><span class="dmc-btn primary">Export audit trail</span><span class="dmc-btn">Open thread</span></div>
-     <div class="dmc-src-line">Consulted: Slack approvals · Policy engine · GitHub</div>`
-  ];;
+    // 1 · projects at risk
+    `Here's this week's risk picture:
+     <div class="sl-att red"><b>Project Phoenix</b><span class="tag risk">AT RISK</span></div>
+     <div class="sl-att amber"><b>Project Atlas</b><span class="tag watch">WATCH</span></div>
+     <div class="sl-att green"><b>Release 4.2</b><span class="tag ok">ON TRACK</span></div>
+     <div class="sl-att blue"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags clear.</div>
+     <div class="sl-actions"><span class="sl-btn primary">Hold release train</span><span class="sl-btn">View evidence</span></div>
+     <div class="sl-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>
+     <div class="sl-reactions"><span class="sl-react">👀 3</span><span class="sl-react">✅ 2</span></div>`,
+    // 2 · release 4.2 safe?
+    `Yes — cleared on every dimension:
+     <div class="sl-att green"><b>Policy gates · 4 of 4</b><span class="tag ok">PASSED</span></div>
+     <div class="sl-att green"><b>Risk Agent · 214 diffs read</b><span class="tag ok">NO FLAGS</span></div>
+     <div class="sl-att green"><b>Human approvals · 2 of 2</b><span class="tag ok">LOGGED</span></div>
+     <div class="sl-att blue"><b>Readiness 94/100.</b> All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
+     <div class="sl-actions"><span class="sl-btn primary">Approve deploy</span><span class="sl-btn">Full report</span></div>
+     <div class="sl-src">Sources: Policy engine · CI · approvals log · evidence attached</div>
+     <div class="sl-reactions"><span class="sl-react">🚀 4</span><span class="sl-react">✅ 2</span></div>`,
+    // 3 · AI spend
+    `Spend by team, this month:
+     <div class="sl-att green"><b>Platform</b><span class="tag ok">$14.2K · efficient</span></div>
+     <div class="sl-att green"><b>Payments</b><span class="tag ok">$10.9K · efficient</span></div>
+     <div class="sl-att amber"><b>Mobile</b><span class="tag watch">$9.3K · ▲ 32%</span></div>
+     <div class="sl-att blue"><b>Watch Mobile:</b> spend rose 32% with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
+     <div class="sl-actions"><span class="sl-btn primary">Open spend report</span><span class="sl-btn">Alert Mobile lead</span></div>
+     <div class="sl-src">Sources: token logs · billing · delivery metrics per team</div>
+     <div class="sl-reactions"><span class="sl-react">👀 2</span><span class="sl-react">💸 1</span></div>`,
+    // 4 · who approved
+    `Found it in the approvals log:
+     <div class="sl-att green"><b>Approver · Priya N, Eng Lead</b><span class="tag ok">VERIFIED</span></div>
+     <div class="sl-att green"><b>Gate · prod-deploy-approval</b><span class="tag ok">PASSED</span></div>
+     <div class="sl-att green"><b>Evidence · 14 records</b><span class="tag ok">EXPORTABLE</span></div>
+     <div class="sl-att blue"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
+     <div class="sl-actions"><span class="sl-btn primary">Export audit trail</span><span class="sl-btn">Open thread</span></div>
+     <div class="sl-src">Sources: approvals log · Risk Agent report · audit trail</div>
+     <div class="sl-reactions"><span class="sl-react">✅ 3</span><span class="sl-react">📎 1</span></div>`
+  ];
   const target = document.getElementById('type-target');
   const answerEl = document.getElementById('chat-answer');
   const answerMsg = document.getElementById('chat-answer-msg');
-  let started = false;
+  let qi = 0, started = false;
 
   function typeText(text, answerHTML, cb) {
     let i = 0;
@@ -1657,41 +1732,23 @@
       target.textContent = text.slice(0, ++i);
       if (i >= text.length) {
         clearInterval(t);
-        setTimeout(() => { answerEl.innerHTML = answerHTML; answerMsg.classList.add('on'); cb && cb(); }, 350);
+        setTimeout(() => {
+          answerEl.innerHTML = answerHTML;
+          answerMsg.classList.add('on');
+          cb && cb();
+        }, 350);
       }
-    }, 34);
+    }, 38);
   }
-
-  // domain → question index + which sources light up
-  const DOMAINS = [
-    { key: 'gov',  q: 0, srcs: ['github','jira','ci','policy'] },
-    { key: 'risk', q: 1, srcs: ['policy','ci','slack'] },
-    { key: 'comp', q: 3, srcs: ['slack','policy','github'] },
-    { key: 'prod', q: 2, srcs: ['ai','ci'] },
-  ];
-  let di = 0, autoTimer = null, userPicked = false;
-  const dmcTabs = [...document.querySelectorAll('.dmc-tab')];
-  const dmcSrcs = [...document.querySelectorAll('.dmc-src')];
-
-  function lightSources(keys) {
-    dmcSrcs.forEach(el => el.classList.toggle('hot', keys.includes(el.dataset.src)));
-  }
-  function showDomain(idx, fromUser) {
-    di = idx;
-    const d = DOMAINS[idx];
-    dmcTabs.forEach((t, i) => t.classList.toggle('active', i === idx));
-    lightSources(d.srcs);
-    typeText(questions[d.q], ANSWERS[d.q], () => {
-      if (!userPicked) autoTimer = setTimeout(() => showDomain((di + 1) % DOMAINS.length, false), 6000);
+  function cycle() {
+    typeText(questions[qi], ANSWERS[qi], () => {
+      setTimeout(() => { qi = (qi + 1) % questions.length; cycle(); }, 5600);
     });
-    if (fromUser) { userPicked = true; clearTimeout(autoTimer); }
   }
-  dmcTabs.forEach((t, i) => t.addEventListener('click', () => showDomain(i, true)));
-
   const chatIO = new IntersectionObserver(es => {
-    es.forEach(e => { if (e.isIntersecting && !started) { started = true; showDomain(0, false); chatIO.disconnect(); } });
+    es.forEach(e => { if (e.isIntersecting && !started) { started = true; cycle(); chatIO.disconnect(); } });
   }, { threshold: 0.3 });
-  chatIO.observe(document.getElementById('dm-console'));
+  chatIO.observe(document.querySelector('.slack-card'));
 
   // ── Animated counters ──
   function animateCount(el) {
