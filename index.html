@@ -303,9 +303,13 @@
   @media (max-width: 940px) { .dm-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
   .dm-left { display: flex; flex-direction: column; align-items: center; }
 
-  /* Dockmaster orb */
+  /* Dockmaster orb / constellation */
   .orb-wrap { position: relative; width: 100%; max-width: 400px; }
+  .orb-wrap-wide { max-width: 460px; }
   .orb-svg { position: relative; width: 100%; height: auto; overflow: visible; display: block; }
+  .orb-tile { cursor: default; transition: transform .2s; }
+  .dm-legend { margin-top: .4rem; text-align: center; font-size: 12px; color: var(--muted-2); line-height: 1.7; max-width: 400px; }
+  .dm-legend b { color: var(--blue); font-weight: 700; }
 
   /* flow labels (in / out) */
   .dm-flow-label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-2); text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -1139,60 +1143,86 @@
     </div>
 
     <div class="dm-grid">
-      <!-- Dockmaster orb: inputs in, domains out -->
+      <!-- Dockmaster integration constellation -->
       <div class="reveal dm-left">
         <div class="dm-flow-label in">Reads from your stack</div>
-        <div class="orb-wrap">
-          <svg class="orb-svg" viewBox="0 0 420 400" role="img" aria-label="Dockmaster AI reads GitHub, Jira, Grafana, Prometheus and CI/CD, and governs across four domains">
+        <div class="orb-wrap orb-wrap-wide">
+          <svg class="orb-svg" viewBox="0 0 460 460" role="img" aria-label="Dockmaster AI connects to GitHub, GitLab, Jira, Linear, CI/CD, Grafana, Prometheus, Datadog, Sentry and PagerDuty">
             <defs>
               <radialGradient id="orbGrad" cx="50%" cy="36%" r="66%"><stop offset="0" stop-color="#22406A"/><stop offset="1" stop-color="#0B1524"/></radialGradient>
               <filter id="chipShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0E2038" flood-opacity="0.10"/></filter>
               <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#2563EB" flood-opacity="0.28"/></filter>
             </defs>
-            <circle class="orb-ring r1" cx="210" cy="208" r="150" fill="none" stroke="rgba(14,32,56,0.08)" stroke-width="1.4" stroke-dasharray="3 10"/>
-            <circle class="orb-ring r2" cx="210" cy="208" r="108" fill="none" stroke="rgba(37,99,235,0.14)" stroke-width="1.4" stroke-dasharray="2 9"/>
-            <line x1="210" y1="82" x2="210" y2="142" stroke="rgba(14,32,56,0.12)" stroke-width="1.4"/>
-            <circle class="orb-particle" r="2.8" fill="#1A2B42"><animateMotion dur="2.4s" repeatCount="indefinite" path="M210 82 L210 142"/></circle>
-            <line x1="330" y1="169" x2="273" y2="188" stroke="rgba(14,32,56,0.12)" stroke-width="1.4"/>
-            <circle class="orb-particle" r="2.8" fill="#2684FF"><animateMotion dur="2.7s" repeatCount="indefinite" path="M330 169 L273 188"/></circle>
-            <line x1="284" y1="310" x2="249" y2="261" stroke="rgba(14,32,56,0.12)" stroke-width="1.4"/>
-            <circle class="orb-particle" r="2.8" fill="#F46800"><animateMotion dur="3.0s" repeatCount="indefinite" path="M284 310 L249 261"/></circle>
-            <line x1="136" y1="310" x2="171" y2="261" stroke="rgba(14,32,56,0.12)" stroke-width="1.4"/>
-            <circle class="orb-particle" r="2.8" fill="#E6522C"><animateMotion dur="3.2s" repeatCount="indefinite" path="M136 310 L171 261"/></circle>
-            <line x1="90" y1="169" x2="147" y2="188" stroke="rgba(14,32,56,0.12)" stroke-width="1.4"/>
-            <circle class="orb-particle" r="2.8" fill="#2F9E7D"><animateMotion dur="3.5s" repeatCount="indefinite" path="M90 169 L147 188"/></circle>
-            <g class="orb-node-g" filter="url(#chipShadow)">
-              <rect class="orb-chip" x="157" y="42" width="105" height="32" rx="10"/>
-              <circle cx="174" cy="58" r="5" fill="#1A2B42"/>
-              <text class="orb-chip-t" x="187" y="62">GitHub</text>
+            <circle class="orb-ring r1" cx="230" cy="230" r="178" fill="none" stroke="rgba(14,32,56,0.07)" stroke-width="1.3" stroke-dasharray="3 11"/>
+            <circle class="orb-ring r2" cx="230" cy="230" r="118" fill="none" stroke="rgba(37,99,235,0.12)" stroke-width="1.3" stroke-dasharray="2 10"/>
+            <line x1="318" y1="109" x2="266" y2="180" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#FC6D26"><animateMotion dur="2.3s" repeatCount="indefinite" path="M318 109 L266 180"/></circle>
+            <line x1="373" y1="276" x2="289" y2="249" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#5E6AD2"><animateMotion dur="2.6s" repeatCount="indefinite" path="M373 276 L289 249"/></circle>
+            <line x1="230" y1="380" x2="230" y2="292" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#632CA6"><animateMotion dur="2.9s" repeatCount="indefinite" path="M230 380 L230 292"/></circle>
+            <line x1="87" y1="276" x2="171" y2="249" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#362D59"><animateMotion dur="3.2s" repeatCount="indefinite" path="M87 276 L171 249"/></circle>
+            <line x1="142" y1="109" x2="194" y2="180" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#06AC38"><animateMotion dur="3.5s" repeatCount="indefinite" path="M142 109 L194 180"/></circle>
+            <line x1="230" y1="140" x2="230" y2="168" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#24292E"><animateMotion dur="2.3s" repeatCount="indefinite" path="M230 140 L230 168"/></circle>
+            <line x1="316" y1="202" x2="289" y2="211" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#2684FF"><animateMotion dur="2.6s" repeatCount="indefinite" path="M316 202 L289 211"/></circle>
+            <line x1="283" y1="303" x2="266" y2="280" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#2F9E7D"><animateMotion dur="2.9s" repeatCount="indefinite" path="M283 303 L266 280"/></circle>
+            <line x1="177" y1="303" x2="194" y2="280" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#F46800"><animateMotion dur="3.2s" repeatCount="indefinite" path="M177 303 L194 280"/></circle>
+            <line x1="144" y1="202" x2="171" y2="211" stroke="rgba(14,32,56,0.10)" stroke-width="1.3"/>
+            <circle class="orb-particle" r="2.6" fill="#E6522C"><animateMotion dur="3.5s" repeatCount="indefinite" path="M144 202 L171 211"/></circle>
+            <g class="orb-tile"><title>GitLab</title>
+              <rect x="312" y="63" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="335" y="91" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#FC6D26">GL</text>
             </g>
-            <g class="orb-node-g" filter="url(#chipShadow)">
-              <rect class="orb-chip" x="307" y="146" width="91" height="32" rx="10"/>
-              <circle cx="324" cy="162" r="5" fill="#2684FF"/>
-              <text class="orb-chip-t" x="337" y="166">Jira</text>
+            <g class="orb-tile"><title>Linear</title>
+              <rect x="376" y="262" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="399" y="290" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#5E6AD2">LN</text>
             </g>
-            <g class="orb-node-g" filter="url(#chipShadow)">
-              <rect class="orb-chip" x="242" y="313" width="112" height="32" rx="10"/>
-              <circle cx="259" cy="329" r="5" fill="#F46800"/>
-              <text class="orb-chip-t" x="272" y="334">Grafana</text>
+            <g class="orb-tile"><title>Datadog</title>
+              <rect x="207" y="385" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="230" y="413" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#632CA6">DD</text>
             </g>
-            <g class="orb-node-g" filter="url(#chipShadow)">
-              <rect class="orb-chip" x="55" y="313" width="134" height="32" rx="10"/>
-              <circle cx="72" cy="329" r="5" fill="#E6522C"/>
-              <text class="orb-chip-t" x="85" y="334">Prometheus</text>
+            <g class="orb-tile"><title>Sentry</title>
+              <rect x="38" y="262" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="61" y="290" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#362D59">SN</text>
             </g>
-            <g class="orb-node-g" filter="url(#chipShadow)">
-              <rect class="orb-chip" x="18" y="146" width="98" height="32" rx="10"/>
-              <circle cx="35" cy="162" r="5" fill="#2F9E7D"/>
-              <text class="orb-chip-t" x="48" y="166">CI/CD</text>
+            <g class="orb-tile"><title>PagerDuty</title>
+              <rect x="102" y="63" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="125" y="91" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#06AC38">PD</text>
             </g>
-            <circle class="orb-halo" cx="210" cy="208" r="66" fill="none" stroke="rgba(91,155,255,0.35)" stroke-width="12"/>
+            <g class="orb-tile"><title>GitHub</title>
+              <rect x="207" y="89" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="230" y="117" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#24292E">GH</text>
+            </g>
+            <g class="orb-tile"><title>Jira</title>
+              <rect x="319" y="171" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="342" y="199" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#2684FF">JI</text>
+            </g>
+            <g class="orb-tile"><title>CI/CD</title>
+              <rect x="276" y="302" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="299" y="330" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#2F9E7D">CI</text>
+            </g>
+            <g class="orb-tile"><title>Grafana</title>
+              <rect x="138" y="302" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="161" y="330" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#F46800">GF</text>
+            </g>
+            <g class="orb-tile"><title>Prometheus</title>
+              <rect x="95" y="171" width="46" height="46" rx="13" fill="#fff" stroke="rgba(14,32,56,0.08)" filter="url(#chipShadow)"/>
+              <text x="118" y="199" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#E6522C">PM</text>
+            </g>
+            <circle class="orb-halo" cx="230" cy="230" r="64" fill="none" stroke="rgba(91,155,255,0.35)" stroke-width="12"/>
             <g class="orb-core" filter="url(#coreGlow)">
-              <circle cx="210" cy="208" r="60" fill="url(#orbGrad)"/>
-              <g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="210" cy="188" r="6"/><path d="M210 194v40"/><path d="M196 207h28"/><path d="M184 221c3.4 11.5 12.5 17 26 17"/></g><path d="M210 238 L236 210" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <circle cx="230" cy="230" r="58" fill="url(#orbGrad)"/>
+              <g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="230" cy="208" r="6"/><path d="M230 214v40"/><path d="M216 227h28"/><path d="M204 241c3.4 11.5 12.5 17 26 17"/></g><path d="M230 258 L256 230" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/>
             </g>
           </svg>
         </div>
+        <div class="dm-legend">GitHub · GitLab · Jira · Linear · CI/CD · Grafana · Prometheus · Datadog · Sentry · PagerDuty <b>+ more</b></div>
 
         <div class="dm-caption">
           <div class="dm-flow-label out">Governs across four domains</div>
