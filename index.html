@@ -218,8 +218,9 @@
   .ea-card h3 { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.5; margin: .6rem 0 1.3rem; }
   .field { margin-bottom: .9rem; }
   .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; letter-spacing: .02em; }
-  .field input { width: 100%; padding: 11px 14px; border: 1.5px solid rgba(14,32,56,0.14); border-radius: 9px; font-family: var(--sans); font-size: 14px; color: var(--ink); background: var(--cream); transition: border-color .15s, box-shadow .15s, background .15s; }
-  .field input:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .field input, .field textarea { width: 100%; padding: 11px 14px; border: 1.5px solid rgba(14,32,56,0.14); border-radius: 9px; font-family: var(--sans); font-size: 14px; color: var(--ink); background: var(--cream); transition: border-color .15s, box-shadow .15s, background .15s; }
+  .field textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
   .ea-card .btn { width: 100%; margin-top: .4rem; }
   .ea-fine { font-size: 11.5px; color: var(--muted-2); margin-top: .9rem; line-height: 1.5; }
 
@@ -1648,6 +1649,14 @@
           <div class="field">
             <label for="f-role">Role</label>
             <input id="f-role" name="role" type="text" placeholder="VP Engineering">
+          </div>
+          <div class="field">
+            <label for="f-linkedin">LinkedIn <span style="font-weight:400;color:var(--muted-2);">(optional)</span></label>
+            <input id="f-linkedin" name="linkedin" type="url" placeholder="linkedin.com/in/jordanreyes">
+          </div>
+          <div class="field">
+            <label for="f-notes">Anything we should know? <span style="font-weight:400;color:var(--muted-2);">(optional)</span></label>
+            <textarea id="f-notes" name="notes" rows="3" placeholder="Your stack, team size, or what you're hoping DryDock solves…"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" id="ea-submit">Request early access</button>
         </form>
