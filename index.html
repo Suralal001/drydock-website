@@ -298,74 +298,73 @@
   .ans-note b { color: var(--blue); }
   .ans-src { margin-top: .8rem; font-size: 11.5px; color: var(--muted-2); }
 
-  /* ── Dockmaster ingest → core → domains flow ── */
-  .dm-flow { margin-top: 3rem; }
-  .dm-flow-svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .dm-src-label, .dm-dom-label { font-family: var(--sans); }
-  .dm-particle { animation: dm-fade 3s linear infinite; }
-  @keyframes dm-fade { 0%,100% { opacity: 0; } 15%,85% { opacity: 1; } }
-  .dm-core-ring { transform-origin: 500px 200px; animation: hub-breathe 3.4s ease-in-out infinite; }
-  .dm-core-ring2 { transform-origin: 500px 200px; animation: dm-ripple 3.4s ease-in-out infinite; }
-  @keyframes dm-ripple { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(1.5); opacity: 0; } }
-  .dm-dom { cursor: pointer; }
-  .dm-dom-box { transition: fill .3s, stroke .3s; }
-  .dm-dom-txt { transition: fill .3s; }
-  .dm-conn { transition: stroke .3s, stroke-opacity .3s; }
-  @media (prefers-reduced-motion: reduce) { .dm-particle, .dm-core-ring, .dm-core-ring2 { animation: none; } }
+  /* ── Dockmaster console (modern product surface) ── */
+  .dm-console { max-width: 1080px; margin: 3rem auto 0; background: #0B1524; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; box-shadow: 0 30px 70px -30px rgba(14,32,56,0.5), 0 4px 12px rgba(14,32,56,0.15); overflow: hidden; }
+  .dmc-chrome { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .dmc-dots { display: flex; gap: 7px; }
+  .dmc-dots i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .dmc-title { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 700; font-size: 14.5px; margin-left: 6px; }
+  .dmc-title svg { width: 20px; height: 20px; }
+  .dmc-status { margin-left: auto; display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(255,255,255,0.55); font-family: var(--mono); }
+  .dmc-status .live { width: 7px; height: 7px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 3px rgba(52,211,153,0.2); animation: pulse-dot 2s ease-in-out infinite; }
 
-  /* domain answer panel */
-  .dm-answer-wrap { max-width: 760px; margin: 2.5rem auto 0; }
-  .dm-answer-head { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; justify-content: center; font-size: 14px; color: var(--muted); }
-  .dm-answer-head b { color: var(--navy); font-weight: 700; }
-  .dm-answer-head .dm-ah-dot { width: 9px; height: 9px; border-radius: 50%; }
+  /* segmented domain control */
+  .dmc-tabs { display: flex; gap: 4px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); overflow-x: auto; }
+  .dmc-tab { flex: 1; min-width: max-content; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 11px; background: transparent; border: 1px solid transparent; color: rgba(255,255,255,0.55); font-family: var(--sans); font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .dmc-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .dmc-tab .tdot { width: 8px; height: 8px; border-radius: 50%; }
+  .dmc-tab.active { color: #fff; background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.14); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
-  /* ── Slack-style Dockmaster demo ── */
-  .slack-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; font-family: var(--sans); }
-  .sl-shell { display: grid; grid-template-columns: 168px 1fr; }
-  @media (max-width: 640px) { .sl-shell { grid-template-columns: 1fr; } .sl-side { display: none; } }
-  .sl-side { background: #3F0E40; color: rgba(255,255,255,0.75); padding: 12px 0 16px; font-size: 13.5px; }
-  .sl-ws { display: flex; align-items: center; justify-content: space-between; color: #fff; font-weight: 800; font-size: 14.5px; padding: 6px 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 10px; }
-  .sl-ws .chev { font-size: 10px; opacity: .7; }
-  .sl-sec { font-size: 12px; padding: 8px 14px 4px; color: rgba(255,255,255,0.55); }
-  .sl-ch { padding: 4px 14px; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sl-ch .hash { opacity: .6; margin-right: 6px; }
-  .sl-ch.active { background: #1164A3; color: #fff; font-weight: 600; }
-  .sl-ch .badge { float: right; background: #CD2553; color: #fff; font-size: 10.5px; font-weight: 700; border-radius: 9px; padding: 0 6px; line-height: 16px; margin-top: 2px; }
-  .sl-ch.dm { display: flex; align-items: center; gap: 7px; }
-  .sl-dm-dot { width: 8px; height: 8px; border-radius: 50%; background: #2BAC76; border: 1.5px solid #3F0E40; flex-shrink: 0; }
-  .sl-day { display: flex; align-items: center; gap: 10px; padding: 2px 18px 10px; }
-  .sl-day::before, .sl-day::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-  .sl-day span { font-size: 11.5px; font-weight: 700; color: #616061; border: 1px solid var(--line); border-radius: 12px; padding: 2px 10px; }
-  .sl-head { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid var(--line); font-weight: 800; font-size: 15px; color: #1D1C1D; }
-  .sl-head .sl-hash { color: #616061; font-weight: 400; }
-  .sl-head .sl-meta { margin-left: auto; font-size: 12px; font-weight: 400; color: #616061; display: flex; align-items: center; gap: 6px; }
-  .sl-head .sl-live { width: 8px; height: 8px; border-radius: 50%; background: #2BAC76; }
-  .sl-body { padding: 14px 0 6px; min-height: 380px; }
-  .sl-msg { display: flex; gap: 10px; padding: 8px 18px; transition: background .15s; }
-  .sl-msg:hover { background: #F8F8F8; }
-  .sl-av { width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; color: #fff; }
-  .sl-av svg { width: 22px; height: 22px; }
-  .sl-msg-c { flex: 1; min-width: 0; }
-  .sl-who { font-size: 14.5px; font-weight: 800; color: #1D1C1D; margin-bottom: 2px; }
-  .sl-app { font-size: 9.5px; font-weight: 700; color: #616061; background: #EBEAEB; border-radius: 3px; padding: 1px 4px; vertical-align: 1px; letter-spacing: .03em; }
-  .sl-time { font-size: 11.5px; font-weight: 400; color: #616061; margin-left: 4px; }
-  .sl-text { font-size: 14.5px; color: #1D1C1D; line-height: 1.55; min-height: 22px; }
-  .sl-text .caret { display: inline-block; width: 2px; height: 15px; background: var(--blue); margin-left: 2px; vertical-align: -2px; animation: caret-blink 1s step-end infinite; }
-  .sl-att { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-left: 4px solid #DDD; background: #FAFAFA; border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 6px 0; font-size: 13.5px; }
-  .sl-att b { color: #1D1C1D; font-weight: 700; }
-  .sl-att.red { border-left-color: #E01E5A; }
-  .sl-att.amber { border-left-color: #ECB22E; }
-  .sl-att.green { border-left-color: #2BAC76; }
-  .sl-att.blue { border-left-color: var(--blue); display: block; }
-  .sl-att.blue b { color: var(--blue); }
-  .sl-src { font-size: 11.5px; color: #616061; margin-top: 7px; }
-  .sl-actions { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
-  .sl-btn { font-size: 12.5px; font-weight: 700; color: #1D1C1D; background: #fff; border: 1px solid #BBBABB; border-radius: 6px; padding: 5px 12px; cursor: default; }
-  .sl-btn.primary { background: #007A5A; border-color: #007A5A; color: #fff; }
-  .sl-reactions { display: flex; gap: 6px; margin-top: 8px; }
-  .sl-react { font-size: 11.5px; background: #F0F4FF; border: 1px solid rgba(37,99,235,.25); border-radius: 12px; padding: 2px 8px; color: #1D1C1D; }
-  .sl-input { margin: 8px 14px 14px; border: 1px solid #BBBABB; border-radius: 10px; padding: 10px 14px; font-size: 13.5px; color: #9A999A; display: flex; align-items: center; gap: 8px; }
-  .sl-input .plus { width: 20px; height: 20px; border-radius: 50%; background: #EBEAEB; color: #616061; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .dmc-body { display: grid; grid-template-columns: 232px 1fr; min-height: 420px; }
+  @media (max-width: 760px) { .dmc-body { grid-template-columns: 1fr; } .dmc-sources { display: none; } }
+
+  /* connected sources rail */
+  .dmc-sources { border-right: 1px solid rgba(255,255,255,0.07); padding: 16px 14px; display: flex; flex-direction: column; }
+  .dmc-sources-h { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 2px 6px 12px; }
+  .dmc-src { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; font-size: 13px; color: rgba(255,255,255,0.75); transition: background .3s, color .3s; position: relative; }
+  .dmc-src .sdot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; transition: box-shadow .3s, transform .3s; }
+  .dmc-src .sync { margin-left: auto; font-size: 10px; font-family: var(--mono); color: rgba(255,255,255,0.3); transition: color .3s; }
+  .dmc-src.hot { background: rgba(255,255,255,0.07); color: #fff; }
+  .dmc-src.hot .sdot { box-shadow: 0 0 0 4px rgba(255,255,255,0.12); transform: scale(1.15); }
+  .dmc-src.hot .sync { color: #34D399; }
+  .dmc-core { margin-top: auto; padding: 12px 12px 6px; }
+  .dmc-core-inner { display: flex; align-items: center; gap: 10px; background: rgba(37,99,235,0.14); border: 1px solid rgba(91,155,255,0.28); border-radius: 12px; padding: 10px 12px; }
+  .dmc-core-inner svg { width: 26px; height: 26px; flex-shrink: 0; }
+  .dmc-core-inner .ct { font-size: 12.5px; font-weight: 700; color: #fff; }
+  .dmc-core-inner .cs { font-size: 10.5px; color: #93C5FD; font-family: var(--mono); }
+
+  /* conversation main pane */
+  .dmc-conv { background: #0E1728; display: flex; flex-direction: column; }
+  .dmc-conv-head { display: flex; align-items: center; gap: 8px; padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; color: rgba(255,255,255,0.55); }
+  .dmc-conv-head .hash { color: rgba(255,255,255,0.35); }
+  .dmc-conv-head b { color: #fff; font-weight: 600; }
+  .dmc-conv-body { padding: 18px 20px; flex: 1; }
+  .dmc-msg { display: flex; gap: 12px; margin-bottom: 16px; }
+  .dmc-av { width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; }
+  .dmc-av svg { width: 20px; height: 20px; }
+  .dmc-mc { flex: 1; min-width: 0; }
+  .dmc-who { font-size: 13.5px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .dmc-who .badge { font-size: 9px; font-weight: 700; letter-spacing: .04em; color: #93C5FD; background: rgba(37,99,235,0.2); border-radius: 4px; padding: 1px 5px; margin-left: 5px; vertical-align: 1px; }
+  .dmc-who .t { font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.35); margin-left: 5px; }
+  .dmc-q { font-size: 14.5px; color: rgba(255,255,255,0.9); min-height: 20px; }
+  .dmc-q .caret { display: inline-block; width: 2px; height: 15px; background: #5B9BFF; margin-left: 2px; vertical-align: -2px; animation: caret-blink 1s step-end infinite; }
+  .dmc-a { opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+  .dmc-a.on { opacity: 1; transform: none; }
+  .dmc-a .lead-in { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 10px; }
+  .dmc-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 13px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-left-width: 3px; margin-bottom: 7px; font-size: 13.5px; color: rgba(255,255,255,0.9); }
+  .dmc-row b { color: #fff; font-weight: 600; }
+  .dmc-row.red { border-left-color: #F87171; } .dmc-row.amber { border-left-color: #FBBF24; }
+  .dmc-row.green { border-left-color: #34D399; } .dmc-row.blue { border-left-color: #5B9BFF; }
+  .dmc-note { display: block; padding: 12px 14px; border-radius: 10px; background: rgba(37,99,235,0.12); border-left: 3px solid #5B9BFF; font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,0.9); margin: 8px 0; }
+  .dmc-note b { color: #93C5FD; }
+  .dmc-tag { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 11px; letter-spacing: .03em; white-space: nowrap; }
+  .dmc-tag.risk { background: rgba(248,113,113,0.16); color: #FCA5A5; }
+  .dmc-tag.watch { background: rgba(251,191,36,0.16); color: #FCD34D; }
+  .dmc-tag.ok { background: rgba(52,211,153,0.16); color: #6EE7B7; }
+  .dmc-acts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .dmc-btn { font-size: 12.5px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); background: transparent; color: rgba(255,255,255,0.8); cursor: default; }
+  .dmc-btn.primary { background: #2563EB; border-color: #2563EB; color: #fff; }
+  .dmc-src-line { font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 12px; font-family: var(--mono); }
 
   /* ── Agents crew ── */
   .crew { background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%); position: relative; overflow: hidden; }
@@ -1135,148 +1134,57 @@
       </div>
     </div>
 
-    <!-- Ingest → Dockmaster core → domains flow -->
-    <div class="dm-flow reveal">
-      <svg class="dm-flow-svg" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dockmaster absorbs data from your tools and answers across governance, risk, compliance, and productivity">
-        <defs>
-          <linearGradient id="coreGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#16304F"/><stop offset="1" stop-color="#0B1524"/>
-          </linearGradient>
-        </defs>
+    <!-- Dockmaster console -->
+    <div class="dm-console reveal" id="dm-console">
+      <div class="dmc-chrome">
+        <div class="dmc-dots"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></div>
+        <div class="dmc-title"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg> Dockmaster</div>
+        <div class="dmc-status"><span class="live"></span> synthesizing across 6 sources</div>
+      </div>
 
-        <!-- section labels -->
-        <text x="120" y="30" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#8494A8">YOUR TOOLS</text>
-        <text x="880" y="30" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#8494A8">ANSWERED</text>
+      <div class="dmc-tabs" id="dmc-tabs">
+        <button class="dmc-tab active" data-domain="gov"  type="button"><span class="tdot" style="background:#5B9BFF"></span>Governance</button>
+        <button class="dmc-tab"        data-domain="risk" type="button"><span class="tdot" style="background:#FBBF24"></span>Risk</button>
+        <button class="dmc-tab"        data-domain="comp" type="button"><span class="tdot" style="background:#5EEAD4"></span>Compliance</button>
+        <button class="dmc-tab"        data-domain="prod" type="button"><span class="tdot" style="background:#C4B5FD"></span>Productivity</button>
+      </div>
 
-        <!-- ══ connectors: sources → core ══ -->
-        <g fill="none" stroke="#C3CAD4" stroke-width="1.4">
-          <path d="M195 70  C330 70, 360 175, 432 190"/>
-          <path d="M195 122 C330 122, 365 182, 432 194"/>
-          <path d="M195 174 C320 174, 380 190, 432 198"/>
-          <path d="M195 226 C320 226, 380 210, 432 202"/>
-          <path d="M195 278 C330 278, 365 218, 432 206"/>
-          <path d="M195 330 C330 330, 360 225, 432 210"/>
-        </g>
-        <!-- particles: sources → core -->
-        <g>
-          <circle class="dm-particle" r="3" fill="#2563EB"><animateMotion dur="2.6s" repeatCount="indefinite" path="M195 70 C330 70, 360 175, 432 190"/></circle>
-          <circle class="dm-particle" r="3" fill="#128C6A"><animateMotion dur="2.9s" begin=".4s" repeatCount="indefinite" path="M195 122 C330 122, 365 182, 432 194"/></circle>
-          <circle class="dm-particle" r="3" fill="#B45309"><animateMotion dur="2.4s" begin=".8s" repeatCount="indefinite" path="M195 174 C320 174, 380 190, 432 198"/></circle>
-          <circle class="dm-particle" r="3" fill="#7C3AED"><animateMotion dur="3.1s" begin="1.1s" repeatCount="indefinite" path="M195 226 C320 226, 380 210, 432 202"/></circle>
-          <circle class="dm-particle" r="3" fill="#0E7490"><animateMotion dur="2.7s" begin=".6s" repeatCount="indefinite" path="M195 278 C330 278, 365 218, 432 206"/></circle>
-          <circle class="dm-particle" r="3" fill="#C0392B"><animateMotion dur="2.5s" begin="1.4s" repeatCount="indefinite" path="M195 330 C330 330, 360 225, 432 210"/></circle>
-        </g>
+      <div class="dmc-body">
+        <aside class="dmc-sources">
+          <div class="dmc-sources-h">Connected sources</div>
+          <div class="dmc-src" data-src="github"><span class="sdot" style="background:#93C5FD"></span>GitHub<span class="sync">live</span></div>
+          <div class="dmc-src" data-src="jira"><span class="sdot" style="background:#6EE7B7"></span>Jira<span class="sync">live</span></div>
+          <div class="dmc-src" data-src="ci"><span class="sdot" style="background:#FCD34D"></span>CI/CD<span class="sync">live</span></div>
+          <div class="dmc-src" data-src="slack"><span class="sdot" style="background:#C4B5FD"></span>Slack<span class="sync">live</span></div>
+          <div class="dmc-src" data-src="ai"><span class="sdot" style="background:#FDBA74"></span>Claude &amp; Copilot<span class="sync">live</span></div>
+          <div class="dmc-src" data-src="policy"><span class="sdot" style="background:#5B9BFF"></span>Policy engine<span class="sync">live</span></div>
+          <div class="dmc-core">
+            <div class="dmc-core-inner"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg><div><div class="ct">Dockmaster AI</div><div class="cs">MCP · Claude · ChatGPT</div></div></div>
+          </div>
+        </aside>
 
-        <!-- ══ source nodes ══ -->
-        <g font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#1A2B42">
-          <g><rect x="20" y="55" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="64" width="12" height="12" rx="3" fill="#1A2B42"/><text x="56" y="74">GitHub</text></g>
-          <g><rect x="20" y="107" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="116" width="12" height="12" rx="3" fill="#128C6A"/><text x="56" y="126">Jira</text></g>
-          <g><rect x="20" y="159" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="168" width="12" height="12" rx="3" fill="#B45309"/><text x="56" y="178">CI/CD pipelines</text></g>
-          <g><rect x="20" y="211" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="220" width="12" height="12" rx="3" fill="#611F69"/><text x="56" y="230">Slack</text></g>
-          <g><rect x="20" y="263" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="272" width="12" height="12" rx="3" fill="#C0662B"/><text x="56" y="282">Claude &amp; Copilot</text></g>
-          <g><rect x="20" y="315" width="175" height="30" rx="8" fill="#fff" stroke="rgba(14,32,56,.1)"/><rect x="34" y="324" width="12" height="12" rx="3" fill="#2563EB"/><text x="56" y="334">Policy engine</text></g>
-        </g>
-
-        <!-- ══ connectors: core → domains ══ -->
-        <g fill="none" stroke-width="1.6">
-          <path class="dm-conn" id="dmc-gov"  d="M568 190 C640 175, 660 90,  740 90"  stroke="#2563EB" stroke-opacity=".9"/>
-          <path class="dm-conn" id="dmc-risk" d="M568 197 C640 190, 660 163, 740 163" stroke="#B45309" stroke-opacity=".35"/>
-          <path class="dm-conn" id="dmc-comp" d="M568 203 C640 210, 660 237, 740 237" stroke="#0E7490" stroke-opacity=".35"/>
-          <path class="dm-conn" id="dmc-prod" d="M568 210 C640 225, 660 310, 740 310" stroke="#7C3AED" stroke-opacity=".35"/>
-        </g>
-        <g>
-          <circle class="dm-particle" r="3.5" fill="#2563EB"><animateMotion dur="2.2s" repeatCount="indefinite" path="M568 190 C640 175, 660 90, 740 90"/></circle>
-          <circle class="dm-particle" r="3.5" fill="#B45309"><animateMotion dur="2.5s" begin=".5s" repeatCount="indefinite" path="M568 197 C640 190, 660 163, 740 163"/></circle>
-          <circle class="dm-particle" r="3.5" fill="#0E7490"><animateMotion dur="2.4s" begin="1s" repeatCount="indefinite" path="M568 203 C640 210, 660 237, 740 237"/></circle>
-          <circle class="dm-particle" r="3.5" fill="#7C3AED"><animateMotion dur="2.6s" begin="1.4s" repeatCount="indefinite" path="M568 210 C640 225, 660 310, 740 310"/></circle>
-        </g>
-
-        <!-- ══ Dockmaster core ══ -->
-        <circle class="dm-core-ring2" cx="500" cy="200" r="70" fill="none" stroke="#2563EB" stroke-width="2" opacity=".4"/>
-        <g class="dm-core-ring">
-          <circle cx="500" cy="200" r="70" fill="url(#coreGrad)"/>
-          <circle cx="500" cy="200" r="70" fill="none" stroke="rgba(91,155,255,.4)" stroke-width="5"/>
-        </g>
-        <g transform="translate(500,200)">
-          <g stroke="#FAF7F1" stroke-width="3.4" fill="none" stroke-linecap="round" transform="translate(0,-8) scale(.85)"><circle cx="0" cy="-18.5" r="4.5"/><path d="M0 -14v30"/><path d="M-10 -6h20"/><path d="M-18 4C-15.5 12.5 -8.5 16.5 0 16.5"/></g>
-          <path d="M0 8 L14.5 -13" stroke="#5B9BFF" stroke-width="3.6" fill="none" stroke-linecap="round" transform="translate(0,-8) scale(.85)"/>
-          <text x="0" y="34" text-anchor="middle" font-family="Source Serif 4,serif" font-size="15" fill="#FAF7F1">Dockmaster</text>
-        </g>
-
-        <!-- ══ domain outcome cards (clickable) ══ -->
-        <g class="dm-dom" data-domain="gov" role="button" tabindex="0">
-          <rect class="dm-dom-box" x="740" y="66" width="240" height="48" rx="12" fill="#EAF0FE" stroke="#2563EB" stroke-width="1.5"/>
-          <circle cx="762" cy="90" r="5" fill="#2563EB"/>
-          <text class="dm-dom-txt" x="780" y="86" font-family="Inter,sans-serif" font-size="14.5" font-weight="700" fill="#0E2038">Governance</text>
-          <text x="780" y="102" font-family="Inter,sans-serif" font-size="11.5" fill="#526075">Policy gates, enforced</text>
-        </g>
-        <g class="dm-dom" data-domain="risk" role="button" tabindex="0">
-          <rect class="dm-dom-box" x="740" y="139" width="240" height="48" rx="12" fill="#fff" stroke="rgba(14,32,56,.12)" stroke-width="1.5"/>
-          <circle cx="762" cy="163" r="5" fill="#B45309"/>
-          <text class="dm-dom-txt" x="780" y="159" font-family="Inter,sans-serif" font-size="14.5" font-weight="700" fill="#0E2038">Risk</text>
-          <text x="780" y="175" font-family="Inter,sans-serif" font-size="11.5" fill="#526075">Every diff, scored</text>
-        </g>
-        <g class="dm-dom" data-domain="comp" role="button" tabindex="0">
-          <rect class="dm-dom-box" x="740" y="213" width="240" height="48" rx="12" fill="#fff" stroke="rgba(14,32,56,.12)" stroke-width="1.5"/>
-          <circle cx="762" cy="237" r="5" fill="#0E7490"/>
-          <text class="dm-dom-txt" x="780" y="233" font-family="Inter,sans-serif" font-size="14.5" font-weight="700" fill="#0E2038">Compliance</text>
-          <text x="780" y="249" font-family="Inter,sans-serif" font-size="11.5" fill="#526075">Audit evidence, ready</text>
-        </g>
-        <g class="dm-dom" data-domain="prod" role="button" tabindex="0">
-          <rect class="dm-dom-box" x="740" y="287" width="240" height="48" rx="12" fill="#fff" stroke="rgba(14,32,56,.12)" stroke-width="1.5"/>
-          <circle cx="762" cy="311" r="5" fill="#7C3AED"/>
-          <text class="dm-dom-txt" x="780" y="307" font-family="Inter,sans-serif" font-size="14.5" font-weight="700" fill="#0E2038">Productivity</text>
-          <text x="780" y="323" font-family="Inter,sans-serif" font-size="11.5" fill="#526075">Spend &amp; flow, tracked</text>
-        </g>
-      </svg>
+        <div class="dmc-conv">
+          <div class="dmc-conv-head"><span class="hash">#</span> release-governance <span style="margin-left:auto;color:rgba(255,255,255,.35)">answering as <b style="color:#fff">Dockmaster</b></span></div>
+          <div class="dmc-conv-body">
+            <div class="dmc-msg">
+              <div class="dmc-av" style="background:#B45309;">J</div>
+              <div class="dmc-mc">
+                <div class="dmc-who">John <span class="t">2:14 PM</span></div>
+                <div class="dmc-q"><span id="type-target"></span><span class="caret"></span></div>
+              </div>
+            </div>
+            <div class="dmc-msg dmc-a" id="chat-answer-msg">
+              <div class="dmc-av" style="background:#16304F;"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
+              <div class="dmc-mc">
+                <div class="dmc-who">Dockmaster <span class="badge">AI</span><span class="t">2:14 PM</span></div>
+                <div id="chat-answer" class="dmc-a-body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Domain answer: Dockmaster replies in Slack -->
-    <div class="dm-answer-wrap reveal d2">
-      <div class="dm-answer-head">Ask Dockmaster about <b id="dm-domain-name">Governance</b> <span class="dm-ah-dot" id="dm-domain-dot" style="background:#2563EB;"></span></div>
-      <div class="slack-card">
-          <div class="sl-shell">
-          <div class="sl-side">
-            <div class="sl-ws">Acme Eng <span class="chev">▾</span></div>
-            <div class="sl-sec">Channels</div>
-            <div class="sl-ch"><span class="hash">#</span>deploys</div>
-            <div class="sl-ch"><span class="hash">#</span>eng-releases <span class="badge">3</span></div>
-            <div class="sl-ch active"><span class="hash">#</span>release-governance</div>
-            <div class="sl-ch"><span class="hash">#</span>incidents</div>
-            <div class="sl-sec">Direct messages</div>
-            <div class="sl-ch dm"><span class="sl-dm-dot"></span>Dockmaster</div>
-            <div class="sl-ch dm"><span class="sl-dm-dot" style="background:transparent;border-color:rgba(255,255,255,.4);"></span>Priya N</div>
-          </div>
-          <div class="sl-main">
-          <div class="sl-head">
-            <span class="sl-hash">#</span> release-governance
-            <span class="sl-meta"><span class="sl-live"></span> Dockmaster is active</span>
-          </div>
-          <div class="sl-body">
-            <div class="sl-day"><span>Today</span></div>
-            <div class="sl-msg">
-              <div class="sl-av" style="background:#B45309;">J</div>
-              <div class="sl-msg-c">
-                <div class="sl-who">John <span class="sl-time">2:14 PM</span></div>
-                <div class="sl-text"><span id="type-target"></span><span class="caret"></span></div>
-              </div>
-            </div>
-            <div class="sl-msg answer" id="chat-answer-msg">
-              <div class="sl-av" style="background:var(--navy);">
-                <svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg>
-              </div>
-              <div class="sl-msg-c">
-                <div class="sl-who">Dockmaster <span class="sl-app">APP</span> <span class="sl-time">2:14 PM</span></div>
-                <div id="chat-answer" class="sl-text"></div>
-              </div>
-            </div>
-          </div>
-          <div class="sl-input"><span class="plus">+</span> Message #release-governance</div>
-          </div><!-- /sl-main -->
-          </div><!-- /sl-shell -->
-        </div><!-- /slack-card -->
-      </div><!-- /dm-answer-wrap -->
-    </div><!-- /wrap -->
+  </div><!-- /wrap -->
 </section>
 <!-- ═══ CREW ═══ -->
 <section class="crew" id="crew">
@@ -1703,47 +1611,43 @@
     "Who approved the last prod deploy?"
   ];
   const ANSWERS = [
-    // 1 · projects at risk
-    `Here's this week's risk picture:
-     <div class="sl-att red"><b>Project Phoenix</b><span class="tag risk">AT RISK</span></div>
-     <div class="sl-att amber"><b>Project Atlas</b><span class="tag watch">WATCH</span></div>
-     <div class="sl-att green"><b>Release 4.2</b><span class="tag ok">ON TRACK</span></div>
-     <div class="sl-att blue"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags clear.</div>
-     <div class="sl-actions"><span class="sl-btn primary">Hold release train</span><span class="sl-btn">View evidence</span></div>
-     <div class="sl-src">Sources: GitHub · Jira · CI logs · Policy engine · evidence attached</div>
-     <div class="sl-reactions"><span class="sl-react">👀 3</span><span class="sl-react">✅ 2</span></div>`,
-    // 2 · release 4.2 safe?
-    `Yes — cleared on every dimension:
-     <div class="sl-att green"><b>Policy gates · 4 of 4</b><span class="tag ok">PASSED</span></div>
-     <div class="sl-att green"><b>Risk Agent · 214 diffs read</b><span class="tag ok">NO FLAGS</span></div>
-     <div class="sl-att green"><b>Human approvals · 2 of 2</b><span class="tag ok">LOGGED</span></div>
-     <div class="sl-att blue"><b>Readiness 94/100.</b> All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
-     <div class="sl-actions"><span class="sl-btn primary">Approve deploy</span><span class="sl-btn">Full report</span></div>
-     <div class="sl-src">Sources: Policy engine · CI · approvals log · evidence attached</div>
-     <div class="sl-reactions"><span class="sl-react">🚀 4</span><span class="sl-react">✅ 2</span></div>`,
-    // 3 · AI spend
-    `Spend by team, this month:
-     <div class="sl-att green"><b>Platform</b><span class="tag ok">$14.2K · efficient</span></div>
-     <div class="sl-att green"><b>Payments</b><span class="tag ok">$10.9K · efficient</span></div>
-     <div class="sl-att amber"><b>Mobile</b><span class="tag watch">$9.3K · ▲ 32%</span></div>
-     <div class="sl-att blue"><b>Watch Mobile:</b> spend rose 32% with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
-     <div class="sl-actions"><span class="sl-btn primary">Open spend report</span><span class="sl-btn">Alert Mobile lead</span></div>
-     <div class="sl-src">Sources: token logs · billing · delivery metrics per team</div>
-     <div class="sl-reactions"><span class="sl-react">👀 2</span><span class="sl-react">💸 1</span></div>`,
-    // 4 · who approved
-    `Found it in the approvals log:
-     <div class="sl-att green"><b>Approver · Priya N, Eng Lead</b><span class="tag ok">VERIFIED</span></div>
-     <div class="sl-att green"><b>Gate · prod-deploy-approval</b><span class="tag ok">PASSED</span></div>
-     <div class="sl-att green"><b>Evidence · 14 records</b><span class="tag ok">EXPORTABLE</span></div>
-     <div class="sl-att blue"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
-     <div class="sl-actions"><span class="sl-btn primary">Export audit trail</span><span class="sl-btn">Open thread</span></div>
-     <div class="sl-src">Sources: approvals log · Risk Agent report · audit trail</div>
-     <div class="sl-reactions"><span class="sl-react">✅ 3</span><span class="sl-react">📎 1</span></div>`
-  ];
+    // 0 · projects at risk (Governance)
+    `<div class="lead-in">Here's this week's risk picture:</div>
+     <div class="dmc-row red"><b>Project Phoenix</b><span class="dmc-tag risk">AT RISK</span></div>
+     <div class="dmc-row amber"><b>Project Atlas</b><span class="dmc-tag watch">WATCH</span></div>
+     <div class="dmc-row green"><b>Release 4.2</b><span class="dmc-tag ok">ON TRACK</span></div>
+     <div class="dmc-note"><b>Recommendation:</b> Phoenix is failing 2 of 4 policy gates: 3 unreviewed AI-authored merges and a stale QA sign-off. Suggest holding the release train until the Risk Agent's flags clear.</div>
+     <div class="dmc-acts"><span class="dmc-btn primary">Hold release train</span><span class="dmc-btn">View evidence</span></div>
+     <div class="dmc-src-line">Consulted: GitHub · Jira · CI/CD · Policy engine</div>`,
+    // 1 · safe to ship (Risk)
+    `<div class="lead-in">Yes — cleared on every dimension:</div>
+     <div class="dmc-row green"><b>Policy gates · 4 of 4</b><span class="dmc-tag ok">PASSED</span></div>
+     <div class="dmc-row green"><b>Risk Agent · 214 diffs read</b><span class="dmc-tag ok">NO FLAGS</span></div>
+     <div class="dmc-row green"><b>Human approvals · 2 of 2</b><span class="dmc-tag ok">LOGGED</span></div>
+     <div class="dmc-note"><b>Readiness 94/100.</b> All gates passed and both required human approvals are logged. Nothing in this release is unreviewed.</div>
+     <div class="dmc-acts"><span class="dmc-btn primary">Approve deploy</span><span class="dmc-btn">Full report</span></div>
+     <div class="dmc-src-line">Consulted: Policy engine · CI/CD · Slack approvals</div>`,
+    // 2 · AI spend (Productivity)
+    `<div class="lead-in">Spend by team, this month:</div>
+     <div class="dmc-row green"><b>Platform</b><span class="dmc-tag ok">$14.2K · efficient</span></div>
+     <div class="dmc-row green"><b>Payments</b><span class="dmc-tag ok">$10.9K · efficient</span></div>
+     <div class="dmc-row amber"><b>Mobile</b><span class="dmc-tag watch">$9.3K · ▲ 32%</span></div>
+     <div class="dmc-note"><b>Watch Mobile:</b> spend rose 32% with flat output. Overall $42K/mo maps to +18% delivery speed, so the investment is working everywhere else.</div>
+     <div class="dmc-acts"><span class="dmc-btn primary">Open spend report</span><span class="dmc-btn">Alert Mobile lead</span></div>
+     <div class="dmc-src-line">Consulted: Claude &amp; Copilot · billing · CI/CD</div>`,
+    // 3 · who approved (Compliance)
+    `<div class="lead-in">Found it in the approvals log:</div>
+     <div class="dmc-row green"><b>Approver · Priya N, Eng Lead</b><span class="dmc-tag ok">VERIFIED</span></div>
+     <div class="dmc-row green"><b>Gate · prod-deploy-approval</b><span class="dmc-tag ok">PASSED</span></div>
+     <div class="dmc-row green"><b>Evidence · 14 records</b><span class="dmc-tag ok">EXPORTABLE</span></div>
+     <div class="dmc-note"><b>Priya N</b> approved release 4.1 to production on Tuesday at 16:42, after the Risk Agent cleared 2 flags. The full decision trail exports in one click.</div>
+     <div class="dmc-acts"><span class="dmc-btn primary">Export audit trail</span><span class="dmc-btn">Open thread</span></div>
+     <div class="dmc-src-line">Consulted: Slack approvals · Policy engine · GitHub</div>`
+  ];;
   const target = document.getElementById('type-target');
   const answerEl = document.getElementById('chat-answer');
   const answerMsg = document.getElementById('chat-answer-msg');
-  let qi = 0, started = false;
+  let started = false;
 
   function typeText(text, answerHTML, cb) {
     let i = 0;
@@ -1753,61 +1657,41 @@
       target.textContent = text.slice(0, ++i);
       if (i >= text.length) {
         clearInterval(t);
-        setTimeout(() => {
-          answerEl.innerHTML = answerHTML;
-          answerMsg.classList.add('on');
-          cb && cb();
-        }, 350);
+        setTimeout(() => { answerEl.innerHTML = answerHTML; answerMsg.classList.add('on'); cb && cb(); }, 350);
       }
-    }, 38);
+    }, 34);
   }
-  // ── Domain-driven flow: map each domain to its question/answer + accent ──
-  // questions/ANSWERS order: 0 risk-list, 1 safe-to-ship, 2 spend, 3 who-approved
+
+  // domain → question index + which sources light up
   const DOMAINS = [
-    { key: 'gov',  name: 'Governance',   q: 1, color: '#2563EB' },
-    { key: 'risk', name: 'Risk',         q: 0, color: '#B45309' },
-    { key: 'comp', name: 'Compliance',   q: 3, color: '#0E7490' },
-    { key: 'prod', name: 'Productivity', q: 2, color: '#7C3AED' },
+    { key: 'gov',  q: 0, srcs: ['github','jira','ci','policy'] },
+    { key: 'risk', q: 1, srcs: ['policy','ci','slack'] },
+    { key: 'comp', q: 3, srcs: ['slack','policy','github'] },
+    { key: 'prod', q: 2, srcs: ['ai','ci'] },
   ];
   let di = 0, autoTimer = null, userPicked = false;
-  const domNodes = [...document.querySelectorAll('.dm-dom')];
+  const dmcTabs = [...document.querySelectorAll('.dmc-tab')];
+  const dmcSrcs = [...document.querySelectorAll('.dmc-src')];
 
-  function highlightDomain(key) {
-    domNodes.forEach(n => {
-      const active = n.dataset.domain === key;
-      const box = n.querySelector('.dm-dom-box');
-      box.setAttribute('fill', active ? '#EAF0FE' : '#fff');
-      box.setAttribute('stroke', active ? DOMAINS.find(d => d.key === key).color : 'rgba(14,32,56,.12)');
-      box.setAttribute('stroke-width', active ? '2' : '1.5');
-    });
-    ['gov','risk','comp','prod'].forEach(k => {
-      const c = document.getElementById('dmc-' + k);
-      if (c) c.setAttribute('stroke-opacity', k === key ? '.9' : '.3');
-    });
+  function lightSources(keys) {
+    dmcSrcs.forEach(el => el.classList.toggle('hot', keys.includes(el.dataset.src)));
   }
-
   function showDomain(idx, fromUser) {
     di = idx;
     const d = DOMAINS[idx];
-    document.getElementById('dm-domain-name').textContent = d.name;
-    document.getElementById('dm-domain-dot').style.background = d.color;
-    highlightDomain(d.key);
+    dmcTabs.forEach((t, i) => t.classList.toggle('active', i === idx));
+    lightSources(d.srcs);
     typeText(questions[d.q], ANSWERS[d.q], () => {
       if (!userPicked) autoTimer = setTimeout(() => showDomain((di + 1) % DOMAINS.length, false), 6000);
     });
     if (fromUser) { userPicked = true; clearTimeout(autoTimer); }
   }
-
-  domNodes.forEach(n => {
-    const idx = DOMAINS.findIndex(d => d.key === n.dataset.domain);
-    n.addEventListener('click', () => showDomain(idx, true));
-    n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDomain(idx, true); } });
-  });
+  dmcTabs.forEach((t, i) => t.addEventListener('click', () => showDomain(i, true)));
 
   const chatIO = new IntersectionObserver(es => {
     es.forEach(e => { if (e.isIntersecting && !started) { started = true; showDomain(0, false); chatIO.disconnect(); } });
   }, { threshold: 0.3 });
-  chatIO.observe(document.querySelector('.dm-flow'));
+  chatIO.observe(document.getElementById('dm-console'));
 
   // ── Animated counters ──
   function animateCount(el) {
