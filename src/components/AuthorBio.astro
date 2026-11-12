@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { authors: CollectionEntry<'authors'>[]; }
+const { authors } = Astro.props;
+
+const initialsOf = (a: CollectionEntry<'authors'>) =>
+  a.data.initials ??
+  a.data.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+---
+<section class="author-bios" aria-label={authors.length > 1 ? 'Authors' : 'Author'}>
+  {authors.map((a) => (
+    <aside class="author-bio">
+      {a.data.avatar
+        ? <img class="ab-avatar-img" src={a.data.avatar} alt="" width="48" height="48" />
+        : <div class="ab-avatar" aria-hidden="true">{initialsOf(a)}</div>}
+      <div class="ab-body">
+        <a class="ab-name" href={`/blog/author/${a.id}`}>{a.data.name}</a>
+        <div class="ab-title">{a.data.title} &middot; {a.data.company}</div>
+        <p>{a.data.bio}</p>
+        <div class="ab-links">
+          <a href={`/blog/author/${a.id}`}>All posts</a>
+          {a.data.linkedin && <a href={a.data.linkedin} rel="noopener">LinkedIn</a>}
+          {a.data.email && <a href={`mailto:${a.data.email}`}>Email</a>}
+          {a.data.website && <a href={a.data.website} rel="noopener">Website</a>}
+        </div>
+      </div>
+    </aside>
+  ))}
+</section>

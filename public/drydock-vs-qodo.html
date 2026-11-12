@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DryDock vs Jellyfish (2026): Engineering Intelligence vs Delivery Governance</title>
-<meta name="description" content="Jellyfish measures engineering activity for the board. DryDock enforces policy and generates evidence. Measurement vs governance, honestly compared.">
+<title>DryDock vs Qodo (2026): AI Code Review vs AI Delivery Governance</title>
+<meta name="description" content="Qodo reviews pull requests. DryDock governs the whole release. An honest comparison of the two layers, when you need each, and why many teams run both.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://usedrydock.com/drydock-vs-jellyfish.html">
+<link rel="canonical" href="https://usedrydock.com/drydock-vs-qodo.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="DryDock AI">
-<meta property="og:title" content="DryDock vs Jellyfish (2026): Engineering Intelligence vs Delivery Governance">
-<meta property="og:description" content="Jellyfish measures engineering activity for the board. DryDock enforces policy and generates evidence. Measurement vs governance, honestly compared.">
-<meta property="og:url" content="https://usedrydock.com/drydock-vs-jellyfish.html">
+<meta property="og:title" content="DryDock vs Qodo (2026): AI Code Review vs AI Delivery Governance">
+<meta property="og:description" content="Qodo reviews pull requests. DryDock governs the whole release. An honest comparison of the two layers, when you need each, and why many teams run both.">
+<meta property="og:url" content="https://usedrydock.com/drydock-vs-qodo.html">
 <meta property="og:image" content="https://usedrydock.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="%230E2038"/><g stroke="%23FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.5"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="%233B82F6" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'>
@@ -56,6 +56,9 @@
   .related { border-top:1px solid var(--line); margin-top:2.5rem; padding-top:1.5rem; font-size:14.5px; }
   footer { border-top:1px solid var(--line); padding:2rem clamp(1.25rem,4vw,3rem); font-size:13px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
   footer a { color:var(--muted); }
+  .nav-right { display:flex; align-items:center; gap:1.3rem; }
+  .nav-link { font-size:14.5px; color:var(--muted); text-decoration:none; font-weight:600; }
+  .nav-link:hover { color:var(--navy); }
 </style>
 </head>
 <body>
@@ -64,39 +67,39 @@
     <span class="logo-mark"><svg viewBox="0 0 64 64" fill="none"><g stroke="#FAF7F1" stroke-width="4.5" fill="none" stroke-linecap="round"><circle cx="32" cy="13.5" r="4.8"/><path d="M32 18v30"/><path d="M22 26h20"/><path d="M14 36c2.5 8.5 9.5 12.5 18 12.5"/></g><path d="M32 48.5 51 27" stroke="#5B9BFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span>
     DryDock&nbsp;<span class="ai">AI</span>
   </a>
-  <a class="nav-cta" href="/#early-access">Request early access</a>
+  <span class="nav-right"><a class="nav-link" href="/blog">Blog</a><a class="nav-cta" href="/#early-access">Request early access</a></span>
 </nav>
 <article>
   <div class="kicker">Honest comparison</div>
-  <h1>DryDock vs Jellyfish</h1>
+  <h1>DryDock vs Qodo</h1>
   <div class="byline">By Suralal S, VP of Technology · Updated July 2026</div>
-  <p class="lead">Jellyfish is the strongest platform for explaining engineering investment to a CFO or board. DryDock answers a different question: not "where did the effort go?" but "was what shipped governed, and can I prove it?"</p>
-  <p>Jellyfish is engineering intelligence: allocation, DORA metrics, AI-impact reporting (including integrations that pull signals from Qodo and Claude Review). It is deliberately passive — a measurement layer. DryDock is an enforcement layer: policy gates that block non-compliant releases, escalations routed to humans with evidence, and a continuously-built audit trail. One reports; the other acts.</p>
+  <p class="lead">Qodo is one of the best AI code review platforms available, and this is not a takedown. The honest answer is that Qodo and DryDock operate at different layers, and many teams should run both.</p>
+  <p>Qodo positions itself as "governing code at the speed AI writes it" — and at the pull-request level, it delivers: context-aware review, test generation, and enforceable coding standards per diff. DryDock operates one layer up: it consumes review verdicts (from Qodo, Copilot review, or humans) as one signal among many, applies release-level policy, routes the decisions that need a person, and generates the audit evidence a compliance team can export.</p>
   <h2>Side by side</h2>
   <table>
-    <tr><th></th><th>Jellyfish</th><th>DryDock</th></tr>
-    <tr><td>Primary job</td><td>Measure engineering activity, allocation, and AI impact for leadership</td><td class="dd">Enforce policy, route human decisions, generate audit evidence</td></tr>
-    <tr><td>Mode</td><td>Passive: dashboards and reports</td><td class="dd">Active: clears, blocks, escalates, logs</td></tr>
-    <tr><td>AI-authored code</td><td>Reports AI impact and ROI at metadata level</td><td class="dd">Governs it: separate risk scoring and stricter gates</td></tr>
-    <tr><td>Can it stop a bad release?</td><td>No — it will tell you afterwards</td><td class="dd">Yes — that is the product</td></tr>
-    <tr><td>Audit evidence</td><td>Activity reports</td><td class="dd">Decision-level evidence log, exportable per framework</td></tr>
-    <tr><td>Human-in-the-loop</td><td>Not applicable</td><td class="dd">Policy-routed approvals with recommendations attached</td></tr>
-    <tr><td>Best buyer</td><td>VPs justifying spend to CFO / board</td><td class="dd">CTOs / VPs accountable for safety and compliance of releases</td></tr>
+    <tr><th></th><th>Qodo</th><th>DryDock</th></tr>
+    <tr><td>Primary job</td><td>Review every pull request with AI; enforce code standards per diff</td><td class="dd">Govern every release: policy gates, human routing, audit evidence</td></tr>
+    <tr><td>Layer</td><td>Pull request / code level</td><td class="dd">Delivery pipeline level — idea to production</td></tr>
+    <tr><td>AI-authored code</td><td>Reviews it like any diff, with rules</td><td class="dd">Tags it, scores it separately, applies stricter gates by policy</td></tr>
+    <tr><td>Human-in-the-loop</td><td>Reviewer comments on PRs</td><td class="dd">Policy routes named decisions to named roles, with evidence attached</td></tr>
+    <tr><td>Audit evidence</td><td>PR history</td><td class="dd">Continuous evidence log: SOC 2 / ISO 27001 / EU AI Act export</td></tr>
+    <tr><td>Release readiness</td><td>Not its job</td><td class="dd">Scored before every release</td></tr>
+    <tr><td>Best buyer</td><td>Engineering teams improving review quality</td><td class="dd">CTOs / VPs accountable for what ships</td></tr>
   </table>
   <h2>The verdict</h2>
-  <div class="verdict"><p>Choose <strong>Jellyfish</strong> to explain engineering investment upward. Choose <strong>DryDock</strong> to control what ships and prove it was controlled. They can coexist: Jellyfish tells the board where the effort went; DryDock proves the output was governed.</p></div>
+  <div class="verdict"><p>Choose <strong>Qodo</strong> if your bottleneck is PR review quality and test coverage. Choose <strong>DryDock</strong> if your problem is release-level: "can I prove what shipped was governed?" Run both if AI writes a large share of your code — Qodo's verdicts become one of the signals DryDock's policy gates consume.</p></div>
   <div class="cta">
     <h2>See governance in action</h2>
     <p>DryDock's crew of specialised AI agents enforces policy, routes human decisions, and builds your audit evidence continuously — live in your pipeline in a week.</p>
     <a class="btn" href="/#early-access">Request early access</a>
   </div>
   <div class="related">
-    <strong>Related:</strong> <a href="/what-is-ai-delivery-governance.html">What is AI Delivery Governance?</a> · <a href="/drydock-vs-qodo.html">DryDock vs Qodo</a> · <a href="/drydock-vs-linearb.html">DryDock vs LinearB</a>
+    <strong>Related:</strong> <a href="/what-is-ai-delivery-governance.html">What is AI Delivery Governance?</a> · <a href="/drydock-vs-jellyfish.html">DryDock vs Jellyfish</a> · <a href="/drydock-vs-linearb.html">DryDock vs LinearB</a>
   </div>
 </article>
 <footer>
   <span>© 2026 DryDock AI · usedrydock.com</span>
-  <span><a href="/">Home</a> · <a href="/#faq">FAQ</a> · <a href="mailto:suralal.s@neoito.com">Contact</a></span>
+  <span><a href="/">Home</a> · <a href="/blog">Blog</a> · <a href="/#faq">FAQ</a> · <a href="mailto:suralal.s@neoito.com">Contact</a></span>
 </footer>
 </body>
 </html>

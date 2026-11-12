@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  authors: CollectionEntry<'authors'>[];
+  pubDate: Date;
+  updatedDate?: Date;
+  readTime: number;
+}
+const { authors, pubDate, updatedDate, readTime } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const initialsOf = (a: CollectionEntry<'authors'>) =>
+  a.data.initials ??
+  a.data.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+---
+<div class="byline">
+  <div class="by-faces" aria-hidden="true">
+    {authors.map((a) => (
+      a.data.avatar
+        ? <img class="by-face" src={a.data.avatar} alt="" width="30" height="30" />
+        : <span class="by-face">{initialsOf(a)}</span>
+    ))}
+  </div>
+  <div class="by-text">
+    <div class="by-names">
+      {authors.map((a, i) => (
+        <>
+          {i > 0 && <span class="by-sep">{i === authors.length - 1 ? ' and ' : ', '}</span>}
+          <a href={`/blog/author/${a.id}`}>{a.data.name}</a>
+        </>
+      ))}
+    </div>
+    <div class="by-meta">
+      {authors.length === 1 && <>{authors[0].data.title} &middot; </>}
+      <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+      {updatedDate && (
+        <> &middot; updated <time datetime={updatedDate.toISOString()}>{fmt(updatedDate)}</time></>
+      )}
+      &middot; {readTime} min read
+    </div>
+  </div>
+</div>

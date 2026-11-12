@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, getEntries } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Resolve author references once, keyed by post id
+const authorMap = new Map<string, string>();
+for (const p of posts) {
+  const as = await getEntries(p.data.authors);
+  authorMap.set(p.id, as.map((a) => a.data.name).join(' & '));
+}
+
+const [featured, ...rest] = posts;
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+const readTime = (body: string | undefined) =>
+  Math.max(1, Math.round((body ?? '').split(/\s+/).filter(Boolean).length / 225));
+
+// Pillars present, ordered by how many posts each has
+const counts = posts.reduce<Record<string, number>>((acc, p) => {
+  acc[p.data.pillar] = (acc[p.data.pillar] ?? 0) + 1;
+  return acc;
+}, {});
+const pillars = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'DryDock AI Blog',
+  description:
+    'Writing on AI delivery governance — approvals, evidence, risk and cost in software delivery where AI writes most of the code.',
+  url: 'https://usedrydock.com/blog',
+  author: { '@type': 'Person', name: 'Suralal S', jobTitle: 'VP of Technology' },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    description: p.data.description,
+    url: `https://usedrydock.com/blog/${p.id}`,
+    datePublished: p.data.pubDate.toISOString(),
+    author: { '@type': 'Person', name: p.data.author },
+  })),
+};
+---
+<BaseLayout
+  title="Blog — AI Delivery Governance | DryDock AI"
+  description="Writing on governing software delivery in the AI era: approval gates, audit evidence, risk routing, AI tooling cost, and what changes when machines write most of the code."
+  schema={schema}
+>
+  <div class="blog-wrap">
+    <header class="blog-head">
+      <div>
+        <div class="kicker">The DryDock blog</div>
+        <h1>Governing delivery when AI writes the code.</h1>
+      </div>
+      <p class="lead">
+        Practical writing on approvals, evidence, risk and cost in modern software delivery.
+        No feature announcements &mdash; just what we are learning from real enterprise release processes.
+      </p>
+    </header>
+
+    {featured && (
+      <a class="featured-card" href={`/blog/${featured.id}`} data-pillar={featured.data.pillar}>
+        <div>
+          <div class="meta">
+            <span class={`pill ${featured.data.pillar}`}>{featured.data.pillar}</span>
+            <time datetime={featured.data.pubDate.toISOString()}>{fmt(featured.data.pubDate)}</time>
+            <span class="readtime">{readTime(featured.body)} min read</span>
+          </div>
+          <div class="card-author">{authorMap.get(featured.id)}</div>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <span class="more">Read the post &rarr;</span>
+        </div>
+        {featured.data.answer && (
+          <div class="feat-side">
+            <div class="lbl">THE SHORT ANSWER</div>
+            <p>{featured.data.answer}</p>
+          </div>
+        )}
+      </a>
+    )}
+
+    {rest.length > 0 && (
+      <div class="blog-bar">
+        <div class="filters" role="group" aria-label="Filter posts by topic">
+          <button data-pillar="all" aria-pressed="true">All</button>
+          {pillars.map((p) => (
+            <button data-pillar={p} aria-pressed="false">{p}</button>
+          ))}
+        </div>
+        <p class="blog-count" id="blog-count">{posts.length} posts</p>
+      </div>
+    )}
+
+    <div class="post-list" id="post-list">
+      {posts.length === 0 && <p class="no-results">First posts landing shortly.</p>}
+      {rest.map((post) => (
+        <article class="post-card" data-pillar={post.data.pillar}>
+          <div class="meta">
+            <span class={`pill ${post.data.pillar}`}>{post.data.pillar}</span>
+            <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+            <span class="readtime">{readTime(post.body)} min read</span>
+          </div>
+          <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+          <div class="card-author">{authorMap.get(post.id)}</div>
+          <p>{post.data.description}</p>
+          <a class="more" href={`/blog/${post.id}`}>Read &rarr;</a>
+        </article>
+      ))}
+      <p class="no-results" id="no-results" hidden>No posts in that topic yet.</p>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var buttons = document.querySelectorAll('.filters button');
+      if (!buttons.length) return;
+
+      // The featured card is filterable too, otherwise a pillar whose only
+      // post happens to be featured would render an empty grid.
+      var featured = document.querySelector('.featured-card');
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
+      var all = featured ? [featured].concat(cards) : cards;
+      var empty = document.getElementById('no-results');
+      var count = document.getElementById('blog-count');
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var want = btn.dataset.pillar;
+          buttons.forEach(function (b) {
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+
+          var shown = 0;
+          all.forEach(function (el) {
+            var match = want === 'all' || el.dataset.pillar === want;
+            el.classList.toggle('hide', !match);
+            if (match) shown++;
+          });
+
+          if (empty) empty.hidden = shown !== 0;
+          if (count) {
+            count.textContent =
+              want === 'all'
+                ? all.length + ' posts'
+                : shown + (shown === 1 ? ' post' : ' posts') + ' in ' + want;
+          }
+        });
+      });
+    })();
+  </script>
+</BaseLayout>
