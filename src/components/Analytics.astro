@@ -1,0 +1,55 @@
+---
+// GA4 with Consent Mode. Nothing loads until the visitor accepts.
+// Mirrors the implementation on the homepage so behaviour is identical.
+const GA_ID = 'G-G37G9XB4MG';
+---
+<script is:inline define:vars={{ GA_ID }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('consent', 'default', { analytics_storage: 'denied' });
+
+  window.ddLoadGA = function () {
+    if (window.__ddGaLoaded) return;
+    window.__ddGaLoaded = true;
+    var sc = document.createElement('script');
+    sc.async = true;
+    sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(sc);
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+    gtag('config', GA_ID);
+  };
+</script>
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <h4>A note on privacy</h4>
+  <p>We use privacy-respecting analytics to understand how the site is used. Nothing runs until you say so, fittingly, for a governance product.</p>
+  <div class="cookie-actions">
+    <button class="ck-accept" id="ck-accept" type="button">Accept</button>
+    <button class="ck-decline" id="ck-decline" type="button">Decline</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var banner = document.getElementById('cookie-banner');
+    if (!banner) return;
+    var choice = null;
+    try { choice = localStorage.getItem('dd-consent'); } catch (e) {}
+    if (choice === 'granted') {
+      window.ddLoadGA();
+    } else if (choice !== 'denied') {
+      setTimeout(function () { banner.classList.add('show'); }, 1200);
+    }
+    function close(val) {
+      try { localStorage.setItem('dd-consent', val); } catch (e) {}
+      banner.classList.remove('show');
+    }
+    document.getElementById('ck-accept').addEventListener('click', function () {
+      window.ddLoadGA(); close('granted');
+    });
+    document.getElementById('ck-decline').addEventListener('click', function () {
+      close('denied');
+    });
+  })();
+</script>

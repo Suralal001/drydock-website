@@ -1,0 +1,67 @@
+---
+import '../styles/light-hero.css';
+const views = [
+  { name: 'Release review', icon: '⑂', title: 'Every change. The full picture.', description: 'Code, checks, and human decisions — connected in one release record.' },
+  { name: 'AI agents', icon: '✧', title: 'Your checks, already connected.', description: 'Specialized agents bring quality and security evidence into the review.' },
+  { name: 'Policy checks', icon: '◇', title: 'Your standards. Every release.', description: 'Surface exceptions and route decisions to the people who own them.' },
+  { name: 'Release evidence', icon: '▤', title: 'A decision you can trace.', description: 'Follow the release from original intent to the final human approval.' },
+];
+---
+<section class="dd-hero" id="top" aria-labelledby="hero-heading">
+  <div class="dd-hero-copy">
+    <a class="dd-announcement" href="#how-it-works"><span class="dd-spark">✦</span> Meet your AI delivery control room <span aria-hidden="true">↗</span></a>
+    <h1 id="hero-heading">Build with AI.<br />Be confident in what you ship.</h1>
+    <p>Move from AI-generated code to accountable releases.<br class="dd-desktop-break" /> Your policies, your people, and every piece of evidence. Connected.</p>
+    <div class="dd-actions"><a class="dd-primary" href="https://calendly.com/suralal-s" target="_blank" rel="noopener">Book a demo <span aria-hidden="true">↗</span></a><button class="dd-secondary" id="dd-tour"><span aria-hidden="true">▷</span> Explore the product</button></div>
+    <span class="dd-note">Start with one real release. No pipeline changes required.</span>
+  </div>
+  <div class="dd-showcase">
+    <div class="dd-product-tabs" role="tablist" aria-label="Explore DryDock">
+      {views.map((view, index) => <button id={`dd-tab-${index}`} role="tab" aria-selected={index === 0 ? 'true' : 'false'} aria-controls="dd-product-panel" tabindex={index === 0 ? 0 : -1} data-view={index}><span aria-hidden="true">{view.icon}</span>{view.name}</button>)}
+    </div>
+    <div class="dd-window" id="dd-product-panel" role="tabpanel" aria-labelledby="dd-tab-0" tabindex="0">
+      <aside class="dd-sidebar"><div class="dd-app-logo"><img src="/drydock-logo-tile.svg" width="25" height="25" alt="" /> DryDock <span>⌄</span></div><div class="dd-workspace-label">WORKSPACE</div><div class="dd-side-item">◫ <span>Overview</span></div><div class="dd-side-item dd-selected">⑂ <span>Release review</span><small>4</small></div><div class="dd-side-item">✧ <span>AI agents</span></div><div class="dd-side-item">◇ <span>Policies</span></div><div class="dd-side-item">▤ <span>Evidence library</span></div><div class="dd-sidebar-bottom"><span class="dd-person">AC</span><span>Acme engineering<small>Team workspace</small></span></div></aside>
+      <div class="dd-workspace"><div class="dd-toolbar"><span>Workspace <b>/</b> <span id="dd-breadcrumb">Release review</span></span><span class="dd-demo-label"><i></i> Interactive preview</span></div>
+        <div class="dd-panel-intro"><div><h2 id="dd-panel-title">Every change. The full picture.</h2><p id="dd-panel-description">Code, checks, and human decisions — connected in one release record.</p></div><span class="dd-count">4 releases <span>↗</span></span></div>
+        <div class="dd-review-layout"><div class="dd-release-list"><div class="dd-list-label">ACTIVE RELEASES <span>＋</span></div><div class="dd-release-row dd-current"><div><span class="dd-status-dot amber"></span><strong>Payment reconciliation</strong><span class="dd-row-arrow">↗</span></div><p>PR #1291 <span>·</span> payments-api</p><small>Human review required</small></div><div class="dd-release-row"><div><span class="dd-status-dot"></span><strong>Improve search indexing</strong></div><p>PR #1288 <span>·</span> search-service</p><small class="dd-green">Ready for release</small></div><div class="dd-release-row"><div><span class="dd-status-dot violet"></span><strong>Update auth middleware</strong></div><p>PR #1286 <span>·</span> identity-service</p><small>Checks in progress</small></div><div class="dd-release-row"><div><span class="dd-status-dot"></span><strong>Fix webhook retries</strong></div><p>PR #1284 <span>·</span> events-api</p><small class="dd-green">Ready for release</small></div><div class="dd-connected"><i></i> Synced with your engineering tools</div></div>
+        <div class="dd-release-detail"><div class="dd-detail-heading"><span>⑂ &nbsp; PR #1291</span><span class="dd-review-badge" id="dd-status">Review required</span></div><h3>Update payment reconciliation</h3><p class="dd-branch">feature/payment-reconcile <span>→</span> main <em>+142</em><b>−28</b></p>
+        <div class="dd-detail-tabs"><span class="dd-active-detail">Overview</span><span>Checks <small>41</small></span><span>Files <small>3</small></span><span>Activity</span></div>
+        <div class="dd-summary"><span>✧</span><div><strong id="dd-summary-title">A little context. A lot of clarity.</strong><p id="dd-summary-copy">Improves payment matching and handles partial refunds. Quality and security checks passed; a senior review is needed.</p></div></div>
+        <div class="dd-checks"><div><span class="dd-check-icon">✓</span><span>Quality checks<small>41 checks passed · 92% coverage</small></span><b>Passed</b></div><div><span class="dd-check-icon">✓</span><span>Security review<small>No blocking findings</small></span><b>Passed</b></div><div class="dd-policy"><span class="dd-policy-icon">◇</span><span>Payment change policy<small>Senior engineer approval required</small></span><button id="dd-policy-button" aria-expanded="false" aria-controls="dd-policy-info">View rule ↗</button></div></div>
+        <p id="dd-policy-info" class="dd-policy-info" hidden>PAY-07: Changes to payment logic require a senior engineer to review the diff, test results, and security evidence before release.</p>
+        <div class="dd-approval"><span class="dd-person">TL</span><div><strong>Tech Lead</strong><small id="dd-approval-text">Ready to review. Full context attached.</small></div><button id="dd-approve">Try demo approval <span>→</span></button></div><p class="dd-live-status" id="dd-live-status" role="status"></p>
+        </div></div>
+      </div>
+    </div>
+    <p class="dd-preview-note">Illustrative workspace. Explore the tabs or try a release approval.</p>
+  </div>
+  <div class="dd-integrations"><p>One connected picture. Across the tools you already use.</p><div><span><img src="/github.svg" alt="" />GitHub</span><span><img src="/jira.svg" alt="" />Jira</span><span><img src="/gitlab.svg" alt="" />GitLab</span><span><img src="/grafana.svg" alt="" />Grafana</span><span><img src="/prometheus.svg" alt="" />Prometheus</span></div></div>
+</section>
+<script define:vars={{ views }}>
+(() => {
+ const root = document.querySelector('.dd-hero');
+ const tabs = [...root.querySelectorAll('[data-view]')];
+ const summaries = [
+ ['A little context. A lot of clarity.', 'Improves payment matching and handles partial refunds. Quality and security checks passed; a senior review is needed.'],
+ ['Specialists working together.', 'Quality and security agents have completed their checks. The policy agent identified a payment change and routed it for senior review.'],
+ ['The right person. The right decision.', 'Policy PAY-07 requires a senior engineer for payment-related changes. Automated checks inform the decision; a human owns the approval.'],
+ ['The story behind the release.', 'PAY-482 intent, PR #1291, 41 test results, security findings, and the review decision are linked to this illustrative release record.']
+ ];
+ function select(index, focus = false) {
+ tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; });
+ root.querySelector('#dd-product-panel').setAttribute('aria-labelledby', `dd-tab-${index}`);
+ root.querySelector('#dd-panel-title').textContent = views[index].title;
+ root.querySelector('#dd-panel-description').textContent = views[index].description;
+ root.querySelector('#dd-breadcrumb').textContent = views[index].name;
+ root.querySelector('#dd-summary-title').textContent = summaries[index][0];
+ root.querySelector('#dd-summary-copy').textContent = summaries[index][1];
+ root.querySelectorAll('.dd-side-item').forEach((item, i) => item.classList.toggle('dd-selected', i === index + 1));
+ if(focus) tabs[index].focus();
+ }
+ tabs.forEach((tab, index) => { tab.addEventListener('click', () => select(index)); tab.addEventListener('keydown', event => { let next; if(event.key === 'ArrowRight') next = (index + 1) % tabs.length; if(event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length; if(event.key === 'Home') next = 0; if(event.key === 'End') next = tabs.length - 1; if(next !== undefined) { event.preventDefault(); select(next, true); } }); });
+ root.querySelector('#dd-tour').addEventListener('click', () => { select(0, true); root.querySelector('.dd-product-tabs').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); });
+ root.querySelector('#dd-policy-button').addEventListener('click', event => { const info = root.querySelector('#dd-policy-info'); info.hidden = !info.hidden; event.currentTarget.setAttribute('aria-expanded', String(!info.hidden)); });
+ let approved = false;
+ root.querySelector('#dd-approve').addEventListener('click', event => { approved = !approved; root.querySelector('#dd-status').textContent = approved ? 'Ready to ship' : 'Review required'; root.querySelector('#dd-status').classList.toggle('dd-approved', approved); root.querySelector('#dd-approval-text').textContent = approved ? 'Demo approval recorded. Evidence linked.' : 'Ready to review. Full context attached.'; event.currentTarget.textContent = approved ? 'Reset preview ↺' : 'Try demo approval →'; root.querySelector('#dd-live-status').textContent = approved ? 'Illustrative approval complete. No live release was changed.' : ''; });
+})();
+</script>

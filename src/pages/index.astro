@@ -1,0 +1,46 @@
+---
+import Analytics from '../components/Analytics.astro';
+import Icon from '../components/MarketingIcon.astro';
+import LightHero from '../components/LightHero.astro';
+import ChallengeSection from '../components/ChallengeSection.astro';
+import ReleaseRecord from '../components/ReleaseRecord.astro';
+import AgentStudio from '../components/AgentStudio.astro';
+import ImpactWorkflow from '../components/ImpactWorkflow.astro';
+import SecurityBoundary from '../components/SecurityBoundary.astro';
+import ClosingSections from '../components/ClosingSections.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+import '../styles/home.css';
+import '../styles/dark-sections.css';
+---
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>DryDock AI — AI Delivery Governance for Engineering Teams</title><meta name="description" content="Govern AI-assisted changes with policy checks, human oversight and release evidence. DryDock connects your engineering tools so your team can make informed release decisions."/><link rel="canonical" href="https://usedrydock.com/"/><link rel="icon" href="/drydock-logo-tile.svg"/><meta property="og:title" content="DryDock AI — Govern AI-generated code before it ships."/><meta property="og:description" content="AI delivery governance. Your policies, your people, your release decisions."/><meta property="og:image" content="https://usedrydock.com/og.png"/><meta property="og:type" content="website"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700;750;800&display=swap" rel="stylesheet"/><script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Organization',name:'DryDock AI',url:'https://usedrydock.com',logo:'https://usedrydock.com/drydock-logo-tile.svg',description:'AI delivery governance for engineering teams.'})}/></head><body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="header reference-header"><a class="brand" href="/" aria-label="DryDock home"><img src="/drydock-logo-tile.svg" width="38" height="38" alt=""/>DryDock <span class="brand-ai">AI</span></a><nav id="main-nav" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#crew">AI agents</a><a href="#insights">Engineering impact</a><a href="#security">Security</a><a href="/blog">Blog</a></nav><a class="button small" href="https://calendly.com/suralal-s" target="_blank" rel="noopener">Book a demo <span>→</span></a><button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">☰</button></header>
+<main id="main">
+<div id="integrations"><LightHero/></div>
+<ChallengeSection/>
+<ReleaseRecord/>
+<AgentStudio/>
+<ImpactWorkflow/>
+<SecurityBoundary/>
+<ClosingSections><div class="access-card"><span class="eyebrow">LET'S BUILD BETTER SOFTWARE</span><h3>Request early access</h3><p>Prefer an introduction first? Tell us a little about your team.</p><div id="form-success" hidden role="status"><h3>Thanks for your interest.</h3><p>Your request has been sent. We'll be in touch to discuss your team and your workflow.</p></div><form action="https://formsubmit.co/suralal.s@neoito.com" method="POST"><input type="hidden" name="_cc" value="bd@neoito.com"/><input type="hidden" name="_subject" value="DryDock — early access request"/><input type="hidden" name="_captcha" value="false"/><input type="hidden" name="_template" value="table"/><input type="hidden" name="_next" value="https://usedrydock.com/?submitted=1#early-access"/><div class="form-row"><label>Name<input name="name" autocomplete="name" placeholder="Your name" required/></label><label>Company<input name="company" autocomplete="organization" placeholder="Your company" required/></label></div><label>Work email<input name="email" type="email" autocomplete="email" placeholder="you@company.com" required/></label><label>What would you like to explore? (optional)<textarea name="notes" id="demo-notes" rows="3" placeholder="Your stack, team size or delivery challenges…"></textarea></label><button class="button" type="submit">Request early access <span>→</span></button><p id="form-feedback" class="form-feedback" role="status" hidden>Opening our form service. If the request does not complete, return here to retry or <a href="mailto:suralal.s@neoito.com">email our team</a>.</p><small>One conversation about your team. No drip campaigns.</small></form></div></ClosingSections>
+
+</main><SiteFooter/>
+<Analytics/>
+<script>
+function track(name:string,params:Record<string,string>={}){const analytics=window as Window & {__ddGaLoaded?:boolean;gtag?:(...args:unknown[])=>void};if(analytics.__ddGaLoaded&&typeof analytics.gtag==='function')analytics.gtag('event',name,params);}
+document.querySelectorAll<HTMLAnchorElement>('a[href*="calendly.com"]').forEach(link=>link.addEventListener('click',()=>track('book_conversation',{location:link.closest('header')?'header':link.closest('.hero')?'hero':'page'})));
+document.querySelectorAll<HTMLAnchorElement>('a[href="#early-access"]').forEach(link=>link.addEventListener('click',()=>track('cta_click',{cta:'early_access'})));
+const form=document.querySelector<HTMLFormElement>('.access-card form');
+const submitButton=form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+const originalSubmit=submitButton?.innerHTML||'';
+form?.addEventListener('submit',()=>{if(submitButton){submitButton.disabled=true;submitButton.textContent='Sending…';}track('early_access_request',{stage:'submission_attempt'});document.querySelector('#form-feedback')?.removeAttribute('hidden');});
+window.addEventListener('pageshow',()=>{if(submitButton){submitButton.disabled=false;submitButton.innerHTML=originalSubmit;}document.querySelector('#form-feedback')?.setAttribute('hidden','');});
+const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle');
+const nav=document.querySelector('#main-nav');
+toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav?.classList.toggle('open',open);});
+nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{toggle?.setAttribute('aria-expanded','false');nav.classList.remove('open');}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){nav?.classList.remove('open');toggle?.setAttribute('aria-expanded','false');}});
+if(new URLSearchParams(location.search).get('submitted')==='1'){document.querySelector('#form-success')?.removeAttribute('hidden');document.querySelector('.access-card form')?.setAttribute('hidden','');}
+document.querySelector('#privacy-preferences')?.addEventListener('click',()=>{document.querySelector('#cookie-banner')?.classList.add('show');document.querySelector<HTMLButtonElement>('#ck-accept')?.focus();});
+</script></body></html>

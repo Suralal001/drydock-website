@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const authors = await getCollection('authors');
+
+  // Only generate pages for authors who actually have posts.
+  return authors
+    .map((author) => ({
+      author,
+      posts: posts
+        .filter((p) => p.data.authors.some((ref) => ref.id === author.id))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    }))
+    .filter(({ posts }) => posts.length > 0)
+    .map(({ author, posts }) => ({
+      params: { slug: author.id },
+      props: { author, posts },
+    }));
+};
+
+const { author, posts } = Astro.props;
+const a = author.data;
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const readTime = (body: string | undefined) =>
+  Math.max(1, Math.round((body ?? '').split(/\s+/).filter(Boolean).length / 225));
+
+const initials =
+  a.initials ?? a.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+
+const sameAs = [a.linkedin, a.website].filter(Boolean);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Person',
+    name: a.name,
+    jobTitle: a.title,
+    worksFor: { '@type': 'Organization', name: a.company },
+    description: a.bio,
+    url: new URL(`/blog/author/${author.id}`, Astro.site).href,
+    ...(sameAs.length ? { sameAs } : {}),
+  },
+};
+---
+<BaseLayout
+  title={`${a.name} — Writing on AI delivery governance | DryDock AI`}
+  description={a.bio.slice(0, 160)}
+  schema={schema}
+>
+  <div class="blog-wrap">
+    <header class="author-head">
+      {a.avatar
+        ? <img class="ah-avatar-img" src={a.avatar} alt="" width="76" height="76" />
+        : <div class="ah-avatar" aria-hidden="true">{initials}</div>}
+      <div>
+        <div class="kicker">Author</div>
+        <h1>{a.name}</h1>
+        <p class="ah-title">{a.title} &middot; {a.company}</p>
+        <p class="ah-bio">{a.bio}</p>
+        <div class="ab-links">
+          {a.linkedin && <a href={a.linkedin} rel="noopener">LinkedIn</a>}
+          {a.email && <a href={`mailto:${a.email}`}>Email</a>}
+          {a.website && <a href={a.website} rel="noopener">Website</a>}
+          <a href="/blog">All writing</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-bar">
+      <p class="blog-count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+    </div>
+
+    <div class="post-list">
+      {posts.map((post) => (
+        <article class="post-card">
+          <div class="meta">
+            <span class={`pill ${post.data.pillar}`}>{post.data.pillar}</span>
+            <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+            <span class="readtime">{readTime(post.body)} min read</span>
+          </div>
+          <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+          <p>{post.data.description}</p>
+          <a class="more" href={`/blog/${post.id}`}>Read &rarr;</a>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

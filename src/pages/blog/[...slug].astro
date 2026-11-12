@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import PostLayout from '../../layouts/PostLayout.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, all: posts },
+  }));
+};
+
+const { post, all } = Astro.props;
+const { Content, headings } = await render(post);
+
+// Related: same pillar first, then most recent. Max 3.
+const related = all
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => {
+    const same = (p: typeof a) => (p.data.pillar === post.data.pillar ? 0 : 1);
+    return same(a) - same(b) || b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  })
+  .slice(0, 3);
+---
+<PostLayout post={post} headings={headings} related={related}>
+  <Content />
+</PostLayout>
